@@ -1,0 +1,23 @@
+{
+  "name": "gym-logistical-tracker",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NewWorldCoder603/Gym-Logistical-Tracker.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/NewWorldCoder603/Gym-Logistical-Tracker/issues"
+  },
+  "homepage": "https://github.com/NewWorldCoder603/Gym-Logistical-Tracker#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mysql": "^2.18.1"
+  }
+}
