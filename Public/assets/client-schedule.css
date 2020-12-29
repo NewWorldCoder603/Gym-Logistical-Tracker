@@ -2,6 +2,33 @@
     font-weight: bold;
 }
 
+/* for schedule column borders */
 .border-teal {
-    border-color: #008080 !important; /* important to over ride bootstrap default */ 
+    border-color: teal !important; /* important to over ride bootstrap default */ 
+}
+
+/*for schedule column borders. (bootstrap border-right wouldn't work properly so went oldschool css */ 
+.border-to-right {
+    border-right: 1px solid;
+}
+
+.border-to-bottom {
+    border-bottom: 1px solid;
+}
+
+.fixed-height{
+    height: 100vh;
+}
+
+/*html button background*/ 
+.background-teal{
+    background-color: teal !important
+}
+
+.text-white{
+    color:white;
+}
+
+.text-teal{
+    color:teal; 
 }

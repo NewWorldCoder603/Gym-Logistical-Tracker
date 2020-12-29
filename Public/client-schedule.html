@@ -15,13 +15,16 @@
     <!--client-schedule.css link-->
     <link href="./assets/client-schedule.css" rel="stylesheet" />
 
+    <!--day.js cdn-->
+    <script src= 'https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.9.4/dayjs.min.js'></script>
+
     <title>Class Schedule</title>
   </head>
   <body>
     <main>
       <!--Head Info-->
-      <section class="text-center mt-5 ">
-        <h2 class="bold">Dev Fitness</h2>
+      <section class="text-center mt-5">
+        <h2 class="bold text-teal mb-3">Dev Fitness</h2>
         <p>111 Stack Lift Ave Salem NH 03070</p>
         <p>Phone: (555) 555 5555</p>
       </section>
@@ -29,39 +32,180 @@
       <!--Schedule Section-->
       <section class="container-fluid px-5">
         <div class="row">
-          <div class="col text-center border-top border-bottom  py-3 border-teal">
-            <p>Monday</p>
-            <p>1/1</p>
+          <div
+            class="col text-center border-top border-bottom py-2 border-teal "
+          >
+            <p class="text-teal bold week-day"></p> 
+            <p class="date-of-year"></p>
           </div>
-          <div class="col text-center border-top  border-bottom  py-3 border-teal">
-            <p>Tuesday</p>
-            <p>1/2</p>
+          <div
+            class="col text-center border-top border-bottom py-2 border-teal"
+          >
+            <p class="text-teal bold week-day"></p>
+            <p class="date-of-year"></p>
           </div>
-          <div class="col text-center border-top  border-bottom  py-3 border-teal">
-            <p>Wednesday</p>
-            <p>1/3</p>
+          <div
+            class="col text-center border-top border-bottom py-2 border-teal"
+          >
+            <p class="text-teal bold week-day"></p>
+            <p class="date-of-year"></p>
           </div>
-          <div class="col text-center border-top border-bottom  py-3 border-teal">
-            <p>Thursday</p>
-            <p>1/4</p>
+          <div
+            class="col text-center border-top border-bottom py-2 border-teal"
+          >
+            <p class="text-teal bold week-day"></p>
+            <p class="date-of-year"></p>
           </div>
-          <div class="col text-center border-top  border-bottom  py-3 border-teal border-teal">
-            <p>Friday</p>
-            <p>1/5</p>
+          <div
+            class="col text-center border-top border-bottom py-2 border-teal border-teal"
+          >
+            <p class="text-teal bold week-day"></p>
+            <p class="date-of-year"></p>
           </div>
-          <div class="col text-center border-top  border-bottom  py-3 border-teal">
-            <p>Saturday</p>
-            <p>1/6</p>
+          <div
+            class="col text-center border-top border-bottom py-2 border-teal"
+          >
+            <p class="text-teal bold week-day"></p>
+            <p class="date-of-year"></p>
           </div>
-          <div class="col text-center border-top  border-bottom  py-3 border-teal">
-            <p>Sunday</p>
-            <p>1/7</p>
+          <div
+            class="col text-center border-top border-bottom py-2 border-teal"
+          >
+            <p class="text-teal bold week-day"></p>
+            <p class="date-of-year"></p>
           </div>
         </div>
+        <div class="row">
+          <div
+            class="col border-to-right border-teal fixed-height text-center mt-3"
+          >
+
+          <!--Example of class html to be pulled to JS later-->
+            <div class="col border-to-bottom border-teal pb-3">
+              <div class="class-title-monday bold text-teal">Spin</div>
+              <div class="class-time-monday">5:15 am</div>
+              <div class="class-trainer-monday">Dave</div>
+              <div class="class-spots-left-monday">3/10</div>
+              <button
+                type="button"
+                class="btn btn-sm background-teal text-white mt-2"
+              >
+                Join
+              </button>
+            </div>
+          </div>
+          <div
+          class="col border-to-right border-teal fixed-height text-center mt-3"
+        >
+
+        <!--Example of class html to be pulled to JS later-->
+          <div class="col border-to-bottom border-teal pb-3">
+            <div class="class-title-monday bold text-teal">Spin</div>
+            <div class="class-time-monday">5:15 am</div>
+            <div class="class-trainer-monday">Dave</div>
+            <div class="class-spots-left-monday">3/10</div>
+            <button
+              type="button"
+              class="btn btn-sm background-teal text-white mt-2"
+            >
+              Join
+            </button>
+          </div>
+        </div>
+        <div
+        class="col border-to-right border-teal fixed-height text-center mt-3"
+      >
+
+      <!--Example of class html to be pulled to JS later-->
+        <div class="col border-to-bottom border-teal pb-3">
+          <div class="class-title-monday bold text-teal">Spin</div>
+          <div class="class-time-monday">5:15 am</div>
+          <div class="class-trainer-monday">Dave</div>
+          <div class="class-spots-left-monday">3/10</div>
+          <button
+            type="button"
+            class="btn btn-sm background-teal text-white mt-2"
+          >
+            Join
+          </button>
+        </div>
+      </div>
+      <div
+      class="col border-to-right border-teal fixed-height text-center mt-3"
+    >
+
+    <!--Example of class html to be pulled to JS later-->
+      <div class="col border-to-bottom border-teal pb-3">
+        <div class="class-title-monday bold text-teal">Spin</div>
+        <div class="class-time-monday">5:15 am</div>
+        <div class="class-trainer-monday">Dave</div>
+        <div class="class-spots-left-monday">3/10</div>
+        <button
+          type="button"
+          class="btn btn-sm background-teal text-white mt-2"
+        >
+          Join
+        </button>
+      </div>
+    </div>
+    <div
+    class="col border-to-right border-teal fixed-height text-center mt-3"
+  >
+
+  <!--Example of class html to be pulled to JS later-->
+    <div class="col border-to-bottom border-teal pb-3">
+      <div class="class-title-monday bold text-teal">Spin</div>
+      <div class="class-time-monday">5:15 am</div>
+      <div class="class-trainer-monday">Dave</div>
+      <div class="class-spots-left-monday">3/10</div>
+      <button
+        type="button"
+        class="btn btn-sm background-teal text-white mt-2"
+      >
+        Join
+      </button>
+    </div>
+  </div>
+  <div
+  class="col border-to-right border-teal fixed-height text-center mt-3"
+>
+
+<!--Example of class html to be pulled to JS later-->
+  <div class="col border-to-bottom border-teal pb-3">
+    <div class="class-title-monday bold text-teal">Spin</div>
+    <div class="class-time-monday">5:15 am</div>
+    <div class="class-trainer-monday">Dave</div>
+    <div class="class-spots-left-monday">3/10</div>
+    <button
+      type="button"
+      class="btn btn-sm background-teal text-white mt-2"
+    >
+      Join
+    </button>
+  </div>
+</div>
+<div
+class="col fixed-height text-center mt-3"
+>
+
+<!--Example of class html to be pulled to JS later-->
+<div class="col border-to-bottom border-teal pb-3">
+  <div class="class-title-monday bold text-teal">Spin</div>
+  <div class="class-time-monday">5:15 am</div>
+  <div class="class-trainer-monday">Dave</div>
+  <div class="class-spots-left-monday">3/10</div>
+  <button
+    type="button"
+    class="btn btn-sm background-teal text-white mt-2"
+  >
+    Join
+  </button>
+</div>
+</div>
       </section>
     </main>
     <!--Link to schedule.js-->
-    <script src="./assets/client-schedule.js"></script>
+    <script defer src="./assets/client-schedule.js"></script>
 
     <!--Jquery CDN -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
