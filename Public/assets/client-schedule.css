@@ -1,0 +1,7 @@
+.bold {
+    font-weight: bold;
+}
+
+.border-teal {
+    border-color: #008080 !important; /* important to over ride bootstrap default */ 
+}
