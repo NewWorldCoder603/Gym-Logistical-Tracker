@@ -31,7 +31,7 @@ body {
 }
 
 /*html button background*/
-.background-teal {
+.background-red {
   background-color: #d22e33 !important;
 }
 
@@ -39,10 +39,14 @@ body {
   color: white;
 }
 
-.text-teal {
+.text-red {
   color: #d22e33;
 }
 
 .float-left {
   float: left;
+}
+
+.font-large {
+  font-size: 1.2em;
 }
