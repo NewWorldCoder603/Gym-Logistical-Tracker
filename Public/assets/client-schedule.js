@@ -20,21 +20,26 @@ for (i = 0; i < $weekDay.length; i++) {
 //starter ajax request that populates page with data
 
 // const queryURLSchedule = //insert schedule get endpoint here
+const getClasses = () => {
+  $.ajax({
+    url: "/api/classes",
+    method: "GET",
+  }).then(function (data) {
+    console.log(data);
+  });
+};
 
-// $.ajax({
-//   url: queryURLSchedule,
-//   method: 'GET',
-// }).then(function (item) {
-//   //class name
-//   const className = item.name
-//   //class day of week
-//   const classDay = item.day
-//   //class time
-//   const classTime = item.time
-//   //Max class size
-//   const classSize  = item.max_size
-//   //trainer id
-//   const trainer_id = item.trainer_id
+getClasses();
+//class name
+// const className = item.name;
+// //class day of week
+// const classDay = item.day;
+// //class time
+// const classTime = item.time;
+// //Max class size
+// const classSize = item.max_size;
+// //trainer id
+// const trainer_id = item.trainer_id;
 
 //   //dynamic template
 //   const classTemplate =
@@ -57,7 +62,7 @@ for (i = 0; i < $weekDay.length; i++) {
 //               </div>
 //             </div>
 // `
-// })
+
 // /* Ajax to do
 // 1. This ajax is set up for a single object, but will actually need to loop an array of objects.
 // 2. Add an append statement based off item.day for each object
@@ -67,13 +72,12 @@ for (i = 0; i < $weekDay.length; i++) {
 // 6. query url schedule needs endpoint added to definition
 
 //from stack overflow at https://stackoverflow.com/questions/4898574/converting-24-hour-time-to-12-hour-time-w-am-pm-using-javascript
-(convertTime) => {
-  //it is pm if hours from 12 onwards
-  suffix = hours >= 12 ? "pm" : "am";
+// (convertTime) => {
+//   //it is pm if hours from 12 onwards
+//   suffix = hours >= 12 ? "pm" : "am";
 
-  //only -12 from hours if it is greater than 12 (if not back at mid night)
-  hours = hours > 12 ? hours - 12 : hours;
+//   //only -12 from hours if it is greater than 12 (if not back at mid night)
+//   hours = hours > 12 ? hours - 12 : hours;
 
-  //if 00 then it is 12 am
-  hours = hours == "00" ? 12 : hours;
-};
+//   //if 00 then it is 12 am
+//   hours = hours == "00" ? 12 : hours;
