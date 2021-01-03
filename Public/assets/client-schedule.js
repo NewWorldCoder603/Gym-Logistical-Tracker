@@ -2,6 +2,10 @@ $weekDay = document.querySelectorAll(".week-day");
 $dateOfYear = document.querySelectorAll(".date-of-year");
 date = dayjs().format("dddd");
 
+  //dynamic template
+
+
+
 //Dynamically inserts day of week from today to 4 days out
 for (i = 0; i < $weekDay.length; i++) {
   dayOfYear = dayjs()
@@ -21,47 +25,77 @@ for (i = 0; i < $weekDay.length; i++) {
 
 // const queryURLSchedule = //insert schedule get endpoint here
 const getClasses = () => {
-  $.ajax({
+  return $.ajax({
     url: "/api/classes",
     method: "GET",
   }).then(function (data) {
-    console.log(data);
+    //grabs the schedule columns for each day of the week to append class template in writePage function
+    $mondayDiv = $('.monday-place-holder')
+    $tuesdayDiv = $('.tuesday-place-holder')
+    $wednesdayDiv = $('.wendesday-place-holder')
+    $thursdayDiv = $('.thursday-place-holder')
+    $fridayDiv = $('.friday-place-holder')
+    $saturdayDiv = $('.saturday-place-holder')
+    $sundayDiv = $('.sunday-place-holder')
+
+//forEach that iterates over classes array using writePage function
+data.forEach(writePage)
+
+function writePage(item, index){
+  console.log(item)
+//dynamic template 
+  const classTemplate =
+`
+            <div class="row m-0 pb-3 pt-3 border-to-bottom-thin font-large">
+              <div class="col border-teal pb-3 text-center">
+                <h4 class="class-title-${item.day} bold text-red">${item.name}</h4>
+                <div class="class-time-${item.day}">${item.time}</div>
+                <div class="class-trainer-${item.day}">${item.trainer_id} Dave</div>
+                <div class="class-spots-left-${item.day}">${item.max_size} </div>
+              </div>
+
+              <div class="col border-to-right border-teal d-flex">
+                <button
+                  type="button"
+                  class="btn background-red text-white align-self-center"
+                >
+                  Join
+                </button>
+              </div>
+            </div>
+`
+  console.log(item.day)
+  switch(item.day) {
+    case 'Monday':
+      $mondayDiv.append(classTemplate)
+      break;
+    case 'Tuesday':
+      $tuesdayDiv.append(classTemplate)
+      break;
+      case 'Wednesday':
+        $wednesdayDiv.append(classTemplate)
+      break;
+      case 'Thursday':
+        $thursdayDiv.append(classTemplate)
+      break;
+      case 'Friday':
+        $fridayDiv.append(classTemplate)
+      break;
+      case 'Saturday':
+        $saturdayDiv.append(classTemplate)
+      break;
+      case 'Sunday':
+      $sundayDiv.append(classTemplate)
+      break;
+  }
+}
+    
   });
 };
 
-getClasses();
-//class name
-// const className = item.name;
-// //class day of week
-// const classDay = item.day;
-// //class time
-// const classTime = item.time;
-// //Max class size
-// const classSize = item.max_size;
-// //trainer id
-// const trainer_id = item.trainer_id;
+getClasses()
 
-//   //dynamic template
-//   const classTemplate =
-// `
-//             <div class="row m-0 pb-3 pt-3 border-to-bottom-thin font-large">
-//               <div class="col border-teal pb-3 text-center">
-//                 <h4 class="class-title-monday bold text-red">${className}</h4>
-//                 <div class="class-time-monday">${classTime}</div>
-//                 <div class="class-trainer-monday">${trainer_id}</div>
-//                 <div class="class-spots-left-monday">${classSize} </div>
-//               </div>
 
-//               <div class="col border-to-right border-teal d-flex">
-//                 <button
-//                   type="button"
-//                   class="btn background-red text-white align-self-center"
-//                 >
-//                   Join
-//                 </button>
-//               </div>
-//             </div>
-// `
 
 // /* Ajax to do
 // 1. This ajax is set up for a single object, but will actually need to loop an array of objects.
