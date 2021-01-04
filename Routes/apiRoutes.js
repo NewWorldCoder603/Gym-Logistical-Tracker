@@ -40,9 +40,10 @@ router.get("/classes", (req, res) => {
 // POST "api/login" authenticates the member login credentials in the database, and responds with the personal details of the member
 router.post("/login", (req, res) => {
   const data = req.body;
+  console.log(data);
   // retrieves the record from database if username and password combination entered by the user matches with the existing records in the database
   connection.query(
-    `SELECT * from member WHERE username = "${data.username}" AND password = MD5("${data.password}")`,
+    `SELECT * from member WHERE username = "${data.userName}" AND password = "${data.password}"`,
     function (err, result) {
       if (err) throw err;
 
