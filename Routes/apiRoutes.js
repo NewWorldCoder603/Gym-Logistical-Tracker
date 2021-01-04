@@ -53,17 +53,7 @@ router.post("/login", (req, res) => {
   );
 });
 
-// router.get("/products-low", (req, res) => {
-//   connection.query(
-//     "SELECT * FROM products WHERE stock_quantity > 10",
-//     function (err, result) {
-//       if (err) throw err;
-//       res.json(result);
-//     }
-//   );
-// });
-
-router.put("/addToClass", (req, res) => {
+router.post("/addToClass", (req, res) => {
   console.log(req.body);
   connection.query(
     `INSERT INTO class_members (class_id, member_id, date) 
@@ -77,44 +67,7 @@ router.put("/addToClass", (req, res) => {
       res.json(result);
     }
   );
-  res.send("ok");
+  res.send("Added to class!");
 });
-
-// router.get("/department", (req, res) => {
-//   console.log(req.body);
-//   connection.query(
-//     "SELECT * FROM departments",
-//     function (err, result) {
-//       if (err) throw err;
-//       res.json(result);
-//     }
-//   );
-// });
-
-// router.post("/addNewItem", (req, res) => {
-//   connection.query(
-//     `INSERT INTO products (product_name, department_name, price, stock_quantity)
-//     VALUES ("${req.body.product}",  "${
-//       req.body.department
-//     }", ${parseInt(req.body.price)}, ${parseInt(
-//       req.body.quantity
-//     )});`,
-//     function (err, result) {
-//       if (err) throw err;
-//       res.json(result);
-//     }
-//   );
-// });
-
-// router.put("/addInventory", (req, res) => {
-//   connection.query(
-//     `UPDATE products SET stock_quantity = stock_quantity + ? WHERE item_id = ?`,
-//     [parseInt(req.body.addNumber), parseInt(req.body.id)],
-//     function (err, result) {
-//       if (err) throw err;
-//       res.json(result);
-//     }
-//   );
-// });
 
 module.exports = router;

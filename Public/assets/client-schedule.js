@@ -29,6 +29,20 @@ const getClasses = () => {
   });
 };
 
+//Adds the current user's Id to the selected class roster
+const addToClass = (memberId) => {
+  return $.ajax({
+    url: "/api/addToClass",
+    method: "POST",
+    //We will need to send the data like this.
+    // data:{
+    //   id:1,
+    //   member_id:memberId,
+    //   date:1,
+    // }
+  });
+};
+
 getClasses();
 
 function writePage(item) {
