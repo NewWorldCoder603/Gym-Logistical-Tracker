@@ -1,5 +1,8 @@
 const router = require("express").Router();
+const fs = require("fs");
+const path = require("path");
 const mysql = require("mysql");
+let user = require("../user/user");
 
 // Connect to the gym_management_systemdb database using a localhost connection
 const connection = mysql.createConnection({
@@ -42,6 +45,15 @@ router.post("/login", (req, res) => {
     `SELECT * from member WHERE username = "${data.username}" AND password = MD5("${data.password}")`,
     function (err, result) {
       if (err) throw err;
+
+      //Add file to track current user
+      fs.writeFileSync(
+        path.join(__dirname, "../user/user.json"),
+        JSON.stringify(result),
+        {},
+        (e) => console.log(e)
+      );
+
       // if the result-set has exactly 1 record, then pass on the member details(database query response) to front-end, else send an error message
       result.length === 1
         ? res.json(result[0])
@@ -58,7 +70,7 @@ router.post("/addToClass", (req, res) => {
   connection.query(
     `INSERT INTO class_members (class_id, member_id, date) 
     VALUES (
-       ${parseInt(req.body.id)}, 
+       ${parseInt(user.id)}, 
        ${parseInt(req.body.member_id)}, 
        ${parseInt(req.body.date)}
        )`,
