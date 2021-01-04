@@ -36,14 +36,21 @@ router.get("/classes", (req, res) => {
 
 // POST "api/login" authenticates the member login credentials in the database, and responds with the personal details of the member
 router.post("/login", (req, res) => {
-    const data = req.body;
-    // retrieves the record from database if username and password combination entered by the user matches with the existing records in the database
-    connection.query(`SELECT * from member WHERE username = "${data.username}" AND password = MD5("${data.password}")`, 
-    function(err, result){
-        if (err) throw err;
-        // if the result-set has exactly 1 record, then pass on the member details(database query response) to front-end, else send an error message
-        result.length === 1? res.json(result[0]): res.json({"error": "Username and/or password is incorrect. Please try again."});
-    })
+  const data = req.body;
+  // retrieves the record from database if username and password combination entered by the user matches with the existing records in the database
+  connection.query(
+    `SELECT * from member WHERE username = "${data.username}" AND password = MD5("${data.password}")`,
+    function (err, result) {
+      if (err) throw err;
+      // if the result-set has exactly 1 record, then pass on the member details(database query response) to front-end, else send an error message
+      result.length === 1
+        ? res.json(result[0])
+        : res.json({
+            error:
+              "Username and/or password is incorrect. Please try again.",
+          });
+    }
+  );
 });
 
 // router.get("/products-low", (req, res) => {
@@ -56,21 +63,22 @@ router.post("/login", (req, res) => {
 //   );
 // });
 
-// router.put("/products", (req, res) => {
-//   console.log(req.body);
-//   connection.query(
-//     "UPDATE products SET stock_quantity = stock_quantity - ? WHERE item_id = ?",
-//     [
-//       parseInt(req.body.purchaseNumber),
-//       parseInt(req.body.id),
-//     ],
-//     function (err, result) {
-//       if (err) throw err;
-//       res.json(result);
-//     }
-//   );
-//   res.send("ok");
-// });
+router.put("/addToClass", (req, res) => {
+  console.log(req.body);
+  connection.query(
+    `INSERT INTO class_members (class_id, member_id, date) 
+    VALUES (
+       ${parseInt(req.body.id)}, 
+       ${parseInt(req.body.member_id)}, 
+       ${parseInt(req.body.date)}
+       )`,
+    function (err, result) {
+      if (err) throw err;
+      res.json(result);
+    }
+  );
+  res.send("ok");
+});
 
 // router.get("/department", (req, res) => {
 //   console.log(req.body);
