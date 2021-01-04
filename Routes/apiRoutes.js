@@ -12,7 +12,7 @@ const connection = mysql.createConnection({
   user: "root",
 
   // Your MySQL password (leave blank for class demonstration purposes; fill in later)
-  password: "Jesterman17!",
+  password: "rootroot",
 
   // Name of database
   database: "gym_management_systemdb",
@@ -26,7 +26,7 @@ connection.connect((err) => {
 // GET "/api/classes" responds with all notes from the database
 router.get("/classes", (req, res) => {
   connection.query(
-    "SELECT * FROM class",
+    "SELECT *,employee.first_name, employee.last_name FROM class INNER JOIN employee ON class.trainer_id = employee.id",
     function (err, result) {
       if (err) throw err;
 
