@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const mysql = require("mysql");
 
-// Connect to the ice_creamDB database using a localhost connection
+// Connect to the gym_management_systemdb database using a localhost connection
 const connection = mysql.createConnection({
   host: "localhost",
 
@@ -23,16 +23,27 @@ connection.connect((err) => {
   console.log("connected as id " + connection.threadId);
 });
 
-// GET "/api/classes" responds with all notes from the database
+// GET "/api/classes" responds with all classes from the database
 router.get("/classes", (req, res) => {
   connection.query(
     "SELECT * FROM class",
     function (err, result) {
       if (err) throw err;
-
       res.json(result);
     }
   );
+});
+
+// POST "api/login" authenticates the member login credentials in the database, and responds with the personal details of the member
+router.post("/login", (req, res) => {
+    const data = req.body;
+    // retrieves the record from database if username and password combination entered by the user matches with the existing records in the database
+    connection.query(`SELECT * from member WHERE username = "${data.username}" AND password = MD5("${data.password}")`, 
+    function(err, result){
+        if (err) throw err;
+        // if the result-set has exactly 1 record, then pass on the member details(database query response) to front-end, else send an error message
+        result.length === 1? res.json(result[0]): res.json({"error": "Username and/or password is incorrect. Please try again."});
+    })
 });
 
 // router.get("/products-low", (req, res) => {
