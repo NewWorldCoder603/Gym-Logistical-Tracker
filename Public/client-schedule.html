@@ -23,15 +23,88 @@
   <body>
     <main>
       <!--Head Info-->
-      <section class="text-center mt-5 mb-4">
-        <img
-          class="logo"
-          src="./assets/images/Color_Logo.png"
-          alt="funny logo of skinny kid trying to lift a huge weight"
-        />
-        <p class="font-large text-red">111 Stack Lift Ave Salem NH 03070</p>
-        <p class="font-large text-red">Phone: (555) 555 5555</p>
+      <section class="text-center mb-5 background-dark container-fluid">
+        <div class="row">
+          <div class="col">
+            <p class="text-red">test</p>
+          </div>
+          <div class="col">
+            <img
+              class="logo"
+              src="./assets/images/Color_Logo_dark_background.png"
+              alt="funny logo of skinny kid trying to lift a huge weight"
+            />
+          </div>
+          <div class="col">
+            <p class="text-red">test</p>
+          </div>
+        </div>
       </section>
+
+      <!--Container holding 2 sections. Left will be member info and stats, right will be "meet our trainers scroller"-->
+
+      <div class="container mb-5">
+        <div class="row">
+          <!--Client Info-->
+          <div class="client-info col-12 col-md-6 text-center mb-5 mb-md-0">
+            <h2 class="my-3">Hi Sarah!</h2>
+            <p>Your are currently signed up for <b>2</b> classes this week!</p>
+            <p>Thursday, Spin at 9AM with Mikey</p>
+            <p>Monday, Zumba at 2PM with Joel</p>
+          </div>
+          <!--Meet the Trainers-->
+          <div class="col-12 col-md-6 text-center background-dark">
+            <h2 class="div text-red my-3">Meet Your Trainers!</h2>
+            <div
+              id="carouselExampleSlidesOnly"
+              class="carousel slide"
+              data-bs-ride="carousel"
+            >
+              <div class="carousel-inner">
+                <div class="carousel-item active">
+                  <img
+                    src="./assets/images/trainer_abeer.jpg"
+                    class="d-block w-50 center max-height"
+                    alt="cover photo of trainer abeer"
+                  />
+                  <div
+                    class="carousel-caption d-none d-md-block center background-t-red"
+                  >
+                    <h5>Abeer</h5>
+                    <p>Zumba</p>
+                  </div>
+                </div>
+                <div class="carousel-item">
+                  <img
+                    src="./assets/images/trainer_arav.jpg"
+                    class="d-block w-50 center max-height"
+                    alt="cover photo of trainer arav"
+                  />
+                  <div
+                    class="carousel-caption d-none d-md-block center background-t-red"
+                  >
+                    <h5>Arav</h5>
+                    <p>Spin</p>
+                  </div>
+                </div>
+                <div class="carousel-item">
+                  <img
+                    src="./assets/images/trainer_felicia.jfif"
+                    class="d-block w-50 center max-height"
+                    alt="cover photo of trainer felicia"
+                  />
+                  <div
+                    class="carousel-caption d-none d-md-block center background-t-red"
+                  >
+                    <h5>Felicia</h5>
+                    <p>Barbell Blast</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
       <!--Schedule Section-->
       <section class="container-fluid px-5">
@@ -94,6 +167,12 @@
           </div>
         </div>
       </section>
+      <footer class="mt-5 background-dark">
+        <p class="font-large text-red text-center">Phone: (555) 555 5555</p>
+        <p class="font-large text-red text-center mb-">
+          111 Stack Lift Ave Salem NH 03070
+        </p>
+      </footer>
     </main>
     <!--Link to schedule.js-->
     <script defer src="./assets/js/client-schedule.js"></script>
