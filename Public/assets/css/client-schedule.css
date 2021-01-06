@@ -1,5 +1,5 @@
 body {
-  background-color: lightgray;
+  background-color: rgb(238, 238, 238);
 }
 
 
@@ -51,7 +51,7 @@ body {
 }
 
 .logo {
-  max-width: 20rem;
+  max-width: 10rem;
   height: auto; 
 }
 
