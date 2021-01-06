@@ -9,14 +9,11 @@ body {
 }
 
 
-.bold {
-  font-weight: bold;
-}
 
 /*for schedule column borders. */
 .border-to-right {
-  border-right: 1px solid;
-  border-color: #1783ee;
+  border-right: 1px solid #1783ee;
+ 
 }
 
 .border-to-bottom {
@@ -51,4 +48,14 @@ body {
 
 .font-large {
   font-size: 1.2em;
+}
+
+.logo {
+  max-width: 20rem;
+  height: auto; 
+}
+
+.btn {
+  margin:0 auto;
+  display:block;
 }

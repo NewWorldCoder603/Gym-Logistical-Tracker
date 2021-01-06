@@ -29,6 +29,54 @@ const getClasses = () => {
   });
 };
 
+    function writePage(item) {
+      //changes format of the 24 hour time to 12 hour time from database to 12 hour time displayed on schedules
+      const twelveHourTime = tConvert(item.time);
+      //dynamic template
+      const classTemplate = `
+            <div class="row m-0 pb-3 pt-3 border-to-bottom-thin font-large border-to-right mb-3">
+              <div class="col border-teal pb-3 text-center">
+                <h4 class="class-title-${item.day} text-red">${item.name}</h4>
+                <div class="class-time-${item.day}">${twelveHourTime}</div>
+                <div class="class-trainer-${item.day}">${item.trainer_id} Dave</div>
+                <div class="class-spots-left-${item.day}">${item.max_size} </div>
+              </div>
+
+              <div class="col border-teal d-flex">
+                <button
+                  type="button"
+                  class="btn background-red text-white align-self-center"
+                >
+                  Join
+                </button>
+              </div>
+            </div>
+`;
+      //switch statement checks each class instance for which day it should appear in then appends it to schedule page
+      switch (item.day) {
+        case "Monday":
+          $mondayDiv.append(classTemplate);
+          break;
+        case "Tuesday":
+          $tuesdayDiv.append(classTemplate);
+          break;
+        case "Wednesday":
+          $wednesdayDiv.append(classTemplate);
+          break;
+        case "Thursday":
+          $thursdayDiv.append(classTemplate);
+          break;
+        case "Friday":
+          $fridayDiv.append(classTemplate);
+          break;
+        case "Saturday":
+          $saturdayDiv.append(classTemplate);
+          break;
+        case "Sunday":
+          $sundayDiv.append(classTemplate);
+          break;
+      }
+    }
 //Adds the current user's Id to the selected class roster
 const addToClass = () => {
   return $.ajax({
