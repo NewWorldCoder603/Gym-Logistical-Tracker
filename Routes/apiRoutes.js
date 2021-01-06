@@ -1,7 +1,10 @@
 const router = require("express").Router();
+const fs = require("fs");
+const path = require("path");
 const mysql = require("mysql");
+let user = require("../user/user");
 
-// Connect to the ice_creamDB database using a localhost connection
+// Connect to the gym_management_systemdb database using a localhost connection
 const connection = mysql.createConnection({
   host: "localhost",
 
@@ -12,7 +15,7 @@ const connection = mysql.createConnection({
   user: "root",
 
   // Your MySQL password (leave blank for class demonstration purposes; fill in later)
-  password: "Jesterman17!",
+  password: "rootroot",
 
   // Name of database
   database: "gym_management_systemdb",
@@ -23,79 +26,61 @@ connection.connect((err) => {
   console.log("connected as id " + connection.threadId);
 });
 
-// GET "/api/classes" responds with all notes from the database
+// GET "/api/classes" responds with all classes from the database
 router.get("/classes", (req, res) => {
   connection.query(
-    "SELECT * FROM class",
+    "SELECT *,employee.first_name, employee.last_name FROM class INNER JOIN employee ON class.trainer_id = employee.id",
     function (err, result) {
       if (err) throw err;
-
       res.json(result);
     }
   );
 });
 
-// router.get("/products-low", (req, res) => {
-//   connection.query(
-//     "SELECT * FROM products WHERE stock_quantity > 10",
-//     function (err, result) {
-//       if (err) throw err;
-//       res.json(result);
-//     }
-//   );
-// });
+// POST "api/login" authenticates the member login credentials in the database, and responds with the personal details of the member
+router.post("/login", (req, res) => {
+  const data = req.body;
+  console.log(data);
+  // retrieves the record from database if username and password combination entered by the user matches with the existing records in the database
+  connection.query(
+    `SELECT * from member WHERE username = "${data.userName}" AND password = "${data.password}"`,
+    function (err, result) {
+      if (err) throw err;
 
-// router.put("/products", (req, res) => {
-//   console.log(req.body);
-//   connection.query(
-//     "UPDATE products SET stock_quantity = stock_quantity - ? WHERE item_id = ?",
-//     [
-//       parseInt(req.body.purchaseNumber),
-//       parseInt(req.body.id),
-//     ],
-//     function (err, result) {
-//       if (err) throw err;
-//       res.json(result);
-//     }
-//   );
-//   res.send("ok");
-// });
+      //Add file to track current user
+      fs.writeFileSync(
+        path.join(__dirname, "../user/user.json"),
+        JSON.stringify(result),
+        {},
+        (e) => console.log(e)
+      );
 
-// router.get("/department", (req, res) => {
-//   console.log(req.body);
-//   connection.query(
-//     "SELECT * FROM departments",
-//     function (err, result) {
-//       if (err) throw err;
-//       res.json(result);
-//     }
-//   );
-// });
+      // if the result-set has exactly 1 record, then pass on the member details(database query response) to front-end, else send an error message
+      result.length === 1
+        ? res.json(result[0])
+        : res.json({
+            error:
+              "Username and/or password is incorrect. Please try again.",
+          });
+    }
+  );
+});
 
-// router.post("/addNewItem", (req, res) => {
-//   connection.query(
-//     `INSERT INTO products (product_name, department_name, price, stock_quantity)
-//     VALUES ("${req.body.product}",  "${
-//       req.body.department
-//     }", ${parseInt(req.body.price)}, ${parseInt(
-//       req.body.quantity
-//     )});`,
-//     function (err, result) {
-//       if (err) throw err;
-//       res.json(result);
-//     }
-//   );
-// });
-
-// router.put("/addInventory", (req, res) => {
-//   connection.query(
-//     `UPDATE products SET stock_quantity = stock_quantity + ? WHERE item_id = ?`,
-//     [parseInt(req.body.addNumber), parseInt(req.body.id)],
-//     function (err, result) {
-//       if (err) throw err;
-//       res.json(result);
-//     }
-//   );
-// });
+router.post("/addToClass", (req, res) => {
+  console.log(req.body);
+  connection.query(
+    `INSERT INTO class_members (class_id, member_id, date) 
+    VALUES (
+       ${parseInt(user.id)}, 
+       ${parseInt(req.body.member_id)}, 
+       ${parseInt(req.body.date)}
+       )`,
+    function (err, result) {
+      if (err) throw err;
+      res.json(result);
+    }
+  );
+  res.send("Added to class!");
+});
 
 module.exports = router;
