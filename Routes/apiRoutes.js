@@ -2,7 +2,8 @@ const router = require("express").Router();
 const fs = require("fs");
 const path = require("path");
 const mysql = require("mysql");
-let user = require("../user/user");
+let user = require("../user/user.json");
+const Member = require("../Clients/clients.js")
 
 // Connect to the gym_management_systemdb database using a localhost connection
 const connection = mysql.createConnection({
@@ -40,10 +41,9 @@ router.get("/classes", (req, res) => {
 // POST "api/login" authenticates the member login credentials in the database, and responds with the personal details of the member
 router.post("/login", (req, res) => {
   const data = req.body;
-  console.log(data);
   // retrieves the record from database if username and password combination entered by the user matches with the existing records in the database
   connection.query(
-    `SELECT * from member WHERE username = "${data.userName}" AND password = "${data.password}"`,
+    `SELECT * from member WHERE username = "${data.userName}" AND password = MD5("${data.password}")`,
     function (err, result) {
       if (err) throw err;
 
@@ -60,10 +60,27 @@ router.post("/login", (req, res) => {
         ? res.json(result[0])
         : res.json({
             error:
-              "Username and/or password is incorrect. Please try again.",
+              "Username and/or password is incorrect. Please try again."
           });
     }
   );
+});
+
+router.post("/register", (req, res) => {
+    const data = req.body;
+    const newMember = new Member(data.username, data.password, data.first_name, data.last_name, data.gender, data.date_of_birth, data.email, data.phone);
+    // SQL query to insert the new member registration record in the member table in the database
+    connection.query("INSERT INTO member SET ?",
+        newMember,
+        function(err) {
+            if (err){
+                // shows a user friendly message to user
+                res.json({error: "Sorry! Some problem occured. Please try again!"});
+            } else {
+                res.json({success: `Welcome ${data.first_name}! You are now a member of Dev Fitness`});
+            }
+        }
+    );
 });
 
 router.post("/addToClass", (req, res) => {
