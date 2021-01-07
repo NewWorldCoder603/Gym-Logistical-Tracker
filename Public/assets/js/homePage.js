@@ -1,15 +1,21 @@
-const userName = $("#username");
-const password = $("#password");
+const userName = $("#logUsername");
+const password = $("#logPassword");
 
-$("#login").click(function () {
+$("#loginBtn").click(function () {
   $.ajax({
     url: "/api/login",
     data: {
-      userName: userName.val(),
-      password: password.val(),
+      userName: userName.val().trim(),
+      password: password.val().trim(),
     },
     method: "POST",
   }).then(function (response) {
-    console.log(response);
+    console.log(response)
+    //if error, display error
+    //if correct login, get request for specific member's id
+    $.ajax({
+      url: "/client-schedule",
+      method: "GET"
+    })
   });
 });
