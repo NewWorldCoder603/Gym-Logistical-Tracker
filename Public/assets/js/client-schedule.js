@@ -24,28 +24,65 @@ const getClasses = () => {
     method: "GET",
   }).then(function (data) {
     //forEach that iterates over database data and populates page with each instance
-    data.forEach(writePage);
+    data.forEach(writeSchedule);
     console.log(data);
   });
 };
 
-//Adds the current user's Id to the selected class roster
-const addToClass = () => {
-  return $.ajax({
-    url: "/api/addToClass",
-    method: "POST",
-    //We will need to send the data like this.
-    // data:{
-    //   id:class-id,
-    //   date:date
-    // }
-  });
-};
+function writeSchedule(item) {
+  //changes format of the 24 hour time to 12 hour time from database to 12 hour time displayed on schedules
+  const twelveHourTime = tConvert(item.time);
+  //dynamic template
+  const classTemplate = `
+            <div class="row m-0 pb-3 pt-3 border-to-bottom-thin font-large border-to-right mb-3">
+              <div class="col border-teal pb-3 text-center">
+                <h4 class="class-title-${item.day} text-red">${item.name}</h4>
+                <div class="class-time-${item.day}">${twelveHourTime}</div>
+                <div class="class-trainer-${item.day}">${item.trainer_id} Dave</div>
+                <div class="class-spots-left-${item.day}">${item.max_size} </div>
+              </div>
+
+              <div class="col border-teal d-flex">
+                <button
+                  type="button"
+                  class="btn background-red text-white align-self-center"
+                >
+                  Join
+                </button>
+              </div>
+            </div>
+`;
+  //switch statement checks each class instance for which day it should appear in then appends it to schedule page
+  switch (item.day) {
+    case "Monday":
+      $mondayDiv.append(classTemplate);
+      break;
+    case "Tuesday":
+      $tuesdayDiv.append(classTemplate);
+      break;
+    case "Wednesday":
+      $wednesdayDiv.append(classTemplate);
+      break;
+    case "Thursday":
+      $thursdayDiv.append(classTemplate);
+      break;
+    case "Friday":
+      $fridayDiv.append(classTemplate);
+      break;
+    case "Saturday":
+      $saturdayDiv.append(classTemplate);
+      break;
+    case "Sunday":
+      $sundayDiv.append(classTemplate);
+      break;
+  }
+}
 
 getClasses();
 
-function writePage(item) {
-  //grabs the schedule columns for each day of the week to append class template in writePage function
+//this function grabs data from api, formats it, then appends it to the page as the schedule
+function writeSchedule(item) {
+  //grabs the schedule columns for each day of the week to append class template in writeSchedule function
   $mondayDiv = $(".monday-place-holder");
   $tuesdayDiv = $(".tuesday-place-holder");
   $wednesdayDiv = $(".wendesday-place-holder");
@@ -107,9 +144,7 @@ function writePage(item) {
 //altered from https://stackoverflow.com/questions/13898423/javascript-convert-24-hour-time-of-day-string-to-12-hour-time-with-am-pm-and-no
 function tConvert(time) {
   // Check correct time format and split into components
-  time = time
-    .toString()
-    .match(/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [
+  time = time.toString().match(/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [
     time,
   ];
 
@@ -125,3 +160,20 @@ function tConvert(time) {
 
   return time.join(""); // return adjusted time or original string
 }
+
+// SECTION  for updating classes
+
+//Adds the current user's Id to the selected class roster
+const addToClass = () => {
+  return $.ajax({
+    url: "/api/addToClass",
+    method: "POST",
+    //We will need to send the data like this.
+    // data:{
+    //   id:class-id,
+    //   date:date
+    // }
+  });
+};
+
+//SECTION for user log in 
