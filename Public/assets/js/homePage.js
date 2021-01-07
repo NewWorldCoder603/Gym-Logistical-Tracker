@@ -1,25 +1,21 @@
-// const $logUsername = $(".logUsername"); //username input field
-// const $logPassword = $(".logPassword"); //password input field
-// const $loginBtn = $(".loginBtn"); //login button
+const userName = $("#logUsername");
+const password = $("#logPassword");
 
-// //landing page get request
-// const getPage = () => {
-//     return $.ajax({
-//         url: "/api/",
-//         method: "GET",
-//     })
-// };
-
-// getPage();
-
-// //Post request for member login
-// const checkLogin = (data) => { //Fix data part
-//     return $.ajax({
-//         url: "/api/login",
-//         data: {username: [value], password: [value]}, //Fix this part
-//         method: "POST",
-//     });
-// };
-
-// //Event Listeners
-// $loginBtn.on("click", checkLogin);
+$("#loginBtn").click(function () {
+  $.ajax({
+    url: "/api/login",
+    data: {
+      userName: userName.val().trim(),
+      password: password.val().trim(),
+    },
+    method: "POST",
+  }).then(function (response) {
+    console.log(response)
+    //if error, display error
+    //if correct login, get request for specific member's id
+    $.ajax({
+      url: "/client-schedule",
+      method: "GET"
+    })
+  });
+});
