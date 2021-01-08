@@ -3,7 +3,7 @@ const fs = require("fs");
 const path = require("path");
 const mysql = require("mysql");
 let user = require("../user/user.json");
-const Member = require("../Clients/clients.js")
+const Member = require("../Clients/clients.js");
 
 // Connect to the gym_management_systemdb database using a localhost connection
 const connection = mysql.createConnection({
@@ -47,40 +47,80 @@ router.post("/login", (req, res) => {
     function (err, result) {
       if (err) throw err;
 
-      //Add file to track current user
-      fs.writeFileSync(
-        path.join(__dirname, "../user/user.json"),
-        JSON.stringify(result),
-        {},
-        (e) => console.log(e)
-      );
-
       // if the result-set has exactly 1 record, then pass on the member details(database query response) to front-end, else send an error message
       result.length === 1
         ? res.json(result[0])
         : res.json({
             error:
-              "Username and/or password is incorrect. Please try again."
+              "Username and/or password is incorrect. Please try again.",
           });
     }
   );
 });
 
+router.post("/addEmployee", (req, res) => {
+  const data = req.body;
+  const newEmployee = new Employee(
+    data.username,
+    data.password,
+    data.first_name,
+    data.last_name,
+    data.gender,
+    data.email,
+    data.phone,
+    data.role,
+    data.manager_id
+  );
+  // SQL query to insert the new employee registration record in the employee table in the database
+  connection.query(
+    "INSERT INTO employee SET ?",
+    newEmployee,
+    function (err) {
+      if (err) {
+        // shows a user friendly message to user
+        res.json({
+          error:
+            "Sorry! Some problem occured. Please try again!",
+        });
+      } else {
+        res.json({
+          success: `${data.first_name} ${data.last_name} has been added as ${data.role}`,
+        });
+      }
+    }
+  );
+});
+
 router.post("/register", (req, res) => {
-    const data = req.body;
-    const newMember = new Member(data.username, data.password, data.first_name, data.last_name, data.gender, data.date_of_birth, data.email, data.phone);
-    // SQL query to insert the new member registration record in the member table in the database
-    connection.query("INSERT INTO member SET ?",
-        newMember,
-        function(err) {
-            if (err){
-                // shows a user friendly message to user
-                res.json({error: "Sorry! Some problem occured. Please try again!"});
-            } else {
-                res.json({success: `Welcome ${data.first_name}! You are now a member of Dev Fitness`});
-            }
-        }
-    );
+  const data = req.body;
+  const newMember = new Member(
+    data.username,
+    data.password,
+    data.first_name,
+    data.last_name,
+    data.gender,
+    data.date_of_birth,
+    data.email,
+    data.phone
+  );
+  // SQL query to insert the new member registration record in the member table in the database
+  connection.query(
+    "INSERT INTO member SET ?",
+    newMember,
+    function (err) {
+      if (err) {
+        // shows a user friendly message to user
+        res.json({
+          error:
+            "Sorry! Some problem occured. Please try again!",
+        });
+      } else {
+        res.json({
+          success: `Welcome ${data.first_name}! You are now a member of Dev Fitness`,
+        });
+      }
+    }
+  );
 });
 
 router.post("/addToClass", (req, res) => {
