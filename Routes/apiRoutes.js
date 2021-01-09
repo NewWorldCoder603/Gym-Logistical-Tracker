@@ -16,7 +16,7 @@ const connection = mysql.createConnection({
   user: "root",
 
   // Your MySQL password (leave blank for class demonstration purposes; fill in later)
-  password: "rootroot",
+  password: "SeptemberBC2020!",
 
   // Name of database
   database: "gym_management_systemdb",
@@ -58,7 +58,7 @@ router.post("/login", (req, res) => {
               logged_in: 1
             },
             {
-              id = member_id
+              id: member_id
             }
           ], 
           function(err, result){
@@ -72,7 +72,7 @@ router.post("/login", (req, res) => {
           }
         )
       } else {
-          res.json({
+          res.status(401).json({
             error : "Username and/or password is incorrect. Please try again.",
           });
       }
