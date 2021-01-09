@@ -1,4 +1,4 @@
-const userName = $("#logUsername");
+const username = $("#logUsername");
 const password = $("#logPassword");
 
 
@@ -6,7 +6,7 @@ $("#loginBtn").click(function () {
   $.ajax({
     url: "/api/login",
     data: {
-      userName: userName.val().trim(),
+      username: username.val().trim(),
       password: password.val().trim(),
     },
     method: "POST",
