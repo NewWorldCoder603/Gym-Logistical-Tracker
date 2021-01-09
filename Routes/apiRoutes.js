@@ -15,7 +15,7 @@ const connection = mysql.createConnection({
   user: "root",
 
   // Your MySQL password (leave blank for class demonstration purposes; fill in later)
-  password: "rootroot",
+  password: "Jesterman17!",
 
   // Name of database
   database: "gym_management_systemdb",
@@ -53,7 +53,7 @@ router.post("/login", (req, res) => {
         JSON.stringify(result),
         {},
         (e) => console.log(e)
-      );
+      );2
 
       // if the result-set has exactly 1 record, then pass on the member details(database query response) to front-end, else send an error message
       result.length === 1
