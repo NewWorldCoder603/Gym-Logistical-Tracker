@@ -10,8 +10,12 @@ $("#loginBtn").click(function () {
       password: password.val().trim(),
     },
     method: "POST",
+
+    error: function(req, status, err){
+      if(err) throw err
+    }
   }).then(function (response) {
-    if (err) throw err;
+    
     console.log(response);
 
     localStorage.setItem("userId", response.id);
