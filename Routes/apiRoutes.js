@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const fs = require("fs");
+const Employee = require("../Employee/employee");
 const path = require("path");
 const mysql = require("mysql");
 let user = require("../user/user.json");
@@ -8,17 +8,9 @@ const Member = require("../Clients/clients.js");
 // Connect to the gym_management_systemdb database using a localhost connection
 const connection = mysql.createConnection({
   host: "localhost",
-
-  // Your port, if not 3306
   port: 3306,
-
-  // Your MySQL username
   user: "root",
-
-  // Your MySQL password (leave blank for class demonstration purposes; fill in later)
   password: "rootroot",
-
-  // Name of database
   database: "gym_management_systemdb",
 });
 
