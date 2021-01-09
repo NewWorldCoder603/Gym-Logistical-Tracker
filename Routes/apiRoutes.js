@@ -2,8 +2,8 @@ const router = require("express").Router();
 const fs = require("fs");
 const path = require("path");
 const mysql = require("mysql");
-let user = require("../user/user.json");
 const Member = require("../Clients/clients.js");
+const Employee = require("../Employee/employee.js")
 
 // Connect to the gym_management_systemdb database using a localhost connection
 const connection = mysql.createConnection({
@@ -43,17 +43,39 @@ router.post("/login", (req, res) => {
   const data = req.body;
   // retrieves the record from database if username and password combination entered by the user matches with the existing records in the database
   connection.query(
-    `SELECT * from member WHERE username = "${data.userName}" AND password = MD5("${data.password}")`,
+    `SELECT * from member WHERE username = "${data.username}" AND password = MD5("${data.password}")`,
     function (err, result) {
       if (err) throw err;
-
-      // if the result-set has exactly 1 record, then pass on the member details(database query response) to front-end, else send an error message
-      result.length === 1
-        ? res.json(result[0])
-        : res.json({
-            error:
-              "Username and/or password is incorrect. Please try again.",
+      console.log(result);
+      // if the result-set has exactly 1 record, then pass on the member id(database query response) to front-end, else send an error message
+      if(result.length === 1){
+        const member_id = result[0].id;
+        // updates the logged_in column for this member's record in database to 1 to track that the user is logged in
+        connection.query(
+          "UPDATE member SET ? WHERE ?",
+          [
+            {
+              logged_in: 1
+            },
+            {
+              id = member_id
+            }
+          ], 
+          function(err, result){
+            err ? 
+              res.json({
+                error : "Sorry! Some problem ocurred. Please try again.",
+              }): 
+              res.json({
+                id: member_id
+              })
+          }
+        )
+      } else {
+          res.json({
+            error : "Username and/or password is incorrect. Please try again.",
           });
+      }
     }
   );
 });
@@ -91,6 +113,7 @@ router.post("/addEmployee", (req, res) => {
   );
 });
 
+// POST "api/register" registers a member/adds the member's personal details to the database
 router.post("/register", (req, res) => {
   const data = req.body;
   const newMember = new Member(
