@@ -48,13 +48,34 @@ router.post("/login", (req, res) => {
       if (err) throw err;
       console.log(result);
       // if the result-set has exactly 1 record, then pass on the member id(database query response) to front-end, else send an error message
-      result.length === 1
-        ? res.json({
-            id : result[0].id 
-        })
-        : res.json({
+      if(result.length === 1){
+        const member_id = result[0].id;
+        // updates the logged_in column for this member's record in database to 1 to track that the user is logged in
+        connection.query(
+          "UPDATE member SET ? WHERE ?",
+          [
+            {
+              logged_in: 1
+            },
+            {
+              id = member_id
+            }
+          ], 
+          function(err, result){
+            err ? 
+              res.json({
+                error : "Sorry! Some problem ocurred. Please try again.",
+              }): 
+              res.json({
+                id: member_id
+              })
+          }
+        )
+      } else {
+          res.json({
             error : "Username and/or password is incorrect. Please try again.",
-        });
+          });
+      }
     }
   );
 });
