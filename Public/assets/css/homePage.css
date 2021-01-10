@@ -2,14 +2,18 @@ body {
   background-color: #eeeeee;
 }
 
-#member {
+/* #member {
   color: #d22e33;
   font-weight: bold;
-}
+} */
 
-#slogan {
+.text-red {
   color: #d22e33;
   font-weight: bold;
   font-family: verdana, sans-serif;
   font-size: x-large;
+}
+
+.background-dark {
+  background: rgb(49, 49, 49);
 }
