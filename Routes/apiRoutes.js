@@ -1,6 +1,4 @@
-
 const db = require("../models");
-
 
 module.exports = function (app) {
   // GET "/api/classes" responds with all classes from the database
@@ -23,7 +21,6 @@ module.exports = function (app) {
         class_name: results.name,
       };
 
-
       res.json(reqClass);
     });
   });
@@ -39,9 +36,7 @@ module.exports = function (app) {
         },
       }).then(function (result) {
         if (!result) {
-          return console.log(
-            "The email or password is incorrect."
-          );
+          return console.log("The email or password is incorrect.");
         } else {
           db.Member.update(true, {
             where: {
@@ -76,8 +71,6 @@ module.exports = function (app) {
       res.send(result);
     });
   });
-
-
 
   // Query to insert the new member registration record in the member table in the database
   app.post("/api/register", (req, res) => {

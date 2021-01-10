@@ -5,7 +5,7 @@ $("body").on("click", "#loginBtn", function () {
   $.ajax({
     url: "/api/login/",
     data: {
-      username: username.val().trim(),
+      userName: username.val().trim(),
       password: password.val().trim(),
     },
     method: "POST",
@@ -15,13 +15,18 @@ $("body").on("click", "#loginBtn", function () {
     },
   }).then(function (response) {
     console.log(response);
+    // if (response.is_logged_in === true) {
 
+    //if correct login, set user id to local storage, and redirect to client schedule page.
     localStorage.setItem("userId", response.id);
-    //if correct login, get request for specific member's id
+    window.location.replace("/client-schedule");
 
-    $.ajax({
-      url: "/api/client-schedule/",
-      method: "GET",
-    });
+    // } else if (response.is_logged_in === false) {
+    //   return "Username / Password combination does not match our records.";
+    // }
   });
+});
+
+$("body").on("click", "#getStartedBtn", function () {
+  window.location.replace("/register");
 });
