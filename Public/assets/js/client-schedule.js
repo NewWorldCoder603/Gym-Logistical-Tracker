@@ -171,9 +171,14 @@ const addToClass = () => {
     //We will need to send the data like this.
     // data:{
     //   id:class-id,
-    //   date:date
+    //   date:date,
+    //   memberid 
     // }
   });
 };
 
 //SECTION for user log in 
+
+//add removeFromClass ajax here 
+
+//add logout ajax here 
