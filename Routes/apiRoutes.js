@@ -5,7 +5,7 @@ const db = require("../models");
 module.exports = function (app) {
   // GET "/api/classes" responds with all classes from the database
   app.get("/api/classes", function (req, res) {
-    db.Class.findAll({
+    db.Class.findOne({
       where: {
         id: req.body.class_id,
       },
@@ -31,35 +31,37 @@ module.exports = function (app) {
   // POST "api/login" authenticates the member login credentials in the database, and responds with the personal details of the member
   app.post("/api/login", (req, res) => {
     console.log(req.body);
-    try {
       db.Member.findAll({
         where: {
-          email: req.body.userName,
-          password: req.body.password,
+          email: req.body.username,
+          password: md5(req.body.password),
         },
-      }).then(function (result) {
-        if (!result) {
-          return console.log(
-            "The email or password is incorrect."
+      }).then(function (err, result) {
+        if (err || result.length !== 1) {
+          res.status(401).send(
+            "The email and/or password is incorrect. Please try again."
           );
         } else {
-          db.Member.update(true, {
+          db.Member.update({
+            is_logged_in:true
+          }, {
             where: {
-              id: result.id,
+              id: result[0].id,
             },
-          }).then(function (logIn) {});
-          // if the result-set has exactly 1 record, then pass on the member details(database query response) to front-end, else send an error message
-          if (!result.is_logged_in) {
-            res.json(result);
-          } else {
-            alert("This account is currently logged in!");
-          }
-        }
-      });
-    } catch {
-      console.log("The email or password is incorrect.");
-    }
+          }).then(function (err, result){
+            // if the result-set has exactly 1 record, then pass on the member details(database query response) to front-end, else send an error message
+            if (!result.is_logged_in) {
+              res.json(result);
+            } else {
+              alert("This account is currently logged in!");
+            }
+          });
+        };
+       }).catch (function(err) {
+          console.log("The email or password is incorrect.");
+       })
   });
+  
   // Query to insert the new employee registration record in the employee table in the database
   app.post("/api/addEmployee", (req, res) => {
     db.Employee.create({
@@ -82,13 +84,12 @@ module.exports = function (app) {
   // Query to insert the new member registration record in the member table in the database
   app.post("/api/register", (req, res) => {
     db.Member.create({
-      userName: req.body.userName,
+      email: req.body.userName,
       password: req.body.password,
       first_name: req.body.first_name,
       last_name: req.body.last_name,
       date_of_birth: req.body.date_of_birth,
       gender: req.body.gender,
-      email: req.body.email,
       phone: req.body.phone,
     }).then(function (result) {
       res.send(result);
