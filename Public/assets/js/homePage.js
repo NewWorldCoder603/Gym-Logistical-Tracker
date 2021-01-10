@@ -2,7 +2,7 @@ const username = $("#logUsername");
 const password = $("#logPassword");
 
 $("body").on("click", "#loginBtn", function () {
-  console.log("click");
+  
   $.ajax({
     url: "/api/login/",
     data: {
