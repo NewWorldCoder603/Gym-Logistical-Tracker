@@ -1,63 +1,41 @@
-const router = require("express").Router();
-const fs = require("fs");
-const path = require("path");
-const mysql = require("mysql");
-let user = require("../user/user");
 
-//requires variables from .env file 
-require("dotenv").config(); 
+const db = require("../models");
 
-// Connect to the gym_management_systemdb database using a localhost connection
-const connection = mysql.createConnection({
-  host: process.env.HOST,
 
-  // Your port, if not 3306
-  port: process.env.PORT,
+module.exports = function (app) {
+  // GET "/api/classes" responds with all classes from the database
+  app.get("api/classes", function (req, res) {
+    db.Class.findAll({
+      where: {
+        id: req.body.class_id,
+      },
+    }).then(function (results) {
+      //need code to find trainer name maybe association
 
-  // Your MySQL username
-  user: process.env.USER,
+      const reqClass = {
+        class_id: results.id,
+        class_name: results.class_name,
+        start_time: results.start_time,
+        duration: results.duration,
+        current_size: results.curent_size,
+        max_size: results.max_size,
+        trainer_name: results.trainer_name,
+        class_name: results.name,
+      };
 
-  // Your MySQL password (leave blank for class demonstration purposes; fill in later)
-  password: process.env.PASSWORD,
 
-  // Name of database
-  database: process.env.DATABASE,
-});
+      res.json(reqClass);
+    });
+  });
 
-connection.connect((err) => {
-  if (err) throw err;
-  console.log("connected as id " + connection.threadId);
-});
-
-// GET "/api/classes" responds with all classes from the database
-router.get("/classes", (req, res) => {
-  connection.query(
-    "SELECT *,employee.first_name, employee.last_name FROM class INNER JOIN employee ON class.trainer_id = employee.id",
-    function (err, result) {
-      if (err) throw err;
-      res.json(result);
-    }
-  );
-});
-
-// POST "api/login" authenticates the member login credentials in the database, and responds with the personal details of the member
-router.post("/login", (req, res) => {
-  const data = req.body;
-  console.log(data);
-  // retrieves the record from database if username and password combination entered by the user matches with the existing records in the database
-  connection.query(
-    `SELECT * from member WHERE username = "${data.userName}" AND password = "${data.password}"`,
-    function (err, result) {
-      if (err) throw err;
-
-      //Add file to track current user
-      fs.writeFileSync(
-        path.join(__dirname, "../user/user.json"),
-        JSON.stringify(result),
-        {},
-        (e) => console.log(e)
-      );2
-
+  // POST "api/login" authenticates the member login credentials in the database, and responds with the personal details of the member
+  app.post("api/login", (req, res) => {
+    db.Member.findAll({
+      where: {
+        userName: req.body.userName,
+        password: req.body.password,
+      },
+    }).then(function (result) {
       // if the result-set has exactly 1 record, then pass on the member details(database query response) to front-end, else send an error message
       result.length === 1
         ? res.json(result[0])
@@ -65,25 +43,53 @@ router.post("/login", (req, res) => {
             error:
               "Username and/or password is incorrect. Please try again.",
           });
-    }
-  );
-});
+    });
+  });
 
-router.post("/addToClass", (req, res) => {
-  console.log(req.body);
-  connection.query(
-    `INSERT INTO class_members (class_id, member_id, date) 
-    VALUES (
-       ${parseInt(user.id)}, 
-       ${parseInt(req.body.member_id)}, 
-       ${parseInt(req.body.date)}
-       )`,
-    function (err, result) {
-      if (err) throw err;
-      res.json(result);
-    }
-  );
-  res.send("Added to class!");
-});
+  // Query to insert the new employee registration record in the employee table in the database
+  app.post("api/addEmployee", (req, res) => {
+    db.Employee.create({
+      userName: req.body.userName,
+      password: req.body.password,
+      first_name: req.body.first_name,
+      last_name: req.body.last_name,
+      gender: req.body.gender,
+      email: req.body.email,
+      phone: req.body.phone,
+      role: req.body.role,
+      manager_id: req.body.manager_id,
+    }).then(function (result) {
+      res.send(result);
+    });
+  });
 
-module.exports = router;
+
+
+  // Query to insert the new member registration record in the member table in the database
+  app.post("api/register", (req, res) => {
+    db.Member.create({
+      userName: req.body.userName,
+      password: req.body.password,
+      first_name: req.body.first_name,
+      last_name: req.body.last_name,
+      date_of_birth: req.body.date_of_birth,
+      gender: req.body.gender,
+      email: req.body.email,
+      phone: req.body.phone,
+    }).then(function (result) {
+      res.send(result);
+    });
+  });
+
+  // Query to insert the member into chosen class
+  app.post("/addToClass", (req, res) => {
+    db.Class.update({
+      where: {
+        class_id: parseInt(req.body.class_id),
+        member_id: parseInt(req.body.member_id),
+      },
+    }).then(function (result) {
+      res.send("Added to class!");
+    });
+  });
+};

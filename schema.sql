@@ -14,6 +14,7 @@ CREATE TABLE member(
 	 date_of_birth DATE,
 	 email VARCHAR(30) NOT NULL,
 	 phone BIGINT(10)
+	 logged_in BOOLEAN DEFAULT 0
 );
 
 -- this table stores employee personal details including their roles

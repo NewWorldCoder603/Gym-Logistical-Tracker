@@ -1,21 +1,24 @@
-const userName = $("#logUsername");
+const username = $("#logUsername");
 const password = $("#logPassword");
 
-let userId = 0
 $("#loginBtn").click(function () {
   //post request
   $.ajax({
     url: "/api/login",
     data: {
-      userName: userName.val().trim(),
+      username: username.val().trim(),
       password: password.val().trim(),
     },
     method: "POST",
-  }).then(function (response) {
-    console.log(response) // parse to get id 
-    //id will be in the response. Save it to local storage. 
 
-    //if error, display error
+    error: function(req, status, err){
+      if(err) throw err
+    }
+  }).then(function (response) {
+    
+    console.log(response);
+
+    localStorage.setItem("userId", response.id);
     //if correct login, get request for specific member's id
 
 
