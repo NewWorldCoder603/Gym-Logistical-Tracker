@@ -19,6 +19,9 @@ $("body").on("click", "#loginBtn", function () {
 
     localStorage.setItem("userId", response.id);
     //if correct login, get request for specific member's id
+
+
+
     $.ajax({
       url: "/api/client-schedule/",
       method: "GET",
