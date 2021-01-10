@@ -16,6 +16,11 @@ module.exports = function (sequelize, DataTypes) {
     date_of_birth: DataTypes.DATE,
     gender: DataTypes.STRING,
     phone: { type: DataTypes.INTEGER, min: 4, max: 12 },
+    is_logged_in: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      default: false,
+    },
   });
 
   return Member;
