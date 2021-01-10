@@ -25,72 +25,123 @@
   </head>
   <body>
     <div class="container-fluid ">
-      <div class = "row my-3">
+      <div class = "row background-dark my-3">
           <div class = "col-sm-4">
             <div class = "container my-5 py-3">
-              <p id="slogan">Refactor Your Body!</p>
+              <!-- <p id="slogan"></p> -->
             </div>
           </div>
           <div class = "col-sm-4">
             <div class="container-sm align-content-center">
-            <img id="logo1" src="./assets/images/Color_Logo.png" class = "img-rounded img-responsive" alt = "Dev Fitness logo, weight lifter" style="width:250px;height:250px;">
+            <img id="logo1" src="./assets/images/Color_Logo_dark_background.png" class = "img-rounded img-responsive" alt = "Dev Fitness logo, weight lifter" style="width:250px;height:250px;">
           </div>
           </div>
+          
+      </div>
+      <div class="container mb-5">
+        <div class="row">
+          
+          <!--Advertising-->
+          <div class="col-12 col-md-6 text-center background-dark">
+            <h2 id="slogan" class="div text-red my-3">Refactor Your Body!</h2>
+            <div
+              id="carouselExampleSlidesOnly"
+              class="carousel slide"
+              data-bs-ride="carousel"
+            >
+              <div class="carousel-inner">
+                <div class="carousel-item active">
+                  <img src="./assets/images/girlfeetwaterbottle.jpg" class = "img-rounded img-responsive" alt = "girl's feet next to weight and water bottle" >
+                  <div
+                    class="carousel-caption d-none d-md-block center background-t-red"
+                  >
+                    <h5>Stretching your mind </h5>
+                    <p>but need to stretch your body?</p>
+                  </div>
+                </div>
+                <div class="carousel-item">
+                  <img src="./assets/images/gym-coronavirus.jpg" class = "img-rounded img-responsive" alt = "man with weights" style="width:375px;height:250px;">
+                  <div
+                    class="carousel-caption d-none d-md-block center background-t-red"
+                  >
+                    <h5>Found your inner strength</h5>
+                    <p> but still discovering your outer strength?</p>
+                  </div>
+                </div>
+                <div class="carousel-item">
+                  <img src="./assets/images/bench.jpg" class = "img-rounded img-responsive m-2" alt = "#" style="width:450px;height:300px;">
+                  <div
+                    class="carousel-caption d-none d-md-block center background-t-red"
+                  >
+                    <h5>Looking for personal training facilities</h5>
+                    <p> to help you meet your fitness goals?</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!--Member Login-->
+          <div class="client-info col-12 col-md-6 text-center mb-5 mb-md-0">
+            <div class = "col-sm-4">
+              <div class = "container py-5">
+                <p class="text-red" id="member">Already a member?</p>
+                <form>
+                  <div class="mb-3">
+                    <label for="exampleInputEmail" class="form-label">Email address</label>
+                    <input type="email" class="form-control" id="logUsername" aria-describedby="emailHelp">
+                    <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+                  </div>
+                  <div class = "mb-3">
+                    <label for="exampleInputPassword" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="logPassword">
+                  </div>
+                  <button type="button" class="btn btn-danger" id="loginBtn">Submit</button><!--Do we want this danger or outline danger?-->
+                </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="container mb-5">
+        <div class="row">
+          
+          <!--New Member Signup-->
           <div class = "col-sm-4">
-            <div class = "container py-5">
-              <p id="member">Already a member?</p>
-              <form>
-                <div class="mb-3">
-                  <label for="exampleInputEmail" class="form-label">Email address</label>
-                  <input type="email" class="form-control" id="logUsername" aria-describedby="emailHelp">
-                  <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+            <div class = "container ml-5 my-5 text-center">
+              <h2 class="ps-4 text-red">Whatever your fitness needs, we've got you covered.  Ready to become a member?</h2>
+              <button class="btn btn-outline-danger btn-lg" type="button" id="button-addon2">Get Started</button>
+            </div>
+          </div>
+        <!--Advertising 2-->
+        <div class="col-12 col-md-6 text-center background-dark">
+          <h2 class="div text-red my-3">Increase Your Stamina!</h2>
+          <div
+            id="carouselExampleSlidesOnly"
+            class="carousel slide"
+            data-bs-ride="carousel"
+          >
+            <div class="carousel-inner">
+              <div class="carousel-item active">
+                <img src="./assets/images/bench.jpg" class = "img-rounded img-responsive m-2" alt = "#" style="width:450px;height:300px;">
+                <div
+                  class="carousel-caption d-none d-md-block center background-t-red"
+                >
+                  <h5>Stretching your mind </h5>
+                  <p>but need to stretch your body?</p>
                 </div>
-                <div class = "mb-3">
-                  <label for="exampleInputPassword" class="form-label">Password</label>
-                  <input type="password" class="form-control" id="logPassword">
+              </div>
+              <div class="carousel-item">
+                <img src="./assets/images/equipmentroom.jpg" class = "img-rounded img-responsive m-2" alt = "#" style="width:666px;height:375px;">
+                <div
+                  class="carousel-caption d-none d-md-block center background-t-red"
+                >
+                  <h5>Looking for a clean, comfortable atmosphere</h5>
+                  <p>to work out and de-stress?</p>
                 </div>
-                <button type="button" class="btn btn-danger" id="loginBtn">Submit</button><!--Do we want this danger or outline danger?-->
-              </form>
+              </div>
+            </div>
           </div>
-      </div>
-      <div class = "row">
-        <div class = "col-sm-3">
-          <div class = "container ml-5">
-            <h3>Stretching your mind but need to stretch your body?</h3>
-            <img src="./assets/images/girlfeetwaterbottle.jpg" class = "img-rounded img-responsive" alt = "girl's feet next to weight and water bottle" >
-          </div>
-        </div>
-        <div class = "col-sm-4">
-          <div class = "container ml-5 my-5 text-center">
-            <h2 class="ps-4">Whatever your fitness needs, we've got you covered.  Ready to become a member?</h2>
-            <button class="btn btn-outline-danger btn-lg" type="button" id="button-addon2">Get Started</button>
-          </div>
-        </div>
-        <div class = "col-sm-5 text-end">
-          <h3>Found your inner strength but still discovering your outer strength?</h3>
-          <img src="./assets/images/gym-coronavirus.jpg" class = "img-rounded img-responsive" alt = "man with weights" style="width:375px;height:250px;">
-        </div>
-      </div>
-      <div class = "row d-flex ">
-        <div class = "col-sm-2">
-        </div>
-        <div class = "col-sm-8 text-center">
-          <div>
-            <h3>Looking for personal training facilities to help you meet your fitness goals?</h3>
-          </div>
-          <div>
-            <img src="./assets/images/bench.jpg" class = "img-rounded img-responsive m-2" alt = "#" style="width:450px;height:300px;">
-          </div>
-        </div>
-        <div class = "col-sm-2">
-        </div>
-        <div class = "row text-center align-content-center">
-          <div class = "col-sm-12 d-flex align-content-center my-5">
-            <h3>Looking for a clean, comfortable atmosphere to work out and de-stress?</h3>
-          </div>
-          <div>
-            <img src="./assets/images/equipmentroom.jpg" class = "img-rounded img-responsive m-2" alt = "#" style="width:666px;height:375px;">
-          </div>
+        </div>   
         </div>
       </div>
     </div>
