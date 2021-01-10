@@ -1,17 +1,15 @@
 body {
-    background-color: #eeeeee;
+  background-color: #eeeeee;
 }
 
 #member {
-    color: #d22e33;
-    font-weight: bold;
+  color: #d22e33;
+  font-weight: bold;
 }
 
 #slogan {
-    color: #d22e33;
-    font-weight: bold;
-    font-family: verdana, sans-serif;
-    font-size: x-large;
-
+  color: #d22e33;
+  font-weight: bold;
+  font-family: verdana, sans-serif;
+  font-size: x-large;
 }
-
