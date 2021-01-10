@@ -2,12 +2,12 @@ body {
   background-color: #eeeeee;
 }
 
-#member {
+/* #member {
   color: #d22e33;
   font-weight: bold;
-}
+} */
 
-#slogan {
+.text-red {
   color: #d22e33;
   font-weight: bold;
   font-family: verdana, sans-serif;
