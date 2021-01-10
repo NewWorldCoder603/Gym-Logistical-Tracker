@@ -13,3 +13,7 @@ body {
   font-family: verdana, sans-serif;
   font-size: x-large;
 }
+
+.background-dark {
+  background: rgb(49, 49, 49);
+}

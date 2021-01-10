@@ -2,7 +2,6 @@ const username = $("#logUsername");
 const password = $("#logPassword");
 
 $("body").on("click", "#loginBtn", function () {
-  
   $.ajax({
     url: "/api/login/",
     data: {
@@ -19,8 +18,6 @@ $("body").on("click", "#loginBtn", function () {
 
     localStorage.setItem("userId", response.id);
     //if correct login, get request for specific member's id
-
-
 
     $.ajax({
       url: "/api/client-schedule/",
