@@ -1,5 +1,6 @@
 var express = require("express");
 const db = require("./models");
+const path = require("path");
 
 // Sets up the Express App
 // =============================================================
@@ -11,12 +12,13 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 // Static directory
-app.use(express.static("public"));
+app.use(express.static(path.join(__dirname, "./public")));
 
 // Routes
 // =============================================================
 require("./routes/apiRoutes.js")(app);
 require("./routes/htmlRoutes.js")(app);
+
 // Starting our Express app
 // =============================================================
 
