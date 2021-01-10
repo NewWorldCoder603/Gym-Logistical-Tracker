@@ -1,20 +1,20 @@
 
 -- Seed data for member table
 INSERT INTO member(username, password, first_name, last_name, gender, phone, email)
-VALUES("member1", MD5("johnpwd"), "John", "Pollock", "M", 6032341637, "john123@outlook.com");
+VALUES("member1", ("johnpwd"), "John", "Pollock", "M", 6032341637, "john123@outlook.com");
 
 INSERT INTO member(username, password, first_name, last_name, gender, email)
-VALUES("member2", MD5("joepwd"), "Joe", "Colt", "F", "joecolt@gmail.com");
+VALUES("member2", ("joepwd"), "Joe", "Colt", "F", "joecolt@gmail.com");
 
 -- Seed data for employee table
 INSERT INTO employee(username, password, first_name, last_name, gender, phone, email, role)
-VALUES("trainer1", MD5("trainer1pwd"), "Carl", "Rocher", "M", 6032367637, "carltrainer1@gmail.com", "trainer");
+VALUES("trainer1", ("trainer1pwd"), "Carl", "Rocher", "M", 6032367637, "carltrainer1@gmail.com", "trainer");
 
 INSERT INTO employee(username, password, first_name, last_name, gender, email, role)
-VALUES("trainer2", MD5("trainer2pwd"), "Ana", "Coleman", "F", "trainer2ana@outlook.com", "trainer");
+VALUES("trainer2", ("trainer2pwd"), "Ana", "Coleman", "F", "trainer2ana@outlook.com", "trainer");
 
 INSERT INTO employee(username, password, first_name, last_name, gender, phone, email, role)
-VALUES("bobmorley", MD5("manager1pwd"), "Robert", "Morley", "M", 6039867039, "managermorley@outlook.com", "manager");
+VALUES("bobmorley", ("manager1pwd"), "Robert", "Morley", "M", 6039867039, "managermorley@outlook.com", "manager");
 
 -- Seed data for class table
 INSERT INTO class (name, day, time, max_size, trainer_id)
