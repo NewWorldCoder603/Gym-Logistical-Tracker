@@ -11,7 +11,7 @@ module.exports = function (sequelize, DataTypes) {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    date: { type: DataTypes.DATE },
+    start_time: { type: DataTypes.DATE },
     duration: { type: DataTypes.INTEGER, allowNull: false },
     current_size: {
       type: DataTypes.INTEGER,
