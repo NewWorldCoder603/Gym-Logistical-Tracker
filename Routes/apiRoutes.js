@@ -4,21 +4,24 @@ const path = require("path");
 const mysql = require("mysql");
 let user = require("../user/user");
 
+//requires variables from .env file 
+require("dotenv").config(); 
+
 // Connect to the gym_management_systemdb database using a localhost connection
 const connection = mysql.createConnection({
-  host: "localhost",
+  host: process.env.HOST,
 
   // Your port, if not 3306
-  port: 3306,
+  port: process.env.PORT,
 
   // Your MySQL username
-  user: "root",
+  user: process.env.USER,
 
   // Your MySQL password (leave blank for class demonstration purposes; fill in later)
-  password: "Jesterman17!",
+  password: process.env.PASSWORD,
 
   // Name of database
-  database: "gym_management_systemdb",
+  database: process.env.DATABASE,
 });
 
 connection.connect((err) => {
