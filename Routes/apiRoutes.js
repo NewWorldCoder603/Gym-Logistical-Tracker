@@ -1,7 +1,5 @@
-
 const db = require("../models");
 const md5 = require("md5");
-
 
 module.exports = function (app) {
   // GET "/api/classes" responds with all classes from the database
@@ -23,7 +21,6 @@ module.exports = function (app) {
         trainer_name: results.trainer_name,
         class_name: results.name,
       };
-
 
       res.json(reqClass);
     });
