@@ -84,18 +84,31 @@ module.exports = function (app) {
 
 
 
-  // Query to insert the new member registration record in the member table in the database
+  // POST API and query to insert the new member registration record in the member table in the database
   app.post("/api/register", (req, res) => {
     db.Member.create({
       email: req.body.userName,
       password: req.body.password,
       first_name: req.body.first_name,
       last_name: req.body.last_name,
-      date_of_birth: req.body.date_of_birth,
+      date_of_birth: (req.body.date_of_birth) ? parseInt(req.body.date_of_birth) : null,
       gender: req.body.gender,
-      phone: req.body.phone,
-    }).then(function (result) {
-      res.send(result);
+      phone: (req.body.phone) ? parseInt(req.body.phone) : null,
+      is_logged_in: true
+    }).then(function(dbMember) {
+      // sends the member id as response
+      res.json(
+        {id: dbMember.id}
+      );
+    }).catch((err)=> {
+      console.log(err);
+      let message = err.original.sqlMessage;
+      // if email already exists in database, send a user-friendly message as response
+      if(err.original.errno === 1062){
+        message = "This email is already registered with us.";
+      }
+      // any other error, send it as a response to be handled at front-end
+      res.json({error:message});
     });
   });
 

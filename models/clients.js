@@ -21,12 +21,12 @@ module.exports = function (sequelize, DataTypes) {
       type: DataTypes.STRING, 
       allowNull: false 
     },
-    date_of_birth: DataTypes.DATE,
+    date_of_birth: DataTypes.DATEONLY,
     gender: DataTypes.STRING,
     phone: { 
-      type: DataTypes.INTEGER,   
+      type: DataTypes.BIGINT,   
       validate: {
-        len: [10, 10]
+        len: [0, 10]
       }
      },
     is_logged_in: {
@@ -34,12 +34,11 @@ module.exports = function (sequelize, DataTypes) {
       defaultValue: false
     },
   });
-  { freezeTableName: true };
 
   Member.associate = function(models) {
     Member.belongsToMany(models.Class, 
       { through: 'Class_Members' }
-      );
+    );
   }
   
   return Member;

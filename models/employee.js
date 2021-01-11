@@ -28,9 +28,9 @@ module.exports = function (sequelize, DataTypes) {
       }
     },
     phone: { 
-      type: DataTypes.INTEGER, 
+      type: DataTypes.BIGINT, 
       validate: {
-        len: [10, 10]
+        len: [0, 10]
       }
     },
     role: { 
@@ -39,7 +39,6 @@ module.exports = function (sequelize, DataTypes) {
     },
     manager_id: DataTypes.INTEGER,
   });
-  { freezeTableName: true };
 
   return Employee;
 };

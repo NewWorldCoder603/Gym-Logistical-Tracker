@@ -2,7 +2,7 @@
 module.exports = function (sequelize, DataTypes) {
     const Class_Members = sequelize.define("Class_Members", {
       date: {
-        type: DataTypes.DATE,
+        type: DataTypes.DATEONLY,
         allowNull: false
       },
     });

@@ -50,13 +50,5 @@ module.exports = function (sequelize, DataTypes) {
     );
   }
 
-  // Class.associate = function(models){
-  //   Class.hasOne(models.Employee,{
-  //     foreignKey:{
-  //       allowNull: false
-  //     }
-  //   })
-  // }
-
   return Class;
 };
