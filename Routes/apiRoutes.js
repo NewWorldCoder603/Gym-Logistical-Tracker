@@ -36,7 +36,9 @@ module.exports = function (app) {
         },
       }).then(function (result) {
         if (!result) {
-          return console.log("The email or password is incorrect.");
+          return console.log(
+            "The email or password is incorrect."
+          );
         } else {
           db.Member.update(true, {
             where: {
@@ -68,7 +70,7 @@ module.exports = function (app) {
       role: req.body.role,
       manager_id: req.body.manager_id,
     }).then(function (result) {
-      res.send(result);
+      res.send("Success!");
     });
   });
 
@@ -84,7 +86,7 @@ module.exports = function (app) {
       email: req.body.email,
       phone: req.body.phone,
     }).then(function (result) {
-      res.send(result);
+      res.send("Success!");
     });
   });
 
