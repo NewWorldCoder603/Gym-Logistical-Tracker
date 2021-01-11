@@ -1,39 +1,54 @@
-// creates the Class module
+// creates the Class model
 module.exports = function (sequelize, DataTypes) {
   const Class = sequelize.define("Class", {
-    id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      primaryKey: true,
-      autoIncrement: true,
-    },
     class_name: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    start_time: { type: DataTypes.DATE },
-    duration: { type: DataTypes.INTEGER, allowNull: false },
+    day: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    start_time: { 
+      type: DataTypes.TIME,
+      allowNull: false
+    },
+    duration: { 
+      type: DataTypes.INTEGER, 
+      allowNull: false 
+    },
     current_size: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      default: 0,
+      defaultValue: 0,
     },
     max_size: {
       type: DataTypes.INTEGER,
-      min: 6,
-      max: 16,
-      default: 10,
+      defaultValue: 10,
       allowNull: false,
+      validate: { 
+        min: 6,
+        max: 16,
+      }
     },
     trainer_id: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: false
     },
     roster: {
       type: DataTypes.STRING,
-      validate: { len: [8, 800] },
+      validate: { 
+        len: [8, 800] 
+      },
     },
+    
   });
+
+  Class.associate = function(models) {
+    Class.belongsToMany(models.Member, 
+      { through: 'Class_Members' }
+    );
+  }
 
   return Class;
 };
