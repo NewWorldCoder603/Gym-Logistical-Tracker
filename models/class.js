@@ -1,12 +1,6 @@
 // creates the Class model
 module.exports = function (sequelize, DataTypes) {
   const Class = sequelize.define("Class", {
-    id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      primaryKey: true,
-      autoIncrement: true,
-    },
     class_name: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -16,7 +10,7 @@ module.exports = function (sequelize, DataTypes) {
       allowNull: false
     },
     start_time: { 
-      type: DataTypes.DATE,
+      type: DataTypes.TIME,
       allowNull: false
     },
     duration: { 
@@ -46,8 +40,23 @@ module.exports = function (sequelize, DataTypes) {
       validate: { 
         len: [8, 800] 
       },
-    }
+    },
+    
   });
+
+  Class.associate = function(models) {
+    Class.belongsToMany(models.Member, 
+      { through: 'Class_Members' }
+    );
+  }
+
+  // Class.associate = function(models){
+  //   Class.hasOne(models.Employee,{
+  //     foreignKey:{
+  //       allowNull: false
+  //     }
+  //   })
+  // }
 
   return Class;
 };

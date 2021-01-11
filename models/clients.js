@@ -34,6 +34,13 @@ module.exports = function (sequelize, DataTypes) {
       defaultValue: false
     },
   });
+  { freezeTableName: true };
 
+  Member.associate = function(models) {
+    Member.belongsToMany(models.Class, 
+      { through: 'Class_Members' }
+      );
+  }
+  
   return Member;
 };

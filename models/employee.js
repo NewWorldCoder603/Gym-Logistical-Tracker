@@ -39,6 +39,7 @@ module.exports = function (sequelize, DataTypes) {
     },
     manager_id: DataTypes.INTEGER,
   });
+  { freezeTableName: true };
 
   return Employee;
 };

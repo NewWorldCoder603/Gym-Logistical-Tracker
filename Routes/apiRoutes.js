@@ -1,11 +1,12 @@
 
 const db = require("../models");
+const md5 = require("md5");
 
 
 module.exports = function (app) {
   // GET "/api/classes" responds with all classes from the database
   app.get("/api/classes", function (req, res) {
-    db.Class.findOne({
+    db.Class.findAll({
       where: {
         id: req.body.class_id,
       },
@@ -28,38 +29,40 @@ module.exports = function (app) {
     });
   });
 
-  // POST "api/login" authenticates the member login credentials in the database, and responds with the personal details of the member
+  // POST "api/login" authenticates the member login credentials in the database, and responds with the member id
   app.post("/api/login", (req, res) => {
     console.log(req.body);
-      db.Member.findAll({
+     // finds if there exists a member with the logged in username and password
+      db.Member.findOne({
         where: {
           email: req.body.username,
-          password: md5(req.body.password),
+          password: req.body.password,
         },
-      }).then(function (err, result) {
-        if (err || result.length !== 1) {
-          res.status(401).send(
-            "The email and/or password is incorrect. Please try again."
-          );
-        } else {
-          db.Member.update({
-            is_logged_in:true
-          }, {
+      }).then(function (dbMember) {
+        console.log(dbMember);
+        const member_id = dbMember.id;
+        // updates the is_logged_in column in member table to true to track the logged in user
+        db.Member.update(
+          {is_logged_in: true},
+          {
             where: {
-              id: result[0].id,
-            },
-          }).then(function (err, result){
-            // if the result-set has exactly 1 record, then pass on the member details(database query response) to front-end, else send an error message
-            if (!result.is_logged_in) {
-              res.json(result);
-            } else {
-              alert("This account is currently logged in!");
+              id: member_id
             }
-          });
-        };
-       }).catch (function(err) {
-          console.log("The email or password is incorrect.");
-       })
+          }
+        ).then(function(){
+          // sends the logged in member's id as response
+          res.json({id:member_id});
+        }).catch((err) =>{
+          res.status(401).send(
+            "Sorry! There was some problem. Please try again."
+          );
+        }) 
+      }).catch((err)=>{
+        // user-friendly message to user in case of error
+        res.status(401).send(
+          "The email and/or password is incorrect. Please try again."
+        );
+      })
   });
   
   // Query to insert the new employee registration record in the employee table in the database
