@@ -10,7 +10,7 @@ module.exports = function (app) {
       },
     }).then(function (results) {
       //need code to find trainer name maybe association
-
+      console.log(id)
       const reqClass = {
         class_id: results.id,
         class_name: results.class_name,

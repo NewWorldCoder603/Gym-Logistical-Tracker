@@ -24,8 +24,8 @@ const getClasses = () => {
     method: "GET",
   }).then(function (data) {
     //forEach that iterates over database data and populates page with each instance
+    console.log(data)
     data.forEach(writeSchedule);
-    console.log(data);
   });
 };
 
@@ -77,6 +77,7 @@ function writeSchedule(item) {
       break;
   }
 }
+
 
 getClasses();
 
