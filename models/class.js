@@ -1,4 +1,4 @@
-// creates the Class model
+// creates the Class module
 module.exports = function (sequelize, DataTypes) {
   const Class = sequelize.define("Class", {
     class_name: {
@@ -7,15 +7,11 @@ module.exports = function (sequelize, DataTypes) {
     },
     day: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
     },
-    start_time: { 
+    start_time: {
       type: DataTypes.TIME,
-      allowNull: false
-    },
-    duration: { 
-      type: DataTypes.INTEGER, 
-      allowNull: false 
+      allowNull: false,
     },
     current_size: {
       type: DataTypes.INTEGER,
@@ -26,29 +22,28 @@ module.exports = function (sequelize, DataTypes) {
       type: DataTypes.INTEGER,
       defaultValue: 10,
       allowNull: false,
-      validate: { 
+      validate: {
         min: 6,
         max: 16,
-      }
+      },
     },
     trainer_id: {
       type: DataTypes.INTEGER,
-      allowNull: false
+      allowNull: false,
     },
     roster: {
       type: DataTypes.STRING,
-      validate: { 
-        len: [8, 800] 
+      validate: {
+        len: [8, 800],
       },
     },
-    
   });
 
-  Class.associate = function(models) {
-    Class.belongsToMany(models.Member, 
-      { through: 'Class_Members' }
-    );
-  }
+  Class.associate = function (models) {
+    Class.belongsToMany(models.Member, {
+      through: "Class_Members",
+    });
+  };
 
   return Class;
 };

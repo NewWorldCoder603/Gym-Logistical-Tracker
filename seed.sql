@@ -1,31 +1,27 @@
 
 -- Seed data for member table
-INSERT INTO member(username, password, first_name, last_name, gender, phone, email)
-VALUES("member1", ("johnpwd"), "John", "Pollock", "M", 6032341637, "john123@outlook.com");
+INSERT INTO `gym_management_systemdb`.`members` (`id`, `email`, `password`, `first_name`, `last_name`, `date_of_birth`, `gender`, `phone`, `is_logged_in`, `createdAt`, `updatedAt`) VALUES ('1', 'Sarah@fitpro.com', 'sara1', 'Sarah', 'Pilot', '1990-03-12', 'F', '1111111111', '0', '10:00:00', '10:00:00');
+INSERT INTO `gym_management_systemdb`.`members` (`id`, `email`, `password`, `first_name`, `last_name`, `date_of_birth`, `gender`, `phone`, `is_logged_in`, `createdAt`, `updatedAt`) VALUES ('2', 'Dwreck@over9000.com', 'dustin1', 'Dustin', 'FireFly', '2000-07-01', 'M', '2222222222', '0', '10:00:00', '10:00:00');
+INSERT INTO `gym_management_systemdb`.`members` (`id`, `email`, `password`, `first_name`, `last_name`, `date_of_birth`, `gender`, `phone`, `is_logged_in`, `createdAt`, `updatedAt`) VALUES ('3', 'JbigInt@yahoo.com', 'jesal1', 'Jesal', 'Starboard', '1989-02-20', 'F', '3333333333', '0', '10:00:00', '10:00:00');
+INSERT INTO `gym_management_systemdb`.`members` (`id`, `email`, `password`, `first_name`, `last_name`, `date_of_birth`, `gender`, `phone`, `is_logged_in`, `createdAt`, `updatedAt`) VALUES ('4', 'eSwiss@gmail.com', 'ethan1', 'Ethan', 'Array', '1992-03-4', 'M', '4444444444', '0', '10:00:00', '10:00:00 ');
 
-INSERT INTO member(username, password, first_name, last_name, gender, email)
-VALUES("member2", ("joepwd"), "Joe", "Colt", "F", "joecolt@gmail.com");
 
 -- Seed data for employee table
-INSERT INTO employee(username, password, first_name, last_name, gender, phone, email, role)
-VALUES("trainer1", ("trainer1pwd"), "Carl", "Rocher", "M", 6032367637, "carltrainer1@gmail.com", "trainer");
 
-INSERT INTO employee(username, password, first_name, last_name, gender, email, role)
-VALUES("trainer2", ("trainer2pwd"), "Ana", "Coleman", "F", "trainer2ana@outlook.com", "trainer");
+INSERT INTO `gym_management_systemdb`.`employees` (`id`, `email`, `password`, `first_name`, `last_name`, `gender`, `phone`, `role`, `createdAt`, `updatedAt`) VALUES ('1', 'arav@gmail.com', 'avar1', 'Arav', 'Patel', 'M ', '9744823958', 'Spin', '10:00:00', '10:00:00');
+INSERT INTO `gym_management_systemdb`.`employees` (`id`, `email`, `password`, `first_name`, `last_name`, `gender`, `phone`, `role`, `createdAt`, `updatedAt`) VALUES ('2', 'F@yahoo.com', 'felicia1', 'Felicia', 'Wager', 'F', '5372982532', 'Barbell Burn', '10:00:00 ', '10:00:00');
+INSERT INTO `gym_management_systemdb`.`employees` (`id`, `email`, `password`, `first_name`, `last_name`, `gender`, `phone`, `role`, `createdAt`, `updatedAt`) VALUES ('3', 'abeer@yahoo.com', 'abeer1', 'Abeer', 'Muwat', 'F', '5839583253', 'Zumba', '10:00:00', '10:00:00');
 
-INSERT INTO employee(username, password, first_name, last_name, gender, phone, email, role)
-VALUES("bobmorley", ("manager1pwd"), "Robert", "Morley", "M", 6039867039, "managermorley@outlook.com", "manager");
 
 -- Seed data for class table
-INSERT INTO class (name, day, time, max_size, trainer_id)
-VALUES("Spin", "Monday", "08:00", 8, 1);
+INSERT INTO `gym_management_systemdb`.`classes` (`id`, `class_name`, `day`, `start_time`, `duration`, `current_size`, `max_size`, `trainer_id`, `createdAt`, `updatedAt`) VALUES ('2', 'Barbell Burn', 'Thursday', '9:30:00', '60', '0', '10', '2', '2010-00-00 00:00:00', '2010-00-00 00:00:00');
+UPDATE `gym_management_systemdb`.`classes` SET `start_time` = '12:00:00', `roster` = '' WHERE (`id` = '1');
+INSERT INTO `gym_management_systemdb`.`classes` (`id`, `class_name`, `day`, `start_time`, `duration`, `current_size`, `max_size`, `trainer_id`, `createdAt`, `updatedAt`) VALUES ('3', 'Zumba', 'Monday', '15:00:00', '60', '0', '8', '3', '2010-00-00 00:00:00', '2010-00-00 00:00:00');
 
-INSERT INTO class (name, day, time, trainer_id)
-VALUES("Zumba", "Thursday", "18:00", 1);
 
 -- Seed data for class_members table
-INSERT INTO class_members (class_id, member_id, date)
-VALUES("2", "1", "2020-12-31");
+INSERT INTO `gym_management_systemdb`.`class_members` (`date`, `createdAt`, `updatedAt`, `ClassId`, `MemberId`) VALUES ('2001-4-3', '20:00:00', '20:00:00', '1', '1');
+INSERT INTO `gym_management_systemdb`.`class_members` (`date`, `createdAt`, `updatedAt`, `ClassId`, `MemberId`) VALUES ('2001-4-3', '20:00:00', '20:00:00', '2', '2');
+INSERT INTO `gym_management_systemdb`.`class_members` (`date`, `createdAt`, `updatedAt`, `ClassId`, `MemberId`) VALUES ('2001-4-3', '20:00:00', '20:00:00', '3', '3');
+INSERT INTO `gym_management_systemdb`.`class_members` (`date`, `createdAt`, `updatedAt`, `ClassId`, `MemberId`) VALUES ('2001-4-3', '20:00:00', '20:00:00', '3', '2');
 
-INSERT INTO class_members (class_id, member_id, date)
-VALUES("1", "1", "2021-01-04");

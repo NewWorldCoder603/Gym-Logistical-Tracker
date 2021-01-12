@@ -21,11 +21,14 @@ for (i = 0; i < $weekDay.length; i++) {
 const getClasses = () => {
   return $.ajax({
     url: "/api/classes",
+    data: {
+      id: localStorage.getItem("userId"),
+    },
     method: "GET",
   }).then(function (data) {
     //forEach that iterates over database data and populates page with each instance
+    console.log(data)
     data.forEach(writeSchedule);
-    console.log(data);
   });
 };
 
@@ -77,6 +80,7 @@ function writeSchedule(item) {
       break;
   }
 }
+
 
 getClasses();
 
@@ -144,7 +148,9 @@ function writeSchedule(item) {
 //altered from https://stackoverflow.com/questions/13898423/javascript-convert-24-hour-time-of-day-string-to-12-hour-time-with-am-pm-and-no
 function tConvert(time) {
   // Check correct time format and split into components
-  time = time.toString().match(/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [
+  time = time
+    .toString()
+    .match(/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [
     time,
   ];
 
@@ -172,13 +178,13 @@ const addToClass = () => {
     // data:{
     //   id:class-id,
     //   date:date,
-    //   memberid 
+    //   memberid
     // }
   });
 };
 
-//SECTION for user log in 
+//SECTION for user log in
 
-//add removeFromClass ajax here 
+//add removeFromClass ajax here
 
-//add logout ajax here 
+//add logout ajax here
