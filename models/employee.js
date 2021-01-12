@@ -1,43 +1,42 @@
-// creates the Employee model
+// creates the Employee module
 module.exports = function (sequelize, DataTypes) {
   const Employee = sequelize.define("Employee", {
     email: {
       type: DataTypes.STRING,
       allowNull: false,
       unique: true,
-      validate: { 
-        isEmail: true 
-      }
+      validate: {
+        isEmail: true,
+      },
     },
-    password: { 
-      type: DataTypes.STRING, 
-      allowNull: false 
+    password: {
+      type: DataTypes.STRING,
+      allowNull: false,
     },
     first_name: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
     },
-    last_name: { 
-      type: DataTypes.STRING, 
-      allowNull: false 
+    last_name: {
+      type: DataTypes.STRING,
+      allowNull: false,
     },
     gender: {
       type: DataTypes.STRING,
       validate: {
-        len: [1, 1]
-      }
+        len: [1, 1],
+      },
     },
-    phone: { 
-      type: DataTypes.BIGINT, 
+    phone: {
+      type: DataTypes.BIGINT,
       validate: {
-        len: [0, 10]
-      }
+        len: [0, 10],
+      },
     },
-    role: { 
-      type: DataTypes.STRING, 
-      allowNull: false 
+    role: {
+      type: DataTypes.STRING,
+      allowNull: false,
     },
-    manager_id: DataTypes.INTEGER,
   });
 
   return Employee;
