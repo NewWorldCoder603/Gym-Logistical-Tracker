@@ -27,7 +27,6 @@ const getClasses = () => {
     method: "GET",
   }).then(function (data) {
     //forEach that iterates over database data and populates page with each instance
-    console.log(data)
     data.forEach(writeSchedule);
   });
 };
@@ -183,8 +182,28 @@ const addToClass = () => {
   });
 };
 
-//SECTION for user log in
+//when the logout button is clicked, 
+//send an ajax to tell the database they are logged out, 
+//erase their local storage id, 
+//redirect user back to login page
+$('.logout-btn').click(function(){
+  $.ajax({
+    url:"/api/member:id" ,
+    method:"GET",
+    data: {
+      id: window.localStorage.getItem('userId')
+    }
+  }).then(function(){
+    localStorage.clear() 
+    window.location.replace("/");
+  })
+})
 
+//SECTION for user log in
+id=2 
 //add removeFromClass ajax here
+
+  
+
 
 //add logout ajax here
