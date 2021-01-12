@@ -4,6 +4,8 @@ $(document).ready(function () {
   date = dayjs().format("dddd");
   $weekDayPlaceholder = $(".weekday-placeholder");
 
+
+
   //grabs class data from database, then dynamically writes schedule page
   const getClasses = () => {
     for (i = 0; i < $weekDay.length; i++) {
@@ -12,13 +14,13 @@ $(document).ready(function () {
         .add([i - 1 + 1], "day")
         .format("dddd");
       $weekDay[i].append(dayofWeek);
-
+  
       //updates date for each day
       dayOfYear = dayjs()
         .add([i - 1 + 1], "day")
         .format("MMM D");
       $dateOfYear[i].append(dayOfYear);
-
+  
       //erases old classNames and adds current day of week as div classname. This will be used as a
       //reference later on to know which div to add each class to.
       $weekDayPlaceholder[i].className = "";
@@ -32,13 +34,17 @@ $(document).ready(function () {
       },
       method: "GET",
     }).then(function (classData) {
+
       //gras every class from ajax request and iterates over it
       classData.map(function (item) {
-        //changes the incoming ajax timestamp to readable 12 hour time.
-        const twelveHourTime = tConvert(item.start_time);
 
-        //dynamic template that inserts ajax response items into html
-        const classTemplate = `
+
+      //changes the incoming ajax timestamp to readable 12 hour time. 
+    const twelveHourTime = tConvert(item.start_time);
+
+
+    //dynamic template that inserts ajax response items into html
+    const classTemplate = `
         <div class="row m-0 pb-3 pt-3 border-to-bottom-thin font-large">
           <div class="col border-teal pb-3 text-center">
             <h4 class="class-title-${item.day} bold text-red">${item.class_name}</h4>
@@ -57,21 +63,21 @@ $(document).ready(function () {
         </div>
 `;
 
-        //Above, each weekday div had its class matched to the dayjs() day of the week. If the ajax gym classes "day" matches
-        //the day of the week, then the class is appended into that div.
+    //Above, each weekday div had its class matched to the dayjs() day of the week. If the ajax gym classes "day" matches 
+    //the day of the week, then the class is appended into that div. 
 
-        for (i = 0; i < $weekDayPlaceholder.length; i++) {
-          if ($weekDayPlaceholder[i].className === item.day) {
-            $weekDayPlaceholder.eq(i).append(classTemplate);
-          }
-        }
+    for (i = 0; i < $weekDayPlaceholder.length; i++) {
+      if ($weekDayPlaceholder[i].className === item.day) {
+        $weekDayPlaceholder.eq(i).append(classTemplate);
+      }
+    }
       });
     });
   };
 
   getClasses();
 
-  //changes timestamp to readable time.
+  //changes timestamp to readable time. 
   //altered from https://stackoverflow.com/questions/13898423/javascript-convert-24-hour-time-of-day-string-to-12-hour-time-with-am-pm-and-no
   function tConvert(time) {
     // Check correct time format and split into components
@@ -89,7 +95,7 @@ $(document).ready(function () {
     time.splice(1, 3);
     time.splice(2, 0, " ");
     // return adjusted time or original string
-    return time.join("");
+    return time.join(""); 
   }
 
   // SECTION  for updating classes
@@ -114,20 +120,24 @@ $(document).ready(function () {
 
   //add logout ajax here
 
-  //when the logout button is clicked,
-  //send an ajax to tell the database they are logged out,
-  //erase their local storage id,
-  //redirect user back to login page
-  $(".logout-btn").click(function () {
-    $.ajax({
-      url: "/api/member:id",
-      method: "GET",
-      data: {
-        id: window.localStorage.getItem("userId"),
-      },
-    }).then(function () {
-      localStorage.clear();
-      window.location.replace("/");
-    });
-  });
+  //when the logout button is clicked, 
+//send an ajax to tell the database they are logged out, 
+//erase their local storage id, 
+//redirect user back to login page
+$('.logout-btn').click(function(){
+  $.ajax({
+    url:"/api/member:id" ,
+    method:"GET",
+    data: {
+      id: window.localStorage.getItem('userId')
+    }
+  }).then(function(){
+    localStorage.clear() 
+    window.location.replace("/");
+  })
+})
+
+
+
+  
 });
