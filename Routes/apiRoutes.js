@@ -6,6 +6,7 @@ module.exports = function (app) {
   app.get("/api/classes", function (req, res) {
     db.Class.findAll({}).then(function (classes) {
       //need code to find trainer name maybe association
+
       db.Employee.findAll({}).then(function (trainers) {
         let classBundle = [];
         classes.forEach(async function (unit) {
@@ -28,6 +29,7 @@ module.exports = function (app) {
 
           classBundle.push(reqClass);
         });
+
 
         res.json(classBundle);
       });
