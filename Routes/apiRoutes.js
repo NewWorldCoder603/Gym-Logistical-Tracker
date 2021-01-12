@@ -4,25 +4,33 @@ const md5 = require("md5");
 module.exports = function (app) {
   // GET "/api/classes" responds with all classes from the database
   app.get("/api/classes", function (req, res) {
-    db.Class.findAll({
-      where: {
-        id: req.body.class_id,
-      },
-    }).then(function (results) {
+    db.Class.findAll({}).then(function (classes) {
       //need code to find trainer name maybe association
+      db.Employee.findAll({}).then(function (trainers) {
+        let classBundle = [];
+        classes.forEach(async function (unit) {
+          const activeTrainer = trainers.filter(
+            (trainer) =>
+              trainer.dataValues.id ===
+              unit.dataValues.trainer_id
+          );
 
-      const reqClass = {
-        class_id: results.id,
-        class_name: results.class_name,
-        start_time: results.start_time,
-        duration: results.duration,
-        current_size: results.curent_size,
-        max_size: results.max_size,
-        trainer_name: results.trainer_name,
-        class_name: results.name,
-      };
+          const reqClass = {
+            id: unit.dataValues.id,
+            class_name: unit.dataValues.class_name,
+            day: unit.dataValues.day,
+            start_time: unit.dataValues.start_time,
+            current_size: unit.dataValues.current_size,
+            max_size: unit.dataValues.max_size,
+            trainer_name:
+              activeTrainer[0].dataValues.first_name,
+          };
 
-      res.json(reqClass);
+          classBundle.push(reqClass);
+        });
+
+        res.json(classBundle);
+      });
     });
   });
 
