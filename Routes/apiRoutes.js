@@ -120,4 +120,29 @@ module.exports = function (app) {
       res.send("Added to class!");
     });
   });
+
+
+  app.get("/api/member:id", (req, res) => {
+    const member_id = req.params.id;
+    db.Member.update(
+      {
+        is_logged_in: false
+      }, 
+      {
+        where: {
+          id : member_id
+        }
+      }).then(function(){
+          // send a logged out message to the user
+          res.json({
+            message: "You have been successfully logged out."
+          });
+      }).catch((err) =>{
+          console.log(err);
+          res.json({
+            message: "You have been successfully logged out."
+          });
+      }) ;
+  });
+
 };
