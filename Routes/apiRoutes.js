@@ -11,9 +11,7 @@ module.exports = function (app) {
 
         classes.forEach(function (unit) {
           const activeTrainer = trainers.filter(
-            (trainer) =>
-              trainer.dataValues.id ===
-              unit.dataValues.trainer_id
+            (trainer) => trainer.dataValues.id === unit.dataValues.trainer_id
           );
 
           const reqClass = {
@@ -23,8 +21,7 @@ module.exports = function (app) {
             start_time: unit.dataValues.start_time,
             current_size: unit.dataValues.current_size,
             max_size: unit.dataValues.max_size,
-            trainer_name:
-              activeTrainer[0].dataValues.first_name,
+            trainer_name: activeTrainer[0].dataValues.first_name,
           };
 
           classBundle.push(reqClass);
@@ -68,18 +65,14 @@ module.exports = function (app) {
           .catch((err) => {
             res
               .status(401)
-              .send(
-                "Sorry! There was some problem. Please try again."
-              );
+              .send("Sorry! There was some problem. Please try again.");
           });
       })
       .catch((err) => {
         // user-friendly message to user in case of error
         res
           .status(401)
-          .send(
-            "The email and/or password is incorrect. Please try again."
-          );
+          .send("The email and/or password is incorrect. Please try again.");
       });
   });
 
@@ -107,13 +100,9 @@ module.exports = function (app) {
       password: req.body.password,
       first_name: req.body.first_name,
       last_name: req.body.last_name,
-      date_of_birth: req.body.date_of_birth
-        ? req.body.date_of_birth
-        : null,
+      date_of_birth: req.body.date_of_birth ? req.body.date_of_birth : null,
       gender: req.body.gender,
-      phone: req.body.phone
-        ? parseInt(req.body.phone)
-        : null,
+      phone: req.body.phone ? parseInt(req.body.phone) : null,
       is_logged_in: true,
     })
       .then(function (dbMember) {
@@ -125,8 +114,7 @@ module.exports = function (app) {
         let message = err.original.sqlMessage;
         // if email already exists in database, send a user-friendly message as response
         if (err.original.errno === 1062) {
-          message =
-            "This email is already registered with us.";
+          message = "This email is already registered with us.";
         }
         // any other error, send it as a response to be handled at front-end
         res.json({ error: message });
@@ -134,7 +122,11 @@ module.exports = function (app) {
   });
 
   // GET API route for logging out the member
+<<<<<<< HEAD
   app.get("/api/member:id", (req, res) => {
+=======
+  app.get("/api/member/:id", (req, res) => {
+>>>>>>> master
     const member_id = req.params.id;
     // updates the is_logged_in column in db to false when member logs out
     db.Member.update(
@@ -163,6 +155,7 @@ module.exports = function (app) {
 
   // Query to insert the member into chosen class
   app.post("/api/addToClass", (req, res) => {
+<<<<<<< HEAD
     db.Class.update({
       where: {
         ClassId: req.body.class_id,
@@ -182,6 +175,21 @@ module.exports = function (app) {
           error:
             "Sorry! Some problem occured. Please try again.",
         });
+=======
+    console.log(req.body);
+    db.Class_Members.create({
+      ClassId: parseInt(req.body.class_id),
+      MemberId: parseInt(req.body.member_id),
+      date: req.body.date,
+    })
+      .then(function (result) {
+        console.log(result);
+        res.json({ message: "You have been successfully added to the class!" });
+      })
+      .catch((err) => {
+        //console.log(err);
+        res.json({ error: "Sorry! Some problem occured. Please try again." });
+>>>>>>> master
       });
   });
 
@@ -198,16 +206,24 @@ module.exports = function (app) {
       .then(function (result) {
         console.log(result);
         res.json({
+<<<<<<< HEAD
           message:
             "You have successfully unenrolled from the class!",
+=======
+          message: "You have successfully unenrolled from the class!",
+>>>>>>> master
         });
       })
       .catch((err) => {
         //console.log(err);
+<<<<<<< HEAD
         res.json({
           error:
             "Sorry! Some problem occured. Please try again.",
         });
+=======
+        res.json({ error: "Sorry! Some problem occured. Please try again." });
+>>>>>>> master
       });
   });
 };

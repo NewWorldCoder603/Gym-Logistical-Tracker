@@ -51,7 +51,7 @@
                                 </select>
                             </div>
                             <div class="col-12">
-                                <label for="inputBirthday" class="form=label">Birthdate (yyyy-dd-mm)</label>
+                                <label for="inputBirthday" class="form=label">Birthdate (yyyy-mm-dd)</label>
                                 <input type="text" class="form-control" id="inputBirthday" placeholder="Birthdate (yyyy-dd-mm)">
                             </div>
                             <div class="col-md-6">
@@ -76,6 +76,22 @@
                 </div>
             </div>
     </div>
+    <!--Alert modal for login errors-->
+    <div id="alert-modal" class="modal fade">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 id="alert-modal-title" class="modal-title">Signup Failed</h4>
+            </div>
+            <div id="alert-modal-body" class="modal-body"></div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default modalBtn" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
     <!--Link to register.js-->
     <script defer src="./assets/js/register.js"></script>
 
