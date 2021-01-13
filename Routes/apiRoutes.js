@@ -39,11 +39,10 @@ module.exports = function (app) {
     db.Member.findOne({
       where: {
         email: req.body.username,
-        password: req.body.password,
+        password: md5(req.body.password),
       },
     })
       .then(function (dbMember) {
-        console.log(dbMember);
         const member_id = dbMember.id;
         // updates the is_logged_in column in member table to true to track the logged in user
         db.Member.update(
@@ -76,7 +75,7 @@ module.exports = function (app) {
   app.post("/api/addEmployee", (req, res) => {
     db.Employee.create({
       userName: req.body.userName,
-      password: req.body.password,
+      password: md5(req.body.password),
       first_name: req.body.first_name,
       last_name: req.body.last_name,
       gender: req.body.gender,
@@ -93,7 +92,8 @@ module.exports = function (app) {
   app.post("/api/register", (req, res) => {
     db.Member.create({
       email: req.body.userName,
-      password: req.body.password,
+      // md5 encrypts the password
+      password: md5(req.body.password),
       first_name: req.body.first_name,
       last_name: req.body.last_name,
       date_of_birth: req.body.date_of_birth ? req.body.date_of_birth : null,
@@ -106,7 +106,6 @@ module.exports = function (app) {
         res.json({ id: dbMember.id });
       })
       .catch((err) => {
-        console.log(err);
         let message = err.original.sqlMessage;
         // if email already exists in database, send a user-friendly message as response
         if (err.original.errno === 1062) {
@@ -138,9 +137,8 @@ module.exports = function (app) {
         });
       })
       .catch((err) => {
-        console.log(err);
         res.json({
-          message: "You have been successfully logged out.",
+          message: "Sorry! We could not log you out. Please try again.",
         });
       });
   });
@@ -158,7 +156,6 @@ module.exports = function (app) {
         res.json({ message: "You have been successfully added to the class!" });
       })
       .catch((err) => {
-        //console.log(err);
         res.json({ error: "Sorry! Some problem occured. Please try again." });
       });
   });
@@ -180,8 +177,45 @@ module.exports = function (app) {
         });
       })
       .catch((err) => {
-        //console.log(err);
         res.json({ error: "Sorry! Some problem occured. Please try again." });
       });
+  });
+
+  // POST API that allows a manager to add a trainer to the employee table in the database
+  app.post("/api/manager/addTrainer", (req, res) => {
+    db.Employee.create({
+      email: req.body.userName,
+      password: md5(req.body.password),
+      first_name: req.body.first_name,
+      last_name: req.body.last_name,
+      gender: req.body.gender,
+      phone: req.body.phone ? parseInt(req.body.phone) : null,
+      role: "trainer",
+    }).then(function(dbTrainer) {
+        // sends successful message as response
+        res.json({ message: "The trainer has been successfully added!" });
+      })
+      .catch((err) => {
+        // if there was an error in adding the trainer, sends a user-friendly error message to user
+        res.json({ error: "Sorry! Some problem occured. Please try again." });
+      });
+  });
+
+  // API GET route for deleting a trainer
+  app.get("/api/manager/deleteTrainer/:id", (req, res) => {
+    db.Employee.destroy({
+      where: {
+        id: trainer_id
+      },
+    })
+    .then(function(result) {
+        console.log(result);
+        res.json({
+          message: "The trainer has been successfully deleted from the system!",
+        });
+    })
+    .catch((err) => {
+      res.json({ error: "Sorry! Some problem occured. Please try again." });
+    });
   });
 };
