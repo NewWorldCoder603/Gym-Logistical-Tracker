@@ -7,6 +7,8 @@ $(document).ready(function () {
 
 
   //grabs class data from database, then dynamically writes schedule page
+
+  //revisit this at some later date 
   const getClasses = () => {
     for (i = 0; i < $weekDay.length; i++) {
       //updates day of the week
@@ -25,6 +27,7 @@ $(document).ready(function () {
       //reference later on to know which div to add each class to.
       $weekDayPlaceholder[i].className = "";
       $weekDayPlaceholder[i].classList.add($weekDay[i].innerHTML);
+     
     }
 
     return $.ajax({
@@ -126,18 +129,11 @@ $(document).ready(function () {
 //redirect user back to login page
 $('.logout-btn').click(function(){
   $.ajax({
-    url:"/api/member:id" ,
+    url:`/api/member/${window.localStorage.getItem('userId')}`,
     method:"GET",
-    data: {
-      id: window.localStorage.getItem('userId')
-    }
   }).then(function(){
     localStorage.clear() 
     window.location.replace("/");
   })
 })
-
-
-
-  
 });
