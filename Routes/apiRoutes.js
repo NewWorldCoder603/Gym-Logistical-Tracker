@@ -131,7 +131,7 @@ module.exports = function (app) {
   });
 
  // GET API route for logging out the member
-  app.get("/api/member:id", (req, res) => {
+  app.get("/api/member/:id", (req, res) => {
     const member_id = req.params.id;
     // updates the is_logged_in column in db to false when member logs out
     db.Member.update(
