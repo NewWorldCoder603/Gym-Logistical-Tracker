@@ -1,15 +1,15 @@
 const db = require("../models");
-const md5 = require("md5");
 
 module.exports = function (app) {
   // GET "/api/classes" responds with all classes from the database
-  app.get("/api/classes", function (req, res) {
+  app.get("/api/classes/:id", function (req, res) {
     db.Class.findAll({}).then(function (classes) {
       //need code to find trainer name maybe association
 
       db.Employee.findAll({}).then(function (trainers) {
         let classBundle = [];
-        classes.forEach(async function (unit) {
+
+        classes.forEach(function (unit) {
           const activeTrainer = trainers.filter(
             (trainer) =>
               trainer.dataValues.id ===
@@ -29,7 +29,6 @@ module.exports = function (app) {
 
           classBundle.push(reqClass);
         });
-
 
         res.json(classBundle);
       });
@@ -60,7 +59,11 @@ module.exports = function (app) {
         )
           .then(function () {
             // sends the logged in member's id as response
-            res.json({ id: member_id });
+            res.json({
+              id: member_id,
+              badHombre:
+                dbMember.first_name + dbMember.last_name,
+            });
           })
           .catch((err) => {
             res
@@ -130,46 +133,57 @@ module.exports = function (app) {
       });
   });
 
- // GET API route for logging out the member
+  // GET API route for logging out the member
   app.get("/api/member:id", (req, res) => {
     const member_id = req.params.id;
     // updates the is_logged_in column in db to false when member logs out
     db.Member.update(
       {
-        is_logged_in: false
-      }, 
+        is_logged_in: false,
+      },
       {
         where: {
-          id : member_id
-        }
-      }).then(function(){
-          // send a logged out message to the user
-          res.json({
-            message: "You have been successfully logged out."
-          });
-      }).catch((err) =>{
-          console.log(err);
-          res.json({
-            message: "You have been successfully logged out."
-          });
-      }) ;
+          id: member_id,
+        },
+      }
+    )
+      .then(function () {
+        // send a logged out message to the user
+        res.json({
+          message: "You have been successfully logged out.",
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+        res.json({
+          message: "You have been successfully logged out.",
+        });
+      });
   });
 
-    // Query to insert the member into chosen class
-    app.post("/api/addToClass", (req, res) => {
-      console.log(req.body);
-      db.Class_Members.create({
-          ClassId: parseInt(req.body.class_id),
-          MemberId: parseInt(req.body.member_id),
-          date: req.body.date
-      }).then(function (result) {
+  // Query to insert the member into chosen class
+  app.post("/api/addToClass", (req, res) => {
+    db.Class.update({
+      where: {
+        ClassId: req.body.class_id,
+        MemberId: req.body.member_id,
+      },
+    })
+      .then(function (result) {
         console.log(result);
-        res.json({message: "You have been successfully added to the class!"});
-      }).catch((err) => {
+        res.json({
+          message:
+            "You have been successfully added to the class!",
+        });
+      })
+      .catch((err) => {
         //console.log(err);
-        res.json({error: "Sorry! Some problem occured. Please try again."});
+        res.json({
+          error:
+            "Sorry! Some problem occured. Please try again.",
+        });
       });
-    });
+  });
 
   // API POST route for removing a member/client from a class
   app.post("/api/removeFromClass", (req, res) => {
@@ -178,15 +192,22 @@ module.exports = function (app) {
       where: {
         ClassId: parseInt(req.body.class_id),
         MemberId: parseInt(req.body.member_id),
-        date: req.body.date
+        date: req.body.date,
       },
-    }).then(function (result) {
-      console.log(result);
-      res.json({message: "You have successfully unenrolled from the class!"});
-    }).catch((err) => {
-      //console.log(err);
-      res.json({error: "Sorry! Some problem occured. Please try again."});
-    });;
+    })
+      .then(function (result) {
+        console.log(result);
+        res.json({
+          message:
+            "You have successfully unenrolled from the class!",
+        });
+      })
+      .catch((err) => {
+        //console.log(err);
+        res.json({
+          error:
+            "Sorry! Some problem occured. Please try again.",
+        });
+      });
   });
-
 };
