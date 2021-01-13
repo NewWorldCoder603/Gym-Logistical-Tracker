@@ -22,7 +22,7 @@ $("body").on("click", "#submitRegistration", function () {
     method: "POST",
 
     error: function (req, status, err) {
-      if (err) throw err;
+      if (err) alertModal(err);
     },
   }).then(function (response) {
     console.log(response);
@@ -31,3 +31,15 @@ $("body").on("click", "#submitRegistration", function () {
     window.location.replace("/client-schedule");
   });
 });
+
+//function to display Alert Modal on login error
+function alertModal(title, body) {
+  // Display error message to the user in a modal
+  $("#alert-modal-title").html(title);
+  $("#alert-modal-body").html(body);
+  $("#alert-modal").modal("show");
+}
+
+//Close modal on close button click
+// $("body").on("click", ".modalBtn, function() {
+//   ")

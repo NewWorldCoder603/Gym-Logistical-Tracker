@@ -25,25 +25,27 @@
   </head>
   <body>
     <div class="container-fluid ">
-      <div class = "row background-dark my-3">
-          <div class = "col-sm-4">
+      <div class = "row  my-3 background-dark">
+          <div class = "col-sm-2">
             <div class = "container my-5 py-3">
-              <!-- <p id="slogan"></p> -->
             </div>
           </div>
-          <div class = "col-sm-4">
-            <div class="container-sm align-content-center">
+          <div class = "col-sm-8 ">
+            <div class="container-sm d-flex justify-content-center ">
             <img id="logo1" src="./assets/images/Color_Logo_dark_background.png" class = "img-rounded img-responsive" alt = "Dev Fitness logo, weight lifter" style="width:250px;height:250px;">
+            </div>
+          </div> 
+          <div class = "col-sm-2">
+            <div class = "container my-5 py-3">
+            </div>
           </div>
-          </div>
-          
       </div>
       <div class="container mb-5">
         <div class="row">
           
           <!--Advertising-->
-          <div class="col-12 col-md-6 text-center background-red">
-            <h2 id="slogan" class="div text-dark my-3">Refactor Your Body!</h2>
+          <div class="col-12 col-md-6 text-center background-dark">
+            <h2 id="slogan" class="div text-red my-3">Refactor Your Body!</h2>
             <div
               id="carouselExampleSlidesOnly"
               class="carousel slide"
@@ -51,7 +53,7 @@
             >
               <div class="carousel-inner">
                 <div class="carousel-item active">
-                  <img src="./assets/images/girlfeetwaterbottle.jpg" class = "img-rounded img-responsive" alt = "girl's feet next to weight and water bottle" >
+                  <img src="./assets/images/girlfeetwaterbottle.jpg" class = "img-rounded img-responsive" alt = "girl's feet next to weight and water bottle" style="width:375px;height:250px">
                   <div
                     class="carousel-caption d-none d-md-block center background-t-red"
                   >
@@ -68,23 +70,13 @@
                     <p> but still discovering your outer strength?</p>
                   </div>
                 </div>
-                <!-- <div class="carousel-item">
-                  <img src="./assets/images/bench.jpg" class = "img-rounded img-responsive m-2" alt = "#" style="width:450px;height:300px;">
-                  <div
-                    class="carousel-caption d-none d-md-block center background-t-red"
-                  >
-                    <h5>Looking for personal training facilities</h5>
-                    <p> to help you meet your fitness goals?</p>
-                  </div>
-                </div> -->
               </div>
             </div>
           </div>
           <!--Member Login-->
-          <div class="client-info col-12 col-md-6 text-center mb-5 mb-md-0">
-            <div class = "col-sm-4">
-              <div class = "container py-5">
-                <p class="text-red" id="member">Already a member?</p>
+          <div class="client-info col-12 col-md-6 d-flex align-content-center text-center mb-5 mb-md-0 background-red">
+              <div class = "container py-5 ">
+                <p class="text-dark " id="member">Already a member?</p>
                 <form>
                   <div class="mb-3">
                     <label for="exampleInputEmail" class="form-label">Email address</label>
@@ -95,34 +87,30 @@
                     <label for="exampleInputPassword" class="form-label">Password</label>
                     <input type="password" class="form-control" id="logPassword">
                   </div>
-                  <button type="button" class="btn btn-danger" id="loginBtn">Submit</button><!--Do we want this danger or outline danger?-->
+                  <button type="button" class="btn btn-light" id="loginBtn">Submit</button><!--Do we want this danger or outline danger?-->
                 </form>
-            </div>
+              </div>
           </div>
         </div>
-      </div>
-
-      <div class="container mb-5">
-        <div class="row">
-          
+        <div class="row"> 
           <!--New Member Signup-->
-          <div class = "col-sm-4">
-            <div class = "container ml-5 my-5 text-center">
-              <h2 class="ps-4 text-red">Whatever your fitness needs, we've got you covered.  Ready to become a member?</h2>
-              <button class="btn btn-outline-danger btn-lg" type="button" id="getStartedBtn">Get Started</button>
+          <div class = "col-12 col-md-6 d-flex align-content-center text-center mb-5 mb-md-0 background-red ">
+            <div class="container py-5 d-flex align-items-center">
+              <h2 class="ps-4 text-dark">Whatever your fitness needs, we've got you covered.  Ready to become a member?</h2>
+              <button class="btn btn-outline-light btn-lg" type="button" id="getStartedBtn">Get Started</button>
             </div>
           </div>
-        <!--Advertising 2-->
-        <div class="col-12 col-md-6 text-center background-red">
-          <h2 class="div text-red my-3">Increase Your Stamina!</h2>
-          <div
-            id="carouselExampleSlidesOnly"
-            class="carousel slide"
-            data-bs-ride="carousel"
-          >
+          <!--Advertising 2-->
+          <div class="col-12 col-md-6 text-center background-dark">
+            <h2 class="div text-red my-3">Increase Your Stamina!</h2>
+            <div
+              id="carouselExampleSlidesOnly"
+              class="carousel slide"
+              data-bs-ride="carousel"
+            >
             <div class="carousel-inner">
               <div class="carousel-item active">
-                <img src="./assets/images/bench.jpg" class = "img-rounded img-responsive m-2" alt = "#" style="width:450px;height:300px;">
+                <img src="./assets/images/bench.jpg" class = "img-rounded img-responsive m-2" alt = "#" style="width:563px;height:375px;">
                 <div
                   class="carousel-caption d-none d-md-block center background-t-red"
                 >
@@ -140,8 +128,29 @@
                 </div>
               </div>
             </div>
+            </div>
+          </div>   
+        </div>
+      </div>
+      <footer class="mt-5">
+        <p class="font-large text-red text-center">Phone: (555) 555 5555</p>
+        <p class="font-large text-red text-center mb-0">
+          111 Stack Lift Ave Salem NH 03070
+        </p>
+      </footer>
+    </div>
+    <!--Alert modal for login errors - Code credit:  https://gist.github.com/billmei/2e9d11ff732b1ea6916f  (lines 149-162)-->
+    <div id="alert-modal" class="modal fade">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button> -->
+            <h4 id="alert-modal-title" class="modal-title">Login Failed</h4>
           </div>
-        </div>   
+          <div id="alert-modal-body" class="modal-body">The email and/or password is incorrect. Please try again.</div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default modalBtn" data-dismiss="modal">Close</button>
+          </div>
         </div>
       </div>
     </div>
