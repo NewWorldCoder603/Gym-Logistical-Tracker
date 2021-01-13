@@ -28,3 +28,8 @@ body {
 .background-red {
   background: #d22e33;
 }
+
+.background-t-red {
+  background: #d22e33;
+  opacity: 0.9;
+}
