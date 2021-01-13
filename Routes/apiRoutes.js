@@ -180,4 +180,42 @@ module.exports = function (app) {
         res.json({ error: "Sorry! Some problem occured. Please try again." });
       });
   });
+
+  // POST API that allows a manager to add a trainer to the employee table in the database
+  app.post("/api/manager/addTrainer", (req, res) => {
+    db.Employee.create({
+      email: req.body.userName,
+      password: md5(req.body.password),
+      first_name: req.body.first_name,
+      last_name: req.body.last_name,
+      gender: req.body.gender,
+      phone: req.body.phone ? parseInt(req.body.phone) : null,
+      role: "trainer",
+    }).then(function(dbTrainer) {
+        // sends successful message as response
+        res.json({ message: "The trainer has been successfully added!" });
+      })
+      .catch((err) => {
+        // if there was an error in adding the trainer, sends a user-friendly error message to user
+        res.json({ error: "Sorry! Some problem occured. Please try again." });
+      });
+  });
+
+  // API GET route for deleting a trainer
+  app.get("/api/manager/deleteTrainer/:id", (req, res) => {
+    db.Employee.destroy({
+      where: {
+        id: trainer_id
+      },
+    })
+    .then(function(result) {
+        console.log(result);
+        res.json({
+          message: "The trainer has been successfully deleted from the system!",
+        });
+    })
+    .catch((err) => {
+      res.json({ error: "Sorry! Some problem occured. Please try again." });
+    });
+  });
 };

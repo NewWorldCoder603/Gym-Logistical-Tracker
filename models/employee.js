@@ -23,9 +23,6 @@ module.exports = function (sequelize, DataTypes) {
     },
     gender: {
       type: DataTypes.STRING,
-      validate: {
-        len: [1, 1],
-      },
     },
     phone: {
       type: DataTypes.BIGINT,
@@ -38,6 +35,19 @@ module.exports = function (sequelize, DataTypes) {
       allowNull: false,
     },
   });
+
+  // Employee.associate = function (models) {
+  //   Employee.hasOne(models.Employee, {
+  //       onDelete: 'CASCADE',
+  //       foreignKey: {
+  //           name: 'parent_id',
+  //           allowNull: true
+  //       },
+  //       as: 'ParentEntry'
+  //   });
+  //   });
+//
+
 
   return Employee;
 };
