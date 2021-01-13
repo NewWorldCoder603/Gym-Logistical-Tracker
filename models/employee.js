@@ -36,18 +36,5 @@ module.exports = function (sequelize, DataTypes) {
     },
   });
 
-  // Employee.associate = function (models) {
-  //   Employee.hasOne(models.Employee, {
-  //       onDelete: 'CASCADE',
-  //       foreignKey: {
-  //           name: 'parent_id',
-  //           allowNull: true
-  //       },
-  //       as: 'ParentEntry'
-  //   });
-  //   });
-//
-
-
   return Employee;
 };
