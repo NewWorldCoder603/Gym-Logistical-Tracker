@@ -39,11 +39,5 @@ module.exports = function (sequelize, DataTypes) {
     },
   });
 
-  Class.associate = function (models) {
-    Class.belongsToMany(models.Member, {
-      through: "Class_Members",
-    });
-  };
-
   return Class;
 };

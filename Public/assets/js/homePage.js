@@ -12,7 +12,11 @@ $("body").on("click", "#loginBtn", function () {
     method: "POST",
     //Show alert modal on login failure
     error: function (req, status, err) {
+<<<<<<< HEAD
       if (err) alertModal("Login Failed");
+=======
+      if (err) alertModal();
+>>>>>>> features/apis
     },
   }).then(function (response) {
     console.log(response);
