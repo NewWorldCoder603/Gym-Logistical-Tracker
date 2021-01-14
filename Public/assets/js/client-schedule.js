@@ -28,14 +28,16 @@ $(document).ready(function () {
     }
 
     return $.ajax({
-      url: `/api/classes/${window.localStorage.getItem("userId")}`,
+      url: `/api/classes/`,
       data: {
         id: localStorage.getItem("userId"),
       },
       method: "GET",
     }).then(function (classData) {
+     
       //gras every class from ajax request and iterates over it
       classData.map(function (item) {
+        console.log(item)
         //changes the incoming ajax timestamp to readable 12 hour time.
         const twelveHourTime = tConvert(item.start_time);
 
@@ -52,12 +54,15 @@ $(document).ready(function () {
           <div class="col border-to-right border-teal d-flex">
             <button
               type="button"
-              class="btn background-red text-white align-self-center">
+              class="btn background-red text-white align-self-center join-btn"
+              data-id="${item.id}" 
+              >
               Join
             </button>
           </div>
         </div>
 `;
+
 
         //Above, each weekday div had its class matched to the dayjs() day of the week. If the ajax gym classes "day" matches
         //the day of the week, then the class is appended into that div.
@@ -124,9 +129,20 @@ $(document).ready(function () {
     $.ajax({
       url: `/api/member/${window.localStorage.getItem("userId")}`,
       method: "GET",
-    }).then(function () {
+    }).then(function (data) {
+      console.log(data)
+      console.log('hello')
       localStorage.clear();
       window.location.replace("/");
     });
   });
 });
+
+
+//join class ajax here. Used a global listener because buttons were created dynamically
+
+$(document).click(".join-btn", function(event) {
+  console.log(event.target)
+ 
+})
+
