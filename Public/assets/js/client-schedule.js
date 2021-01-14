@@ -59,7 +59,7 @@ $(document).ready(function () {
           <div class="col border-to-right border-teal d-flex">
             <button
               type="button"
-              onclick="getTimeStamp()"
+              onclick="addToClass()"
               class="btn background-red text-white align-self-center join-btn"
               data-id="${item.id}"
               >
@@ -106,20 +106,6 @@ $(document).ready(function () {
 
   // SECTION  for updating classes
 
-  //Adds the current user's Id to the selected class roster
-  const addToClass = () => {
-    return $.ajax({
-      url: "/api/addToClass",
-      method: "POST",
-      //We will need to send the data like this.
-      // data:{
-      //   id:class-id,
-      //   date:date,
-      //   memberid
-      // }
-    });
-  };
-
   //SECTION for user log in
 
   //add removeFromClass ajax here
@@ -146,10 +132,29 @@ $(document).ready(function () {
 //Used for dynamically created Join Buttons.
 //reaches up and grabs the specific date for this class in ajax needed format.
 
-function getTimeStamp() {
-  console.log(
-    (timeStamp = event.target.parentElement.parentElement.parentElement.parentElement
-      .querySelector("p")
-      .getAttribute("data-timestamp"))
-  );
-}
+//  Adds the current user's Id to the selected class roster
+const addToClass = () => {
+  //grabs classId attatched when button is made in template
+  classId = event.target.getAttribute("data-id");
+
+  //grab classDate by climbing up the dom and grabbing timestamp attritube
+  classDate = event.target.parentElement.parentElement.parentElement.parentElement
+    .querySelector("p")
+    .getAttribute("data-timestamp");
+
+  //grab memberId from local storage
+  memberId = localStorage.getItem("userId");
+  return $.ajax({
+    url: "/api/addToClass",
+    method: "POST",
+
+    data: {
+      id: classId,
+      date: classDate,
+      memberid: memberId,
+      success: function(){
+        console.log('success');
+      },
+    },
+  });
+};
