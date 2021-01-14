@@ -23,9 +23,6 @@ module.exports = function (sequelize, DataTypes) {
     },
     gender: {
       type: DataTypes.STRING,
-      validate: {
-        len: [1, 1],
-      },
     },
     phone: {
       type: DataTypes.BIGINT,
