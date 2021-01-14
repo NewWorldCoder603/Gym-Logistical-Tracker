@@ -1,33 +1,71 @@
 const db = require("../models");
-const md5 = require("md5");
 
 module.exports = function (app) {
   // GET "/api/classes" responds with all classes from the database
-  app.get("/api/classes", function (req, res) {
+  app.get("/api/classes/:id", function (req, res) {
     db.Class.findAll({}).then(function (classes) {
       //need code to find trainer name maybe association
 
-      db.Employee.findAll({}).then(function (trainers) {
-        let classBundle = [];
-        classes.forEach(async function (unit) {
-          const activeTrainer = trainers.filter(
-            (trainer) => trainer.dataValues.id === unit.dataValues.trainer_id
-          );
+      db.Member.findOne({
+        where: {
+          id: req.params.id,
+        },
+      }).then(function (currentUser) {
+        db.Employee.findAll({}).then(function (trainers) {
+          let classesJoined = [];
+          let roster = [];
+          let classBundle = [];
 
-          const reqClass = {
-            id: unit.dataValues.id,
-            class_name: unit.dataValues.class_name,
-            day: unit.dataValues.day,
-            start_time: unit.dataValues.start_time,
-            current_size: unit.dataValues.current_size,
-            max_size: unit.dataValues.max_size,
-            trainer_name: activeTrainer[0].dataValues.first_name,
-          };
+          const userName =
+            currentUser.dataValues.first_name;
 
-          classBundle.push(reqClass);
+          classes.forEach(function (unit) {
+            const activeTrainer = trainers.filter(
+              (trainer) =>
+                trainer.dataValues.id ===
+                unit.dataValues.trainer_id
+            );
+
+            if (roster) {
+              const roster = unit.dataValues.roster.split(
+                "'"
+              );
+
+              roster.filter(function classParse(
+                participant
+              ) {
+                if (
+                  currentUser.dataValues.id ===
+                  parseInt(participant)
+                ) {
+                  let thisClass = {
+                    id: unit.dataValues.id,
+                    class_name: unit.dataValues.class_name,
+                  };
+                  classesJoined.push(thisClass);
+                  console.log(classesJoined);
+                }
+              });
+            }
+            console.log(classesJoined);
+            const reqClass = {
+              id: unit.dataValues.id,
+              class_name: unit.dataValues.class_name,
+              day: unit.dataValues.day,
+              start_time: unit.dataValues.start_time,
+              current_size: unit.dataValues.current_size,
+              max_size: unit.dataValues.max_size,
+              trainer_name:
+                activeTrainer[0].dataValues.first_name,
+              userName: userName,
+              classJoined: classesJoined,
+            };
+
+            classBundle.push(reqClass);
+          });
+          console.log(classBundle);
+          res.json(classBundle);
         });
-
-        res.json(classBundle);
       });
     });
   });
@@ -55,19 +93,26 @@ module.exports = function (app) {
         )
           .then(function () {
             // sends the logged in member's id as response
-            res.json({ id: member_id });
+            res.json({
+              id: member_id,
+              badHombre: dbMember.first_name,
+            });
           })
           .catch((err) => {
             res
               .status(401)
-              .send("Sorry! There was some problem. Please try again.");
+              .send(
+                "Sorry! There was some problem. Please try again."
+              );
           });
       })
       .catch((err) => {
         // user-friendly message to user in case of error
         res
           .status(401)
-          .send("The email and/or password is incorrect. Please try again.");
+          .send(
+            "The email and/or password is incorrect. Please try again."
+          );
       });
   });
 
@@ -96,9 +141,13 @@ module.exports = function (app) {
       password: md5(req.body.password),
       first_name: req.body.first_name,
       last_name: req.body.last_name,
-      date_of_birth: req.body.date_of_birth ? req.body.date_of_birth : null,
+      date_of_birth: req.body.date_of_birth
+        ? req.body.date_of_birth
+        : null,
       gender: req.body.gender,
-      phone: req.body.phone ? parseInt(req.body.phone) : null,
+      phone: req.body.phone
+        ? parseInt(req.body.phone)
+        : null,
       is_logged_in: true,
     })
       .then(function (dbMember) {
@@ -109,7 +158,8 @@ module.exports = function (app) {
         let message = err.original.sqlMessage;
         // if email already exists in database, send a user-friendly message as response
         if (err.original.errno === 1062) {
-          message = "This email is already registered with us.";
+          message =
+            "This email is already registered with us.";
         }
         // any other error, send it as a response to be handled at front-end
         res.json({ error: message });
@@ -121,6 +171,7 @@ module.exports = function (app) {
   app.get("/api/member/:id", (req, res) => {
 
     const member_id = req.params.id;
+
     // updates the is_logged_in column in db to false when member logs out
     db.Member.update(
       {
@@ -147,39 +198,57 @@ module.exports = function (app) {
 
   // Query to insert the member into chosen class
   app.post("/api/addToClass", (req, res) => {
-    console.log(req.body);
-    db.Class_Members.create({
-      ClassId: parseInt(req.body.class_id),
-      MemberId: parseInt(req.body.member_id),
-      date: req.body.date,
-    })
+    const memeberId = req.params.member_id;
+    console.log(req.params);
+    db.Class.update(
+      { roster: newRoster },
+      {
+        where: {
+          id: req.params.class_id,
+        },
+      }
+    )
       .then(function (result) {
         console.log(result);
-        res.json({ message: "You have been successfully added to the class!" });
+        res.json({
+          message:
+            "You have been successfully added to the class!",
+        });
       })
       .catch((err) => {
+<<<<<<< HEAD
         res.json({ error: "Sorry! Some problem occured. Please try again." });
+=======
+        //console.log(err);
+        res.json({
+          error:
+            "Sorry! Some problem occured. Please try again.",
+        });
+>>>>>>> features/apis
       });
   });
 
   // API POST route for removing a member/client from a class
   app.post("/api/removeFromClass", (req, res) => {
     console.log(req.body);
-    db.Class_Members.destroy({
-      where: {
-        ClassId: parseInt(req.body.class_id),
-        MemberId: parseInt(req.body.member_id),
-        date: req.body.date,
-      },
-    })
+    db.Member.destroy({})
       .then(function (result) {
         console.log(result);
         res.json({
-          message: "You have successfully unenrolled from the class!",
+          message:
+            "You have successfully unenrolled from the class!",
         });
       })
       .catch((err) => {
+<<<<<<< HEAD
         res.json({ error: "Sorry! Some problem occured. Please try again." });
+=======
+        //console.log(err);
+        res.json({
+          error:
+            "Sorry! Some problem occured. Please try again.",
+        });
+>>>>>>> features/apis
       });
   });
 
