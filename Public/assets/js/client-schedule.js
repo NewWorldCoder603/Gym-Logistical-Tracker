@@ -25,19 +25,22 @@ $(document).ready(function () {
       timestamp = dayjs()
         .add([i - 1 + 1], "day")
         .format("YYYY MM DD");
-      $dateOfYear[i].setAttribute("data-timestamp", timestamp);
+      $dateOfYear[i].setAttribute(
+        "data-timestamp",
+        timestamp
+      );
 
       //erases old classNames and adds current day of week as div classname. This will be used as a
       //reference later on to know which div to add each class to.
       $weekDayPlaceholder[i].className = "";
-      $weekDayPlaceholder[i].classList.add($weekDay[i].innerHTML);
+      $weekDayPlaceholder[i].classList.add(
+        $weekDay[i].innerHTML
+      );
     }
 
     return $.ajax({
-      url: `/api/classes/`,
-      data: {
-        id: localStorage.getItem("userId"),
-      },
+      url: `/api/classes/${localStorage.getItem("userId")}`,
+
       method: "GET",
     }).then(function (classData) {
       //gras every class from ajax request and iterates over it
@@ -55,7 +58,6 @@ $(document).ready(function () {
             <div class="class-trainer-${item.day}" style="font-size:.9em;">${item.trainer_name}</div>
             <div class="class-spots-left-${item.day}">${item.max_size} slots </div>
           </div>
-
           <div class="col border-to-right border-teal d-flex">
             <button
               type="button"
@@ -73,7 +75,9 @@ $(document).ready(function () {
         //the day of the week, then the class is appended into that div.
 
         for (i = 0; i < $weekDayPlaceholder.length; i++) {
-          if ($weekDayPlaceholder[i].className === item.day) {
+          if (
+            $weekDayPlaceholder[i].className === item.day
+          ) {
             $weekDayPlaceholder.eq(i).append(classTemplate);
           }
         }
@@ -89,7 +93,9 @@ $(document).ready(function () {
     // Check correct time format and split into components
     time = time
       .toString()
-      .match(/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
+      .match(
+        /^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/
+      ) || [time];
 
     if (time.length > 1) {
       // If time format correct
@@ -110,7 +116,9 @@ $(document).ready(function () {
   //redirect user back to login page
   $(".logout-btn").click(function () {
     $.ajax({
-      url: `/api/member/${window.localStorage.getItem("userId")}`,
+      url: `/api/member/${window.localStorage.getItem(
+        "userId"
+      )}`,
       method: "GET",
     }).then(function (data) {
       console.log(data);
