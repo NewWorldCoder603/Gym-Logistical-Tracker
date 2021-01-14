@@ -166,10 +166,8 @@ module.exports = function (app) {
       });
   });
 
-
   // GET API route for logging out the member
   app.get("/api/member/:id", (req, res) => {
-
     const member_id = req.params.id;
 
     // updates the is_logged_in column in db to false when member logs out
@@ -191,7 +189,8 @@ module.exports = function (app) {
       })
       .catch((err) => {
         res.json({
-          message: "Sorry! We could not log you out. Please try again.",
+          message:
+            "Sorry! We could not log you out. Please try again.",
         });
       });
   });
@@ -216,15 +215,10 @@ module.exports = function (app) {
         });
       })
       .catch((err) => {
-<<<<<<< HEAD
-        res.json({ error: "Sorry! Some problem occured. Please try again." });
-=======
-        //console.log(err);
         res.json({
           error:
             "Sorry! Some problem occured. Please try again.",
         });
->>>>>>> features/apis
       });
   });
 
@@ -240,15 +234,10 @@ module.exports = function (app) {
         });
       })
       .catch((err) => {
-<<<<<<< HEAD
-        res.json({ error: "Sorry! Some problem occured. Please try again." });
-=======
-        //console.log(err);
         res.json({
           error:
             "Sorry! Some problem occured. Please try again.",
         });
->>>>>>> features/apis
       });
   });
 
@@ -260,15 +249,24 @@ module.exports = function (app) {
       first_name: req.body.first_name,
       last_name: req.body.last_name,
       gender: req.body.gender,
-      phone: req.body.phone ? parseInt(req.body.phone) : null,
+      phone: req.body.phone
+        ? parseInt(req.body.phone)
+        : null,
       role: "trainer",
-    }).then(function(dbTrainer) {
+    })
+      .then(function (dbTrainer) {
         // sends successful message as response
-        res.json({ message: "The trainer has been successfully added!" });
+        res.json({
+          message:
+            "The trainer has been successfully added!",
+        });
       })
       .catch((err) => {
         // if there was an error in adding the trainer, sends a user-friendly error message to user
-        res.json({ error: "Sorry! Some problem occured. Please try again." });
+        res.json({
+          error:
+            "Sorry! Some problem occured. Please try again.",
+        });
       });
   });
 
@@ -276,17 +274,21 @@ module.exports = function (app) {
   app.get("/api/manager/deleteTrainer/:id", (req, res) => {
     db.Employee.destroy({
       where: {
-        id: trainer_id
+        id: trainer_id,
       },
     })
-    .then(function(result) {
+      .then(function (result) {
         console.log(result);
         res.json({
-          message: "The trainer has been successfully deleted from the system!",
+          message:
+            "The trainer has been successfully deleted from the system!",
         });
-    })
-    .catch((err) => {
-      res.json({ error: "Sorry! Some problem occured. Please try again." });
-    });
+      })
+      .catch((err) => {
+        res.json({
+          error:
+            "Sorry! Some problem occured. Please try again.",
+        });
+      });
   });
 };
