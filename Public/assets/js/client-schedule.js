@@ -21,6 +21,12 @@ $(document).ready(function () {
         .format("MMM D");
       $dateOfYear[i].append(dayOfYear);
 
+      //create a timestamp specifically to send back in ajax in api readable format yyyy-MM-DD
+      timestamp = dayjs()
+        .add([i - 1 + 1], "day")
+        .format("YYYY MM DD");
+      $dateOfYear[i].setAttribute("data-timestamp", timestamp);
+
       //erases old classNames and adds current day of week as div classname. This will be used as a
       //reference later on to know which div to add each class to.
       $weekDayPlaceholder[i].className = "";
@@ -34,10 +40,9 @@ $(document).ready(function () {
       },
       method: "GET",
     }).then(function (classData) {
-     
       //gras every class from ajax request and iterates over it
       classData.map(function (item) {
-        console.log(item)
+        console.log(item);
         //changes the incoming ajax timestamp to readable 12 hour time.
         const twelveHourTime = tConvert(item.start_time);
 
@@ -54,15 +59,15 @@ $(document).ready(function () {
           <div class="col border-to-right border-teal d-flex">
             <button
               type="button"
+              onclick="getTimeStamp()"
               class="btn background-red text-white align-self-center join-btn"
-              data-id="${item.id}" 
+              data-id="${item.id}"
               >
               Join
             </button>
           </div>
         </div>
 `;
-
 
         //Above, each weekday div had its class matched to the dayjs() day of the week. If the ajax gym classes "day" matches
         //the day of the week, then the class is appended into that div.
@@ -130,19 +135,21 @@ $(document).ready(function () {
       url: `/api/member/${window.localStorage.getItem("userId")}`,
       method: "GET",
     }).then(function (data) {
-      console.log(data)
-      console.log('hello')
+      console.log(data);
+      console.log("hello");
       localStorage.clear();
       window.location.replace("/");
     });
   });
 });
 
+//Used for dynamically created Join Buttons.
+//reaches up and grabs the specific date for this class in ajax needed format.
 
-//join class ajax here. Used a global listener because buttons were created dynamically
-
-$(document).click(".join-btn", function(event) {
-  console.log(event.target)
- 
-})
-
+function getTimeStamp() {
+  console.log(
+    (timeStamp = event.target.parentElement.parentElement.parentElement.parentElement
+      .querySelector("p")
+      .getAttribute("data-timestamp"))
+  );
+}
