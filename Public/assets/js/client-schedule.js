@@ -21,6 +21,12 @@ $(document).ready(function () {
         .format("MMM D");
       $dateOfYear[i].append(dayOfYear);
 
+      //create a timestamp specifically to send back in ajax in api readable format yyyy-MM-DD
+      timestamp = dayjs()
+        .add([i - 1 + 1], "day")
+        .format("YYYY MM DD");
+      $dateOfYear[i].setAttribute("data-timestamp", timestamp);
+
       //erases old classNames and adds current day of week as div classname. This will be used as a
       //reference later on to know which div to add each class to.
       $weekDayPlaceholder[i].className = "";
@@ -28,7 +34,7 @@ $(document).ready(function () {
     }
 
     return $.ajax({
-      url: `/api/classes/${window.localStorage.getItem("userId")}`,
+      url: `/api/classes/`,
       data: {
         id: localStorage.getItem("userId"),
       },
@@ -36,6 +42,7 @@ $(document).ready(function () {
     }).then(function (classData) {
       //gras every class from ajax request and iterates over it
       classData.map(function (item) {
+        console.log(item);
         //changes the incoming ajax timestamp to readable 12 hour time.
         const twelveHourTime = tConvert(item.start_time);
 
@@ -52,7 +59,10 @@ $(document).ready(function () {
           <div class="col border-to-right border-teal d-flex">
             <button
               type="button"
-              class="btn background-red text-white align-self-center">
+              onclick="addToClass()"
+              class="btn background-red text-white align-self-center join-btn"
+              data-id="${item.id}"
+              >
               Join
             </button>
           </div>
@@ -96,20 +106,6 @@ $(document).ready(function () {
 
   // SECTION  for updating classes
 
-  //Adds the current user's Id to the selected class roster
-  const addToClass = () => {
-    return $.ajax({
-      url: "/api/addToClass",
-      method: "POST",
-      //We will need to send the data like this.
-      // data:{
-      //   id:class-id,
-      //   date:date,
-      //   memberid
-      // }
-    });
-  };
-
   //SECTION for user log in
 
   //add removeFromClass ajax here
@@ -124,9 +120,41 @@ $(document).ready(function () {
     $.ajax({
       url: `/api/member/${window.localStorage.getItem("userId")}`,
       method: "GET",
-    }).then(function () {
+    }).then(function (data) {
+      console.log(data);
+      console.log("hello");
       localStorage.clear();
       window.location.replace("/");
     });
   });
 });
+
+//Used for dynamically created Join Buttons.
+//reaches up and grabs the specific date for this class in ajax needed format.
+
+//  Adds the current user's Id to the selected class roster
+const addToClass = () => {
+  //grabs classId attatched when button is made in template
+  classId = event.target.getAttribute("data-id");
+
+  //grab classDate by climbing up the dom and grabbing timestamp attritube
+  classDate = event.target.parentElement.parentElement.parentElement.parentElement
+    .querySelector("p")
+    .getAttribute("data-timestamp");
+
+  //grab memberId from local storage
+  memberId = localStorage.getItem("userId");
+  return $.ajax({
+    url: "/api/addToClass",
+    method: "POST",
+
+    data: {
+      id: classId,
+      date: classDate,
+      memberid: memberId,
+      success: function(){
+        console.log('success');
+      },
+    },
+  });
+};
