@@ -104,14 +104,6 @@ $(document).ready(function () {
     return time.join("");
   }
 
-  // SECTION  for updating classes
-
-  //SECTION for user log in
-
-  //add removeFromClass ajax here
-
-  //add logout ajax here
-
   //when the logout button is clicked,
   //send an ajax to tell the database they are logged out,
   //erase their local storage id,
@@ -152,8 +144,8 @@ const addToClass = () => {
       id: classId,
       date: classDate,
       memberid: memberId,
-      success: function(){
-        console.log('success');
+      success: function () {
+        console.log("success");
       },
     },
   });

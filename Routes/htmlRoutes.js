@@ -23,7 +23,7 @@ module.exports = function (app) {
     );
   });
 
-  // Sends user to manger page
+  // Sends user to manager page
   app.get("/manager", function (req, res) {
     res.sendFile(
       path.join(__dirname, "../public/manager.html")
