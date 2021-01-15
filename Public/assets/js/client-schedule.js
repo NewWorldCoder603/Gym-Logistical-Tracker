@@ -43,11 +43,25 @@ $(document).ready(function () {
 
       method: "GET",
     }).then(function (classData) {
-
       
       //gras every class from ajax request and iterates over it
       classData.map(function (item) {
-        localStorage.setItem('test', item.classJoined[0].id);
+      //   console.log('classJoined', item.classJoined[0].id, 'item.id', item.id)
+      //   //checks to see if the user has joined a class or not by comparing class id to joinedclass id (from roster)
+        
+       let joinedClass = true; 
+       for(i=0; i<item.classJoined.length; i++){
+          console.log(item.classJoined[i].class_name, item.classJoined[i].id)
+         if(item.classJoined[i].id === item.id ){
+            joinedClass = true
+        
+            break; 
+         }
+         else{joinedClass = false
+   
+        
+        
+       }}
         //changes the incoming ajax timestamp to readable 12 hour time.
         const twelveHourTime = tConvert(item.start_time);
 
@@ -66,14 +80,14 @@ $(document).ready(function () {
               onclick="addToClass()"
               class="btn background-red text-white align-self-center join-btn"
               data-id="${item.id}"
-              data-joinedClassList="${item.classJoined[0]}"
+              data-joinedClassList="${joinedClass}"
               >
               Join
             </button>
           </div>
         </div>
 `;
-
+        
         //Above, each weekday div had its class matched to the dayjs() day of the week. If the ajax gym classes "day" matches
         //the day of the week, then the class is appended into that div.
 
@@ -149,17 +163,17 @@ const addToClass = () => {
 
   //grab memberId from local storage
   memberId = localStorage.getItem("userId");
-//   return $.ajax({
-//     url: "/api/addToClass",
-//     method: "POST",
+  return $.ajax({
+    url: "/api/addToClass",
+    method: "POST",
 
-//     data: {
-//       id: classId,
-//       date: classDate,
-//       memberid: memberId,
-//       success: function () {
-//         console.log("success");
-//       },
-//     },
-//   });
+    data: {
+      id: classId,
+      date: classDate,
+      memberid: memberId,
+      success: function () {
+        console.log("success");
+      },
+    },
+  });
 };
