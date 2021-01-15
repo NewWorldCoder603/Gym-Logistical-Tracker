@@ -1,6 +1,7 @@
 const username = $("#logUsername");
 const password = $("#logPassword");
 
+
 //Send username and password as a post request to check if it matches what is on file in database.
 $("body").on("click", "#loginBtn", function () {
   $.ajax({
@@ -12,11 +13,7 @@ $("body").on("click", "#loginBtn", function () {
     method: "POST",
     //Show alert modal on login failure
     error: function (req, status, err) {
-<<<<<<< HEAD
       if (err) alertModal("Login Failed");
-=======
-      if (err) alertModal();
->>>>>>> features/apis
     },
   }).then(function (response) {
     console.log(response);

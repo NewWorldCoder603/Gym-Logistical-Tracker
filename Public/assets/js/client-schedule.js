@@ -45,7 +45,7 @@ $(document).ready(function () {
     }).then(function (classData) {
       //gras every class from ajax request and iterates over it
       classData.map(function (item) {
-        console.log(item);
+        localStorage.setItem('test', item.classJoined[0].id);
         //changes the incoming ajax timestamp to readable 12 hour time.
         const twelveHourTime = tConvert(item.start_time);
 
@@ -64,6 +64,7 @@ $(document).ready(function () {
               onclick="addToClass()"
               class="btn background-red text-white align-self-center join-btn"
               data-id="${item.id}"
+              data-joinedClassList="${item.classJoined[0]}"
               >
               Join
             </button>
@@ -142,19 +143,21 @@ const addToClass = () => {
     .querySelector("p")
     .getAttribute("data-timestamp");
 
+    console.log(event.target)
+
   //grab memberId from local storage
   memberId = localStorage.getItem("userId");
-  return $.ajax({
-    url: "/api/addToClass",
-    method: "POST",
+//   return $.ajax({
+//     url: "/api/addToClass",
+//     method: "POST",
 
-    data: {
-      id: classId,
-      date: classDate,
-      memberid: memberId,
-      success: function () {
-        console.log("success");
-      },
-    },
-  });
+//     data: {
+//       id: classId,
+//       date: classDate,
+//       memberid: memberId,
+//       success: function () {
+//         console.log("success");
+//       },
+//     },
+//   });
 };
