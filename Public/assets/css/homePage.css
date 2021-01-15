@@ -37,3 +37,19 @@ body {
 .text-white {
   color: whitesmoke;
 }
+
+.text-bold {
+  font-weight: bold;
+}
+
+/*Heading is larger during big screen size */
+.big-heading-text {
+  font-size: 800%;
+}
+
+/*Heading shrinks at small screen size so it fits on one line */
+@media screen and (max-width: 800px) {
+  .less-big-heading {
+    font-size: 400%;
+  }
+}
