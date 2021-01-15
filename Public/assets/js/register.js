@@ -28,7 +28,7 @@ $("body").on("click", "#submitRegistration", function () {
     console.log(response);
     //If sign-up goes through, get request for specific member's id
     localStorage.setItem("userId", response.id);
-    window.location.replace("/client-schedule");
+    window.location.assign("/client-schedule");
   });
 });
 
@@ -41,5 +41,6 @@ function alertModal(title, body) {
 }
 
 //Close modal on close button click
-// $("body").on("click", ".modalBtn, function() {
-//   ")
+$(".modalBtn").click(function () {
+  $("#alert-modal").modal("hide");
+});

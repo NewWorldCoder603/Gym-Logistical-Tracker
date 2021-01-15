@@ -12,24 +12,20 @@ $("body").on("click", "#loginBtn", function () {
     method: "POST",
     //Show alert modal on login failure
     error: function (req, status, err) {
-<<<<<<< HEAD
       if (err) alertModal("Login Failed");
-=======
-      if (err) alertModal();
->>>>>>> features/apis
     },
   }).then(function (response) {
     console.log(response);
 
     //if correct login, set user id to local storage, and redirect to client schedule page.
     localStorage.setItem("userId", response.id);
-    window.location.replace("/client-schedule");
+    window.location.assign("/client-schedule");
   });
 });
 
 //Send user to registration page on click of Get Started button
 $("body").on("click", "#getStartedBtn", function () {
-  window.location.replace("/register");
+  window.location.assign("/register");
 });
 
 //function to display Alert Modal on login error - Code credit:  https://gist.github.com/billmei/2e9d11ff732b1ea6916f (lines 31-37)
