@@ -39,10 +39,8 @@ $(document).ready(function () {
     }
 
     return $.ajax({
-      url: `/api/classes/`,
-      data: {
-        id: localStorage.getItem("userId"),
-      },
+      url: `/api/classes/${localStorage.getItem("userId")}`,
+
       method: "GET",
     }).then(function (classData) {
       //gras every class from ajax request and iterates over it
@@ -60,7 +58,6 @@ $(document).ready(function () {
             <div class="class-trainer-${item.day}" style="font-size:.9em;">${item.trainer_name}</div>
             <div class="class-spots-left-${item.day}">${item.max_size} slots </div>
           </div>
-
           <div class="col border-to-right border-teal d-flex">
             <button
               type="button"
@@ -161,7 +158,6 @@ const addToClass = () => {
 
     data: {
       id: classId,
-      date: classDate,
       memberid: memberId,
       success: function () {
         console.log("success");

@@ -33,17 +33,8 @@ module.exports = function (sequelize, DataTypes) {
     },
     roster: {
       type: DataTypes.STRING,
-      validate: {
-        len: [8, 800],
-      },
     },
   });
-
-  Class.associate = function (models) {
-    Class.belongsToMany(models.Member, {
-      through: "Class_Members",
-    });
-  };
 
   return Class;
 };
