@@ -1,22 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <!--Bootstrap-->
     <link
-    href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css"
-    rel="stylesheet"
-    integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1"
-    crossorigin="anonymous"
-   />
-   <!--Link to CSS-->
-   <link rel="stylesheet" href="./assets/css/register.css" />
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1"
+      crossorigin="anonymous"
+    />
 
-    <title>Registration Page</title>
-</head>
-<body>
-    <div class = "container my-5">
+    <!--Link to CSS-->
+    <link rel="stylesheet" href="./assets/css/register.css"/>
+
+    <title>Registration</title>
+  </head>
+  <body>
+    <main>
+      <!--Head Info-->
+      <section class="mb-5 background-dark container-fluid ">
+        <div class="row align-items-center ">
+          <div class="col">
+            <h1 class="big-heading-text less-big-heading text-end ">Dev</h1>
+          </div>
+          <div class="col text-center ">
+            <img
+              class="logo"
+              src="./assets/images/Color_Logo_dark_background.png"
+              alt="funny logo of skinny kid trying to lift a huge weight"
+            />
+          </div>
+          <div class="col">
+            <h1 class="big-heading-text less-big-heading"> &nbsp Fit</h1> <!--&nbsp adds space to even out heading spacing-->
+          </div>
+        </div>
+        
+      </section>
+      <div class = "container my-5">
         <h1>Sign Up for an Account:</h1>
             <div class="row">
                 <div class="col-sm mx-auto">
@@ -91,12 +113,21 @@
           </div>
         </div>
       </div>
+    
 
+    
+      </section>
+      <footer class="mt-5 background-dark">
+        <p class="font-large text-red text-center">Phone: (555) 555 5555</p>
+        <p class="font-large text-red text-center mb-0">
+          111 Stack Lift Ave Salem NH 03070
+        </p>
+      </footer>
+    </main>
     <!--Link to register.js-->
     <script defer src="./assets/js/register.js"></script>
-
     <!--Jquery CDN -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
     <!--Bootstrap JS Bundle-->
     <script
@@ -104,5 +135,5 @@
       integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
       crossorigin="anonymous"
     ></script>
-</body>
+  </body>
 </html>
