@@ -17,28 +17,22 @@ module.exports = function (app) {
           let roster = [];
           let classBundle = [];
 
-          const userName =
-            currentUser.dataValues.first_name;
+          const userName = currentUser.dataValues.first_name;
 
           classes.forEach(function (unit) {
             const activeTrainer = trainers.filter(
-              (trainer) =>
-                trainer.dataValues.id ===
-                unit.dataValues.trainer_id
+              (trainer) => trainer.dataValues.id === unit.dataValues.trainer_id
             );
 
             if (roster) {
+
+             
               const roster = unit.dataValues.roster.split(
                 ","
               );
 
-              roster.filter(function classParse(
-                participant
-              ) {
-                if (
-                  currentUser.dataValues.id ===
-                  parseInt(participant)
-                ) {
+              roster.filter(function classParse(participant) {
+                if (currentUser.dataValues.id === parseInt(participant)) {
                   let thisClass = {
                     id: unit.dataValues.id,
                     class_name: unit.dataValues.class_name,
@@ -54,8 +48,7 @@ module.exports = function (app) {
               start_time: unit.dataValues.start_time,
               current_size: unit.dataValues.current_size,
               max_size: unit.dataValues.max_size,
-              trainer_name:
-                activeTrainer[0].dataValues.first_name,
+              trainer_name: activeTrainer[0].dataValues.first_name,
               userName: userName,
               classJoined: classesJoined,
             };
@@ -100,18 +93,14 @@ module.exports = function (app) {
           .catch((err) => {
             res
               .status(401)
-              .send(
-                "Sorry! There was some problem. Please try again."
-              );
+              .send("Sorry! There was some problem. Please try again.");
           });
       })
       .catch((err) => {
         // user-friendly message to user in case of error
         res
           .status(401)
-          .send(
-            "The email and/or password is incorrect. Please try again."
-          );
+          .send("The email and/or password is incorrect. Please try again.");
       });
   });
 
@@ -140,13 +129,9 @@ module.exports = function (app) {
       password: md5(req.body.password),
       first_name: req.body.first_name,
       last_name: req.body.last_name,
-      date_of_birth: req.body.date_of_birth
-        ? req.body.date_of_birth
-        : null,
+      date_of_birth: req.body.date_of_birth ? req.body.date_of_birth : null,
       gender: req.body.gender,
-      phone: req.body.phone
-        ? parseInt(req.body.phone)
-        : null,
+      phone: req.body.phone ? parseInt(req.body.phone) : null,
       is_logged_in: true,
     })
       .then(function (dbMember) {
@@ -157,8 +142,7 @@ module.exports = function (app) {
         let message = err.original.sqlMessage;
         // if email already exists in database, send a user-friendly message as response
         if (err.original.errno === 1062) {
-          message =
-            "This email is already registered with us.";
+          message = "This email is already registered with us.";
         }
         // any other error, send it as a response to be handled at front-end
         res.json({ error: message });
@@ -188,14 +172,14 @@ module.exports = function (app) {
       })
       .catch((err) => {
         res.json({
-          message:
-            "Sorry! We could not log you out. Please try again.",
+          message: "Sorry! We could not log you out. Please try again.",
         });
       });
   });
 
   // Query to insert the member into chosen class
   app.post("/api/addToClass", (req, res) => {
+
     db.Class.findOne({
       where: { id: req.body.id },
     }).then(function (result) {
@@ -245,14 +229,12 @@ module.exports = function (app) {
       .then(function (result) {
         console.log(result);
         res.json({
-          message:
-            "You have successfully unenrolled from the class!",
+          message: "You have successfully unenrolled from the class!",
         });
       })
       .catch((err) => {
         res.json({
-          error:
-            "Sorry! Some problem occured. Please try again.",
+          error: "Sorry! Some problem occured. Please try again.",
         });
       });
   });
@@ -265,23 +247,19 @@ module.exports = function (app) {
       first_name: req.body.first_name,
       last_name: req.body.last_name,
       gender: req.body.gender,
-      phone: req.body.phone
-        ? parseInt(req.body.phone)
-        : null,
+      phone: req.body.phone ? parseInt(req.body.phone) : null,
       role: "trainer",
     })
       .then(function (dbTrainer) {
         // sends successful message as response
         res.json({
-          message:
-            "The trainer has been successfully added!",
+          message: "The trainer has been successfully added!",
         });
       })
       .catch((err) => {
         // if there was an error in adding the trainer, sends a user-friendly error message to user
         res.json({
-          error:
-            "Sorry! Some problem occured. Please try again.",
+          error: "Sorry! Some problem occured. Please try again.",
         });
       });
   });
@@ -296,14 +274,12 @@ module.exports = function (app) {
       .then(function (result) {
         console.log(result);
         res.json({
-          message:
-            "The trainer has been successfully deleted from the system!",
+          message: "The trainer has been successfully deleted from the system!",
         });
       })
       .catch((err) => {
         res.json({
-          error:
-            "Sorry! Some problem occured. Please try again.",
+          error: "Sorry! Some problem occured. Please try again.",
         });
       });
   });
