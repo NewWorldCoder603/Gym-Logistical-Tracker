@@ -158,7 +158,6 @@ const addToClass = () => {
 
     data: {
       id: classId,
-      date: classDate,
       memberid: memberId,
       success: function () {
         console.log("success");
