@@ -33,9 +33,6 @@ module.exports = function (sequelize, DataTypes) {
     },
     roster: {
       type: DataTypes.STRING,
-      validate: {
-        len: [8, 800],
-      },
     },
   });
 

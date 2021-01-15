@@ -25,7 +25,11 @@ module.exports = function (app) {
             );
 
             if (roster) {
-              const roster = unit.dataValues.roster.split("'");
+
+             
+              const roster = unit.dataValues.roster.split(
+                ","
+              );
 
               roster.filter(function classParse(participant) {
                 if (currentUser.dataValues.id === parseInt(participant)) {
@@ -34,11 +38,9 @@ module.exports = function (app) {
                     class_name: unit.dataValues.class_name,
                   };
                   classesJoined.push(thisClass);
-                  console.log(classesJoined);
                 }
               });
             }
-            console.log(classesJoined);
             const reqClass = {
               id: unit.dataValues.id,
               class_name: unit.dataValues.class_name,
@@ -177,27 +179,47 @@ module.exports = function (app) {
 
   // Query to insert the member into chosen class
   app.post("/api/addToClass", (req, res) => {
-    const memeberId = req.params.member_id;
-    console.log(req.params);
-    db.Class.update(
-      { roster: newRoster },
-      {
-        where: {
-          id: req.params.class_id,
-        },
-      }
-    )
-      .then(function (result) {
-        console.log(result);
-        res.json({
-          message: "You have been successfully added to the class!",
-        });
-      })
-      .catch((err) => {
-        res.json({
-          error: "Sorry! Some problem occured. Please try again.",
-        });
+
+    db.Class.findOne({
+      where: { id: req.body.id },
+    }).then(function (result) {
+      console.log(result.dataValues.roster);
+
+      const oldRoster = result.dataValues.roster.split("'");
+      oldRoster.forEach(function (member) {
+        if (req.body.memberid === member) {
+          res.json({
+            message: "You are already in this class.",
+          });
+        }
       });
+
+      oldRoster.push(req.body.memberid);
+      const newRoster = oldRoster.join(",");
+      console.log(newRoster);
+
+      db.Class.update(
+        { roster: newRoster },
+        {
+          where: {
+            id: req.body.id,
+          },
+        }
+      )
+        .then(function (result) {
+          console.log(result);
+          res.json({
+            message:
+              "You have been successfully added to the class!",
+          });
+        })
+        .catch((err) => {
+          res.json({
+            error:
+              "Sorry! Some problem occured. Please try again.",
+          });
+        });
+    });
   });
 
   // API POST route for removing a member/client from a class
