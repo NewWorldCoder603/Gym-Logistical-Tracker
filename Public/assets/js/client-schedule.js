@@ -43,6 +43,8 @@ $(document).ready(function () {
 
       method: "GET",
     }).then(function (classData) {
+
+      
       //gras every class from ajax request and iterates over it
       classData.map(function (item) {
         localStorage.setItem('test', item.classJoined[0].id);
