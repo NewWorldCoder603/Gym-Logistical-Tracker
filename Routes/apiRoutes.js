@@ -199,9 +199,7 @@ module.exports = function (app) {
     db.Class.findOne({
       where: { id: req.body.id },
     }).then(function (result) {
-      console.log(result.dataValues.roster);
-
-      const oldRoster = result.dataValues.roster.split("'");
+      const oldRoster = result.dataValues.roster.split(",");
       oldRoster.forEach(function (member) {
         if (req.body.memberid === member) {
           res.json({
@@ -212,7 +210,6 @@ module.exports = function (app) {
 
       oldRoster.push(req.body.memberid);
       const newRoster = oldRoster.join(",");
-      console.log(newRoster);
 
       db.Class.update(
         { roster: newRoster },
@@ -240,23 +237,48 @@ module.exports = function (app) {
 
   // API POST route for removing a member/client from a class
   app.post("/api/removeFromClass", (req, res) => {
-    console.log(req.body);
-    db.Member.destroy({})
-      .then(function (result) {
-        console.log(result);
-        res.json({
-          message:
-            "You have successfully unenrolled from the class!",
-        });
-      })
-      .catch((err) => {
-        res.json({
-          error:
-            "Sorry! Some problem occured. Please try again.",
-        });
-      });
-  });
+    console.log(req);
+    db.Class.findOne({
+      where: { id: req.body.id },
+    }).then(function (result) {
+      const freshRoster = [];
+      const oldRoster = result.dataValues.roster.split(",");
+      console.log(oldRoster);
+      oldRoster.forEach(function (member) {
+        if (req.body.memberid === member) {
+          return;
+        } else {
+        }
 
+        freshRoster.push(member);
+        console.log(freshRoster);
+      });
+
+      const newRoster = freshRoster.join(",");
+      console.log(newRoster);
+      db.Class.update(
+        { roster: newRoster },
+        {
+          where: { id: req.body.id },
+        }
+      )
+        .then(function (result) {
+          console.log(result);
+          res.json({
+            message:
+              "You have successfully unenrolled from the class!",
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+          res.json({
+            error:
+              "Sorry! Some problem occured. Please try again.",
+          });
+        });
+    });
+  });
+  // API POST route for adding a member/client to a class
   app.post("api/addClass", (req, res) => {
     db.Class.create({
       class_name: req.body.class_name,
@@ -266,7 +288,19 @@ module.exports = function (app) {
       max_size: req.body.max_size,
       trainer_id: trainer_id,
       roster: roster,
-    });
+    })
+      .then(function (result) {
+        console.log(result);
+        res.json({
+          message: "You have successfully added the class!",
+        });
+      })
+      .catch((err) => {
+        res.json({
+          error:
+            "Sorry! Some problem occured. Please try again.",
+        });
+      });
   });
 
   // POST API that allows a manager to add a trainer to the employee table in the database
