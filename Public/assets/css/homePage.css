@@ -33,3 +33,7 @@ body {
   background: #d22e33;
   opacity: 0.9;
 }
+
+.text-white {
+  color: whitesmoke;
+}
