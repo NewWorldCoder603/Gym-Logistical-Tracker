@@ -1,4 +1,5 @@
 const db = require("../models");
+const md5 = require("md5");
 
 module.exports = function (app) {
   // GET "/api/classes" responds with all classes from the database
@@ -290,5 +291,82 @@ module.exports = function (app) {
             "Sorry! Some problem occured. Please try again.",
         });
       });
+  });
+
+  // POST API that allows a manager to add a member/client to a class
+  app.post("/api/manager/addToClass", (req, res) => {
+    db.Class.findOne({
+      where:{
+        id: req.body.class_id
+      }
+    }).then(function(result){
+      const newRoster = result.roster.split(",");
+      newRoster.push(req.body.member_id);
+      newRoster.join(",");
+      db.Class.update(
+        { roster: newRoster },
+        {
+          where: {
+            id: req.body.class_id,
+          },
+        }
+      )
+      .then(function (result) {
+        console.log(result);
+        res.json({
+          message:
+            "You have successfully added the member to the class!",
+        });
+      }).catch((err) => {
+          res.json({
+            error:
+              "Sorry! Some problem occured. Please try again.",
+          });
+      })
+    }).catch((err)=>{
+      res.json({
+        error:
+          "Sorry! Some problem occured. Please try again.",
+      });
+    });
+  });
+
+  // POST API that allows a manager to remove a member/client from a class
+  app.post("/api/manager/removeFromClass", (req, res) => {
+    db.Class.findOne({
+      where:{
+        id: req.body.class_id
+      }
+    }).then(function(result){
+      let newRoster = result.roster.split(",");
+      const index = newRoster.indexOf(req.body.member_id)
+      newRoster.splice(index, 1);
+      newRoster.join(",");
+      db.Class.update(
+        { roster: newRoster },
+        {
+          where: {
+            id: req.body.class_id,
+          },
+        }
+      )
+      .then(function (result) {
+        console.log(result);
+        res.json({
+          message:
+            "You have successfully removed the member from the class!",
+        });
+      }).catch((err) => {
+          res.json({
+            error:
+              "Sorry! Some problem occured. Please try again.",
+          });
+      })
+    }).catch((err)=>{
+      res.json({
+        error:
+          "Sorry! Some problem occured. Please try again.",
+      });
+    });
   });
 };
