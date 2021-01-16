@@ -353,4 +353,99 @@ module.exports = function (app) {
         });
       });
   });
+
+  // POST API that allows a manager to add a member/client to a class
+  app.post("/api/manager/addToClass", (req, res) => {
+    db.Class.findOne({
+      where:{
+        id: req.body.class_id
+      }
+    }).then(function(result){
+      let freshRoster = result.roster.split(",");
+      freshRoster.push(req.body.member_id);
+      newRoster = freshRoster.join(",");
+      db.Class.update(
+        { roster: newRoster },
+        {
+          where: {
+            id: req.body.class_id,
+          },
+        }
+      )
+      .then(function (result) {
+        console.log(result);
+        res.json({
+          message:
+            "You have successfully added the member to the class!",
+        });
+      }).catch((err) => {
+          res.json({
+            error:
+              "Sorry! Some problem occured. Please try again.",
+          });
+      })
+    }).catch((err)=>{
+      res.json({
+        error:
+          "Sorry! Some problem occured. Please try again.",
+      });
+    });
+  });
+
+  // POST API that allows a manager to remove a member/client from a class
+  app.post("/api/manager/removeFromClass", (req, res) => {
+    db.Class.findOne({
+      where:{
+        id: req.body.class_id
+      }
+    }).then(function(result){
+      const freshRoster = result.roster.split(",");
+      const index = freshRoster.indexOf(req.body.member_id);
+      if(index !== -1){
+        const new_Roster = freshRoster.splice(index, 1);
+        const newRoster = new_Roster.join(",");
+        db.Class.update(
+          { roster: newRoster },
+          {
+            where: {
+              id: req.body.class_id,
+            },
+          }
+        )
+        .then(function (result) {
+          console.log(result);
+          res.json({
+            message:
+              "You have successfully removed the member from the class!",
+          });
+        }).catch((err) => {
+            res.json({
+              error:
+                "Sorry! Some problem occured. Please try again.",
+            });
+        })
+      } else {
+        res.json({error: "Sorry! This member has not joined this class"})
+      }
+    }).catch((err)=>{
+      res.json({
+        error:
+          "Sorry! Some problem occured. Please try again.",
+      });
+    });
+  });
+
+  // GET API that allows a manager to view all the members
+  app.get("/api/manager/members", (req, res) => {
+    db.Members.findAll({})
+    .then(function(result){
+        console.log(result);
+        res.json(result);
+    }).catch((err) => {
+        res.json({
+          error:
+            "Sorry! Some problem occured. Please try again.",
+        });
+    });
+  });
 };
