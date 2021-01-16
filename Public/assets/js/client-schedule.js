@@ -1,84 +1,113 @@
 $(document).ready(function () {
-  $weekDay = $(".week-day");
-  $dateOfYear = $(".date-of-year");
-  date = dayjs().format("dddd");
-  $weekDayPlaceholder = $(".weekday-placeholder");
+  const $weekDay = $(".week-day");
+  const $dateOfYear = $(".date-of-year");
+  const $weekDayDiv = $(".weekday-placeholder");
 
-  //grabs class data from database, then dynamically writes schedule page
-
-  //revisit this at some later date
-  const getClasses = () => {
+  //grabs 7 days of the week, updates day, date, and classes based on date.
+  const setUpDivs = () => {
     for (i = 0; i < $weekDay.length; i++) {
       //updates day of the week
-      dayofWeek = dayjs()
+      const dayofWeek = dayjs()
         .add([i - 1 + 1], "day")
         .format("dddd");
+
+      //appends day onto page
       $weekDay[i].append(dayofWeek);
 
       //updates date for each day
-      dayOfYear = dayjs()
+      const dayOfYear = dayjs()
         .add([i - 1 + 1], "day")
         .format("MMM D");
+
+      //appends date onto page
       $dateOfYear[i].append(dayOfYear);
 
       //create a timestamp specifically to send back in ajax in api readable format yyyy-MM-DD
-      timestamp = dayjs()
+      const timestamp = dayjs()
         .add([i - 1 + 1], "day")
         .format("YYYY MM DD");
-      $dateOfYear[i].setAttribute(
-        "data-timestamp",
-        timestamp
-      );
 
-      //erases old classNames and adds current day of week as div classname. This will be used as a
-      //reference later on to know which div to add each class to.
-      $weekDayPlaceholder[i].className = "";
-      $weekDayPlaceholder[i].classList.add(
-        $weekDay[i].innerHTML
-      );
+      //add ajax as a data-attribute to make it easily grabbable
+      $dateOfYear[i].setAttribute("data-timestamp", timestamp);
+
+      //deletes the old class
+      $weekDayDiv[i].className = "";
+
+      //adds the current day of the week as the new class name. This is how classes will know which div to append to.
+      $weekDayDiv[i].classList.add($weekDay[i].innerHTML);
     }
+  };
+  setUpDivs();
 
+  //grab classes from database, then write a dynamic page.
+  const getClasses = () => {
     return $.ajax({
+      //grabs user id from local storage(set in login page), then ajax calls for data for classes and that user.
       url: `/api/classes/${localStorage.getItem("userId")}`,
-
       method: "GET",
     }).then(function (classData) {
-      //gras every class from ajax request and iterates over it
-      classData.map(function (item) {
-        console.log(item);
-        //changes the incoming ajax timestamp to readable 12 hour time.
-        const twelveHourTime = tConvert(item.start_time);
+      //iterates over each class that comes in from ajax list to populate schedule
+      classData.map(function (fitClass) {
+        //variable asking is the user enrolled in the current class
+        let isEnrolled;
 
-        //dynamic template that inserts ajax response items into html
+        //check each class fit class id against ClassJoined Ids to see if the user joined this specific class
+        for (i = 0; i < fitClass.classJoined.length; i++) {
+          if (fitClass.classJoined[i].id === fitClass.id) {
+            isEnrolled = true;
+            break;
+          } else {
+            isEnrolled = false;
+          }
+        }
+
+        //if the user is enrolled, button will be a remove Button
+        if (isEnrolled) {
+          joinOrRemoveBtn = `<button
+          type="button"
+          onclick="removeFromClass()"
+          class="btn background-red text-white align-self-center join-btn"
+          data-id="${fitClass.id}"
+          data-joinedClassList="true"
+          >
+          Remove
+          </button>`;
+
+          //else, the button will be a join button
+        } else {
+          joinOrRemoveBtn = `<button
+          type="button"
+          onclick="addToClass()"
+          class="btn background-red text-white align-self-center join-btn"
+          data-id="${fitClass.id}"
+          data-joinedClassList="false"
+          >
+          Join
+          </button>`;
+        }
+
+        //convert the ajax timestamp into more readable time to display on page.
+        const twelveHourTime = tConvert(fitClass.start_time);
+
+        //dynamic template that inserts ajax response fitClasss into html
         const classTemplate = `
         <div class="row m-0 pb-3 pt-3 border-to-bottom-thin font-large">
           <div class="col border-teal pb-3 text-center">
-            <h4 class="class-title-${item.day} bold text-red">${item.class_name}</h4>
-            <div class="class-time-${item.day}">${twelveHourTime}</div>
-            <div class="class-trainer-${item.day}" style="font-size:.9em;">${item.trainer_name}</div>
-            <div class="class-spots-left-${item.day}">${item.max_size} slots </div>
+            <h4 class="class-title-${fitClass.day} bold text-red">${fitClass.class_name}</h4>
+            <div class="class-time-${fitClass.day}">${twelveHourTime}</div>
+            <div class="class-trainer-${fitClass.day}" style="font-size:.9em;">${fitClass.trainer_name}</div>
+            <div class="class-spots-left-${fitClass.day}">${fitClass.max_size} slots </div>
           </div>
           <div class="col border-to-right border-teal d-flex">
-            <button
-              type="button"
-              onclick="addToClass()"
-              class="btn background-red text-white align-self-center join-btn"
-              data-id="${item.id}"
-              >
-              Join
-            </button>
+          ${joinOrRemoveBtn}
           </div>
         </div>
 `;
 
-        //Above, each weekday div had its class matched to the dayjs() day of the week. If the ajax gym classes "day" matches
-        //the day of the week, then the class is appended into that div.
-
-        for (i = 0; i < $weekDayPlaceholder.length; i++) {
-          if (
-            $weekDayPlaceholder[i].className === item.day
-          ) {
-            $weekDayPlaceholder.eq(i).append(classTemplate);
+        //search the divs for one with a class day that matches the classname, and append to that div.
+        for (i = 0; i < $weekDayDiv.length; i++) {
+          if ($weekDayDiv[i].className === fitClass.day) {
+            $weekDayDiv.eq(i).append(classTemplate);
           }
         }
       });
@@ -88,14 +117,12 @@ $(document).ready(function () {
   getClasses();
 
   //changes timestamp to readable time.
-  //altered from https://stackoverflow.com/questions/13898423/javascript-convert-24-hour-time-of-day-string-to-12-hour-time-with-am-pm-and-no
+  //https://stackoverflow.com/questions/13898423/javascript-convert-24-hour-time-of-day-string-to-12-hour-time-with-am-pm-and-no
   function tConvert(time) {
     // Check correct time format and split into components
     time = time
       .toString()
-      .match(
-        /^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/
-      ) || [time];
+      .match(/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
 
     if (time.length > 1) {
       // If time format correct
@@ -110,23 +137,10 @@ $(document).ready(function () {
     return time.join("");
   }
 
-  // SECTION  for updating classes
-
-  //SECTION for user log in
-
-  //add removeFromClass ajax here
-
-  //add logout ajax here
-
-  //when the logout button is clicked,
-  //send an ajax to tell the database they are logged out,
-  //erase their local storage id,
-  //redirect user back to login page
+  //on logout click, let database know, erase user local storage id, redirect back to login page.
   $(".logout-btn").click(function () {
     $.ajax({
-      url: `/api/member/${window.localStorage.getItem(
-        "userId"
-      )}`,
+      url: `/api/member/${window.localStorage.getItem("userId")}`,
       method: "GET",
     }).then(function (data) {
       console.log(data);
@@ -137,11 +151,36 @@ $(document).ready(function () {
   });
 });
 
-//Used for dynamically created Join Buttons.
-//reaches up and grabs the specific date for this class in ajax needed format.
-
-//  Adds the current user's Id to the selected class roster
+//  tells the database the user has signed up for the class, and adds their to 'roster' in backend.
 const addToClass = () => {
+  //grabs classId
+  const classId = event.target.getAttribute("data-id");
+
+  //grab classDate from div's class name.
+  const classDate = event.target.parentElement.parentElement.parentElement.parentElement
+    .querySelector("p")
+    .getAttribute("data-timestamp");
+
+  //grab memberId from local storage
+  const memberId = localStorage.getItem("userId");
+
+  //sends all three to back end to add use to class.
+  return $.ajax({
+    url: "/api/addToClass",
+    method: "POST",
+    data: {
+      id: classId,
+      date: classDate,
+      memberid: memberId,
+      success: function () {
+        console.log("success");
+      },
+    },
+  });
+};
+
+//remove user from a particular class when remove button is clicked
+const removeFromClass = () => {
   //grabs classId attatched when button is made in template
   classId = event.target.getAttribute("data-id");
 
@@ -152,8 +191,9 @@ const addToClass = () => {
 
   //grab memberId from local storage
   memberId = localStorage.getItem("userId");
+
   return $.ajax({
-    url: "/api/addToClass",
+    url: "/api/removeFromClass",
     method: "POST",
 
     data: {
@@ -161,7 +201,7 @@ const addToClass = () => {
       date: classDate,
       memberid: memberId,
       success: function () {
-        console.log("success");
+        console.log("User removed from Class");
       },
     },
   });

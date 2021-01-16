@@ -29,7 +29,7 @@ module.exports = function (app) {
 
             if (roster) {
               const roster = unit.dataValues.roster.split(
-                "'"
+                ","
               );
 
               roster.filter(function classParse(
@@ -44,11 +44,9 @@ module.exports = function (app) {
                     class_name: unit.dataValues.class_name,
                   };
                   classesJoined.push(thisClass);
-                  console.log(classesJoined);
                 }
               });
             }
-            console.log(classesJoined);
             const reqClass = {
               id: unit.dataValues.id,
               class_name: unit.dataValues.class_name,
@@ -198,40 +196,103 @@ module.exports = function (app) {
 
   // Query to insert the member into chosen class
   app.post("/api/addToClass", (req, res) => {
-    const memeberId = req.params.member_id;
-    console.log(req.params);
-    db.Class.update(
-      { roster: newRoster },
-      {
-        where: {
-          id: req.params.class_id,
-        },
-      }
-    )
-      .then(function (result) {
-        console.log(result);
-        res.json({
-          message:
-            "You have been successfully added to the class!",
-        });
-      })
-      .catch((err) => {
-        res.json({
-          error:
-            "Sorry! Some problem occured. Please try again.",
-        });
+    db.Class.findOne({
+      where: { id: req.body.id },
+    }).then(function (result) {
+      const oldRoster = result.dataValues.roster.split(",");
+      oldRoster.forEach(function (member) {
+        if (req.body.memberid === member) {
+          res.json({
+            message: "You are already in this class.",
+          });
+        }
       });
+
+      oldRoster.push(req.body.memberid);
+      const newRoster = oldRoster.join(",");
+
+      db.Class.update(
+        { roster: newRoster },
+        {
+          where: {
+            id: req.body.id,
+          },
+        }
+      )
+        .then(function (result) {
+          console.log(result);
+          res.json({
+            message:
+              "You have been successfully added to the class!",
+          });
+        })
+        .catch((err) => {
+          res.json({
+            error:
+              "Sorry! Some problem occured. Please try again.",
+          });
+        });
+    });
   });
 
   // API POST route for removing a member/client from a class
   app.post("/api/removeFromClass", (req, res) => {
-    console.log(req.body);
-    db.Member.destroy({})
+    console.log(req);
+    db.Class.findOne({
+      where: { id: req.body.id },
+    }).then(function (result) {
+      const freshRoster = [];
+      const oldRoster = result.dataValues.roster.split(",");
+      console.log(oldRoster);
+      oldRoster.forEach(function (member) {
+        if (req.body.memberid === member) {
+          return;
+        } else {
+        }
+
+        freshRoster.push(member);
+        console.log(freshRoster);
+      });
+
+      const newRoster = freshRoster.join(",");
+      console.log(newRoster);
+      db.Class.update(
+        { roster: newRoster },
+        {
+          where: { id: req.body.id },
+        }
+      )
+        .then(function (result) {
+          console.log(result);
+          res.json({
+            message:
+              "You have successfully unenrolled from the class!",
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+          res.json({
+            error:
+              "Sorry! Some problem occured. Please try again.",
+          });
+        });
+    });
+  });
+  // API POST route for adding a member/client to a class
+  app.post("api/addClass", (req, res) => {
+    db.Class.create({
+      class_name: req.body.class_name,
+      day: req.body.day,
+      start_time: req.body.start_time,
+      current_size: req.body.current_size,
+      max_size: req.body.max_size,
+      trainer_id: trainer_id,
+      roster: roster,
+    })
       .then(function (result) {
         console.log(result);
         res.json({
-          message:
-            "You have successfully unenrolled from the class!",
+          message: "You have successfully added the class!",
         });
       })
       .catch((err) => {
