@@ -46,6 +46,60 @@ $(document).ready(function () {
       url: `/api/classes/${localStorage.getItem("userId")}`,
       method: "GET",
     }).then(function (classData) {
+      //function displays member info and what classes they are signed up for.
+      //.replace borrowed from https://www.digitalocean.com/community/tutorials/js-capitalizing-strings
+      const displayMemberInfo = () => {
+        //grab divs in Member area
+        const $memberName = $(".member-name");
+        const $numberOfClassesTakenDiv = $(".number-of-classes-taken");
+        const $classesTakenDiv = $(".classes-taken");
+        const $sentence = $(".sentence-text-classes");
+
+        //create variables that hold member info
+        function writeUserName() {
+          const membersName = `Hello ${classData[0].userName.replace(
+            /^\w/,
+            (c) => c.toUpperCase()
+          )}`;
+          const numOfClassesTaken = `${classData[0].classJoined.length}`;
+
+          $memberName.html(membersName);
+          $numberOfClassesTakenDiv.html(numOfClassesTaken);
+        }
+        writeUserName();
+
+        //takes each class the user is signed up for, then appends that class info to user info page
+        function classesTemplate() {
+          numOfClassesTaken = `${classData[0].classJoined.length}`;
+          for (i = 0; i < numOfClassesTaken; i++) {
+            const className = classData[i].class_name;
+            const startTime = tConvert(classData[i].start_time);
+            const trainerName = classData[i].trainer_name;
+            const dayOfClass = classData[i].day;
+            const $p = $("<p>");
+
+            $p.html(
+              `-${dayOfClass}, ${className} at ${startTime} with ${trainerName}-`
+            );
+            $classesTakenDiv.append($p);
+          }
+        }
+        classesTemplate();
+
+        //if user is signed up for one class, appends "class", else, appends "classes"
+        function isClassesPlural() {
+          $classText = $(".sentence-text-classes");
+
+          if (classData[0].classJoined.length === 1) {
+            $classText.append("class this week");
+          } else {
+            $classText.append("classes this week");
+          }
+        }
+        isClassesPlural();
+      };
+      displayMemberInfo();
+
       //iterates over each class that comes in from ajax list to populate schedule
       classData.map(function (fitClass) {
         //variable asking is the user enrolled in the current class
@@ -65,7 +119,7 @@ $(document).ready(function () {
         if (isEnrolled) {
           joinOrRemoveBtn = `<button
           type="button"
-          onclick="removeFromClass()"
+          onclick="removeFromClass(), window.location.reload()"
           class="btn background-red text-white align-self-center join-btn"
           data-id="${fitClass.id}"
           data-joinedClassList="true"
@@ -77,7 +131,7 @@ $(document).ready(function () {
         } else {
           joinOrRemoveBtn = `<button
           type="button"
-          onclick="addToClass()"
+          onclick="addToClass(), window.location.reload()"
           class="btn background-red text-white align-self-center join-btn"
           data-id="${fitClass.id}"
           data-joinedClassList="false"
