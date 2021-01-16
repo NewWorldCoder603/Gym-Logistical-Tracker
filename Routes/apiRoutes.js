@@ -434,4 +434,18 @@ module.exports = function (app) {
       });
     });
   });
+
+  // GET API that allows a manager to view all the members
+  app.get("/api/manager/members", (req, res) => {
+    db.Members.findAll({})
+    .then(function(result){
+        console.log(result);
+        res.json(result);
+    }).catch((err) => {
+        res.json({
+          error:
+            "Sorry! Some problem occured. Please try again.",
+        });
+    });
+  });
 };
