@@ -361,9 +361,9 @@ module.exports = function (app) {
         id: req.body.class_id
       }
     }).then(function(result){
-      const newRoster = result.roster.split(",");
-      newRoster.push(req.body.member_id);
-      newRoster.join(",");
+      let freshRoster = result.roster.split(",");
+      freshRoster.push(req.body.member_id);
+      newRoster = freshRoster.join(",");
       db.Class.update(
         { roster: newRoster },
         {
@@ -399,30 +399,34 @@ module.exports = function (app) {
         id: req.body.class_id
       }
     }).then(function(result){
-      let newRoster = result.roster.split(",");
-      const index = newRoster.indexOf(req.body.member_id)
-      newRoster.splice(index, 1);
-      newRoster.join(",");
-      db.Class.update(
-        { roster: newRoster },
-        {
-          where: {
-            id: req.body.class_id,
-          },
-        }
-      )
-      .then(function (result) {
-        console.log(result);
-        res.json({
-          message:
-            "You have successfully removed the member from the class!",
-        });
-      }).catch((err) => {
+      const freshRoster = result.roster.split(",");
+      const index = freshRoster.indexOf(req.body.member_id);
+      if(index !== -1){
+        const new_Roster = freshRoster.splice(index, 1);
+        const newRoster = new_Roster.join(",");
+        db.Class.update(
+          { roster: newRoster },
+          {
+            where: {
+              id: req.body.class_id,
+            },
+          }
+        )
+        .then(function (result) {
+          console.log(result);
           res.json({
-            error:
-              "Sorry! Some problem occured. Please try again.",
+            message:
+              "You have successfully removed the member from the class!",
           });
-      })
+        }).catch((err) => {
+            res.json({
+              error:
+                "Sorry! Some problem occured. Please try again.",
+            });
+        })
+      } else {
+        res.json({error: "Sorry! This member has not joined this class"})
+      }
     }).catch((err)=>{
       res.json({
         error:
