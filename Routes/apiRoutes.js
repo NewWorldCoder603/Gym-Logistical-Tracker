@@ -354,6 +354,27 @@ module.exports = function (app) {
       });
   });
 
+  // GET API that allows a manager to view all the trainers
+  app.get("/api/manager/trainers", (req, res) => {
+    db.Employee.findAll({ where:
+         {
+           role: "trainer"
+         }
+    })
+    .then(function(result){
+        console.log(result);
+        result.forEach((trainer)=>{
+          delete trainer.dataValues.password;
+        });
+        res.json(result);
+    }).catch((err) => {
+        res.json({
+          error:
+            "Sorry! Some problem occured. Please try again.",
+        });
+    });
+  })
+
   // POST API that allows a manager to add a member/client to a class
   app.post("/api/manager/addToClass", (req, res) => {
     db.Class.findOne({
@@ -361,11 +382,14 @@ module.exports = function (app) {
         id: req.body.class_id
       }
     }).then(function(result){
-      let freshRoster = result.roster.split(",");
-      freshRoster.push(req.body.member_id);
-      newRoster = freshRoster.join(",");
+      // Ensures that when adding a member to an existing roster, if the roster is empty, then initialize it to an array.
+      const currentRosterArray = result.dataValues.roster ? result.dataValues.roster.split(",") : [];
+      currentRosterArray.push(req.body.member_id);
+      const class_size = currentRosterArray.length;
+      const updatedRoster= currentRosterArray.join(",");
       db.Class.update(
-        { roster: newRoster },
+        { roster:updatedRoster,
+          current_size: class_size},
         {
           where: {
             id: req.body.class_id,
@@ -373,7 +397,6 @@ module.exports = function (app) {
         }
       )
       .then(function (result) {
-        console.log(result);
         res.json({
           message:
             "You have successfully added the member to the class!",
@@ -399,13 +422,15 @@ module.exports = function (app) {
         id: req.body.class_id
       }
     }).then(function(result){
-      const freshRoster = result.roster.split(",");
-      const index = freshRoster.indexOf(req.body.member_id);
+      const rosterArray = result.dataValues.roster.split(",");
+      const index = rosterArray.indexOf(req.body.member_id);
       if(index !== -1){
-        const new_Roster = freshRoster.splice(index, 1);
-        const newRoster = new_Roster.join(",");
+        rosterArray.splice(index, 1);
+        const class_size = rosterArray.length;
+        const updatedRoster = rosterArray.join(",");
         db.Class.update(
-          { roster: newRoster },
+          { roster: updatedRoster,
+            current_size: class_size},
           {
             where: {
               id: req.body.class_id,
@@ -413,7 +438,6 @@ module.exports = function (app) {
           }
         )
         .then(function (result) {
-          console.log(result);
           res.json({
             message:
               "You have successfully removed the member from the class!",
@@ -437,8 +461,11 @@ module.exports = function (app) {
 
   // GET API that allows a manager to view all the members
   app.get("/api/manager/members", (req, res) => {
-    db.Members.findAll({})
+    db.Member.findAll({})
     .then(function(result){
+        result.forEach((member)=>{
+          delete member.dataValues.password;
+        });
         console.log(result);
         res.json(result);
     }).catch((err) => {
@@ -448,4 +475,7 @@ module.exports = function (app) {
         });
     });
   });
+
+
+  ;
 };
