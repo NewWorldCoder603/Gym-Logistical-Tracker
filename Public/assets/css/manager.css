@@ -16,6 +16,13 @@ body {
   }
 }
 
+/*Heading shrinks at small screen size so it fits on one line */
+@media screen and (max-width: 580px) {
+  .no-heading {
+    display: none;
+  }
+}
+
 /* Trainer Info */
 .trainerInfo {
   background: whitesmoke;

@@ -10,9 +10,16 @@ body {
 }
 
 /*Heading shrinks at small screen size so it fits on one line */
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 771px) {
   .less-big-heading {
     font-size: 400%;
+  }
+}
+
+/*Heading shrinks at small screen size so it fits on one line */
+@media screen and (max-width: 495px) {
+  .no-heading {
+    display: none;
   }
 }
 
