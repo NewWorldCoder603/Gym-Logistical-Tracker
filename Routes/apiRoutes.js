@@ -71,7 +71,6 @@ module.exports = function (app) {
 
   // POST "api/login" authenticates the member login credentials in the database, and responds with the member id
   app.post("/api/login", (req, res) => {
-    console.log(req.body);
     // finds if there exists a member with the logged in username and password
     db.Member.findOne({
       where: {
@@ -220,7 +219,6 @@ module.exports = function (app) {
         }
       )
         .then(function (result) {
-          console.log(result);
           res.json({
             message:
               "You have been successfully added to the class!",
@@ -237,13 +235,12 @@ module.exports = function (app) {
 
   // API POST route for removing a member/client from a class
   app.post("/api/removeFromClass", (req, res) => {
-    console.log(req);
     db.Class.findOne({
       where: { id: req.body.id },
     }).then(function (result) {
       const freshRoster = [];
       const oldRoster = result.dataValues.roster.split(",");
-      console.log(oldRoster);
+
       oldRoster.forEach(function (member) {
         if (req.body.memberid === member) {
           return;
@@ -251,11 +248,10 @@ module.exports = function (app) {
         }
 
         freshRoster.push(member);
-        console.log(freshRoster);
       });
 
       const newRoster = freshRoster.join(",");
-      console.log(newRoster);
+
       db.Class.update(
         { roster: newRoster },
         {
@@ -263,14 +259,12 @@ module.exports = function (app) {
         }
       )
         .then(function (result) {
-          console.log(result);
           res.json({
             message:
               "You have successfully unenrolled from the class!",
           });
         })
         .catch((err) => {
-          console.log(err);
           res.json({
             error:
               "Sorry! Some problem occured. Please try again.",
@@ -290,7 +284,6 @@ module.exports = function (app) {
       roster: roster,
     })
       .then(function (result) {
-        console.log(result);
         res.json({
           message: "You have successfully added the class!",
         });
@@ -301,6 +294,14 @@ module.exports = function (app) {
             "Sorry! Some problem occured. Please try again.",
         });
       });
+  });
+
+  app.post("api/removeClass", (req, res) => {
+    db.Class.destroy({
+      where: {
+        id: req.body.id,
+      },
+    });
   });
 
   // POST API that allows a manager to add a trainer to the employee table in the database
@@ -447,16 +448,65 @@ module.exports = function (app) {
               error:
                 "Sorry! Some problem occured. Please try again.",
             });
-        })
-      } else {
-        res.json({error: "Sorry! This member has not joined this class"})
+          });
       }
-    }).catch((err)=>{
-      res.json({
-        error:
-          "Sorry! Some problem occured. Please try again.",
-      });
+    }).catch((err) => {
+        res.json({
+          error:
+            "Sorry! Some problem occured. Please try again.",
+        });
     });
+  });
+
+  // POST API that allows a manager to remove a member/client from a class
+  app.post("/api/manager/removeFromClass", (req, res) => {
+    db.Class.findOne({
+      where: {
+        id: req.body.class_id,
+      },
+    })
+      .then(function (result) {
+        const freshRoster = result.roster.split(",");
+        const index = freshRoster.indexOf(
+          req.body.member_id
+        );
+        if (index !== -1) {
+          const new_Roster = freshRoster.splice(index, 1);
+          const newRoster = new_Roster.join(",");
+          db.Class.update(
+            { roster: newRoster },
+            {
+              where: {
+                id: req.body.class_id,
+              },
+            }
+          )
+            .then(function (result) {
+              console.log(result);
+              res.json({
+                message:
+                  "You have successfully removed the member from the class!",
+              });
+            })
+            .catch((err) => {
+              res.json({
+                error:
+                  "Sorry! Some problem occured. Please try again.",
+              });
+            });
+        } else {
+          res.json({
+            error:
+              "Sorry! This member has not joined this class",
+          });
+        }
+      })
+      .catch((err) => {
+        res.json({
+          error:
+            "Sorry! Some problem occured. Please try again.",
+        });
+      });
   });
 
   // GET API that allows a manager to view all the members
@@ -468,14 +518,12 @@ module.exports = function (app) {
         });
         console.log(result);
         res.json(result);
-    }).catch((err) => {
+      })
+      .catch((err) => {
         res.json({
           error:
             "Sorry! Some problem occured. Please try again.",
         });
-    });
+      });
   });
-
-
-  ;
 };
