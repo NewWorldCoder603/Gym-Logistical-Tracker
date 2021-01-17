@@ -53,7 +53,7 @@ $(document).ready(function () {
         const $memberName = $(".member-name");
         const $numberOfClassesTakenDiv = $(".number-of-classes-taken");
         const $classesTakenDiv = $(".classes-taken");
-        const $sentence = $(".sentence-text-classes");
+     
 
         //create variables that hold member info
         function writeUserName() {
@@ -61,7 +61,7 @@ $(document).ready(function () {
             /^\w/,
             (c) => c.toUpperCase()
           )}`;
-          const numOfClassesTaken = `${classData[0].classJoined.length}`;
+          const numOfClassesTaken = `<b>${classData[0].classJoined.length}</b>`;
 
           $memberName.html(membersName);
           $numberOfClassesTakenDiv.html(numOfClassesTaken);
@@ -114,21 +114,12 @@ $(document).ready(function () {
             isEnrolled = false;
           }
         }
-
-        //if the user is enrolled, button will be a remove Button
-        if (isEnrolled) {
-          joinOrRemoveBtn = `<button
-          type="button"
-          onclick="removeFromClass(), window.location.reload()"
-          class="btn background-red text-white align-self-center join-btn"
-          data-id="${fitClass.id}"
-          data-joinedClassList="true"
-          >
-          Remove
-          </button>`;
-
-          //else, the button will be a join button
-        } else {
+        //if class is full and member has not joined, say "class full"
+        if(isEnrolled === false && fitClass.max_size - fitClass.current_size === 0){
+          joinOrRemoveBtn = "<p class= 'align-self-center text-red'>Class Full</p>"
+        }
+        //if class is not full and member has not joined, create a join button
+         else if (isEnrolled === false) {
           joinOrRemoveBtn = `<button
           type="button"
           onclick="addToClass(), window.location.reload()"
@@ -138,7 +129,25 @@ $(document).ready(function () {
           >
           Join
           </button>`;
+
+         
+
+        //if member has joined, regardless of if class is full, create a remove button
+        } else {
+          joinOrRemoveBtn = `<button
+          type="button"
+          onclick="removeFromClass(), window.location.reload()"
+          class="btn background-red text-white align-self-center join-btn"
+          data-id="${fitClass.id}"
+          data-joinedClassList="true"
+          >
+          Remove
+          </button>`;
         }
+
+          //if the user is enrolled, button will be a remove Button
+         
+         
 
         //convert the ajax timestamp into more readable time to display on page.
         const twelveHourTime = tConvert(fitClass.start_time);
@@ -147,17 +156,23 @@ $(document).ready(function () {
         const classTemplate = `
         <div class="row m-0 pb-3 pt-3 border-to-bottom-thin font-large">
           <div class="col border-teal pb-3 text-center">
-            <h4 class="class-title-${fitClass.day} bold text-red">${fitClass.class_name}</h4>
+            <h4 class="class-title-${fitClass.day} bold text-red">${
+          fitClass.class_name
+        }</h4>
             <div class="class-time-${fitClass.day}">${twelveHourTime}</div>
-            <div class="class-trainer-${fitClass.day}" style="font-size:.9em;">${fitClass.trainer_name}</div>
-            <div class="class-spots-left-${fitClass.day}">${fitClass.max_size} slots </div>
+            <div class="class-trainer-${
+              fitClass.day
+            }" >${fitClass.trainer_name}</div>
+            <div class="class-spots-left-${fitClass.day}">${
+          fitClass.max_size - fitClass.current_size
+        } slots </div>
           </div>
           <div class="col border-to-right border-teal d-flex">
           ${joinOrRemoveBtn}
           </div>
         </div>
 `;
-
+        console.log(fitClass);
         //search the divs for one with a class day that matches the classname, and append to that div.
         for (i = 0; i < $weekDayDiv.length; i++) {
           if ($weekDayDiv[i].className === fitClass.day) {
