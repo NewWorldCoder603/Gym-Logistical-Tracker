@@ -317,42 +317,43 @@ module.exports = function (app) {
         : null,
       role: "trainer",
     })
-      .then(function (dbTrainer) {
-        // sends successful message as response
-        res.json({
-          message:
-            "The trainer has been successfully added!",
-        });
-      })
-      .catch((err) => {
-        // if there was an error in adding the trainer, sends a user-friendly error message to user
-        res.json({
-          error:
-            "Sorry! Some problem occured. Please try again.",
-        });
+    .then(function (dbTrainer) {
+      // sends successful message as response
+      res.json({
+        message:
+          "The trainer has been successfully added!",
       });
+    })
+    .catch((err) => {
+      // if there was an error in adding the trainer, sends a user-friendly error message to user
+      res.json({
+        error:
+          "Sorry! Some problem occured. Please try again.",
+      });
+    });
   });
 
   // API GET route for deleting a trainer
   app.get("/api/manager/deleteTrainer/:id", (req, res) => {
+    const trainer_id = req.params.id
     db.Employee.destroy({
       where: {
         id: trainer_id,
       },
     })
-      .then(function (result) {
+    .then(function (result) {
         console.log(result);
         res.json({
           message:
             "The trainer has been successfully deleted from the system!",
         });
-      })
-      .catch((err) => {
+    })
+    .catch((err) => {
         res.json({
           error:
             "Sorry! Some problem occured. Please try again.",
         });
-      });
+    });
   });
 
   // GET API that allows a manager to view all the trainers
@@ -363,7 +364,6 @@ module.exports = function (app) {
          }
     })
     .then(function(result){
-        console.log(result);
         result.forEach((trainer)=>{
           delete trainer.dataValues.password;
         });
@@ -458,57 +458,6 @@ module.exports = function (app) {
     });
   });
 
-  // POST API that allows a manager to remove a member/client from a class
-  app.post("/api/manager/removeFromClass", (req, res) => {
-    db.Class.findOne({
-      where: {
-        id: req.body.class_id,
-      },
-    })
-      .then(function (result) {
-        const freshRoster = result.roster.split(",");
-        const index = freshRoster.indexOf(
-          req.body.member_id
-        );
-        if (index !== -1) {
-          const new_Roster = freshRoster.splice(index, 1);
-          const newRoster = new_Roster.join(",");
-          db.Class.update(
-            { roster: newRoster },
-            {
-              where: {
-                id: req.body.class_id,
-              },
-            }
-          )
-            .then(function (result) {
-              console.log(result);
-              res.json({
-                message:
-                  "You have successfully removed the member from the class!",
-              });
-            })
-            .catch((err) => {
-              res.json({
-                error:
-                  "Sorry! Some problem occured. Please try again.",
-              });
-            });
-        } else {
-          res.json({
-            error:
-              "Sorry! This member has not joined this class",
-          });
-        }
-      })
-      .catch((err) => {
-        res.json({
-          error:
-            "Sorry! Some problem occured. Please try again.",
-        });
-      });
-  });
-
   // GET API that allows a manager to view all the members
   app.get("/api/manager/members", (req, res) => {
     db.Member.findAll({})
@@ -516,10 +465,9 @@ module.exports = function (app) {
         result.forEach((member)=>{
           delete member.dataValues.password;
         });
-        console.log(result);
         res.json(result);
-      })
-      .catch((err) => {
+    })
+    .catch((err) => {
         res.json({
           error:
             "Sorry! Some problem occured. Please try again.",
