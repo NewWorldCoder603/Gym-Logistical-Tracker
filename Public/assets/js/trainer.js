@@ -1,9 +1,10 @@
-$.ajax({
-  url: "/api/trainer",
-  method: "GET",
-  error: function (req, status, err) {
-    if (err) console.log(status);
-  },
-}).then(function (response) {
-  console.log(response);
+$(document).ready(function () {
+  const userId = localStorage.getItem("userId");
+
+  $.ajax({
+    url: `/api/trainer/${userId}`,
+    method: "GET",
+  }).then(function (response) {
+    console.log(response);
+  });
 });
