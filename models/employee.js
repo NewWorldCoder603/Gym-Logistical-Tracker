@@ -34,6 +34,10 @@ module.exports = function (sequelize, DataTypes) {
       type: DataTypes.STRING,
       allowNull: false,
     },
+    is_logged_in: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+    },
   });
 
   

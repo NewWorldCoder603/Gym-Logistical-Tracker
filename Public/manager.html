@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!--Bootstrap-->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1"
+      crossorigin="anonymous"
+    />
+
+    <!--Link to CSS-->
+    <link rel="stylesheet" href="./assets/css/manager.css" />
+
+    <!--day.js cdn-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.9.4/dayjs.min.js"></script>
+
+    <title>Manager</title>
+  </head>
+  <body>
+    <main>
+      <!--Head Info-->
+      <section class="mb-5 background-dark container-fluid ">
+        <div class="row align-items-center ">
+          <div class="col">
+            <h1 class="big-heading-text less-big-heading text-end no-heading">Dev</h1>
+          </div>
+          <div class="col text-center ">
+            <img
+              class="logo"
+              src="./assets/images/Color_Logo_dark_background.png"
+              alt="funny logo of skinny kid trying to lift a huge weight"
+            />
+          </div>
+          <div class="col">
+            <h1 class="big-heading-text less-big-heading no-heading"> &nbsp Fit</h1> <!--&nbsp adds space to even out heading spacing-->
+          </div>
+        </div>
+        
+      </section>
+
+      <!--Container holding 2 sections. Left will be trainer info and stats, right will be view more info section-->
+
+      <div class="container mb-5">
+        <div class="row align-content-center">
+          <!--Trainer Info-->
+          <div class="background-red col-12 col-md-6 text-center mb-5 mb-md-0">
+            <h2 class="my-3">Current Trainers</h2>
+            <div class="row ">
+                <div class = "col-12 d-flex justify-content-center">
+                    <ul style="list-style-type:none;">
+                        <li class="me-5 float-left text-white">Trainer name  </li>
+                        <button type="button" class="btn darkBtn d-flex float-right ms-5 mb-3">View</button>
+                        <li class="me-5 float-left text-white">Trainer name  </li>
+                        <button type="button" class="btn darkBtn d-flex float-right ms-5 mb-3">View</button>
+                        <li class="me-5 float-left text-white">Trainer name  </li>
+                        <button type="button" class="btn darkBtn d-flex float-right ms-5 mb-3">View</button>
+                        <li class="me-5 float-left text-white">Trainer name  </li>
+                        <button type="button" class="btn darkBtn d-flex float-right ms-5 mb-3">View</button>
+                        <li class="me-5 float-left text-white">Trainer name  </li>
+                        <button type="button" class="btn darkBtn d-flex float-right ms-5 mb-3">View</button>
+                    </ul>  
+                </div>
+            </div>
+            <button type="button" class="btn darkBtn  mb-5">Hire New Trainer</button>
+          </div>
+          <!--View Trainer Info-->
+          <div class="col-12 col-md-6 text-center background-dark">
+            <h2 class="div text-red my-3">Employee Information</h2>
+            <div class="row ">
+                <div class = "col-12 d-flex justify-content-center">
+                    <div class="card mb-5 background-red" style="width: 18rem;">
+                        <div class="card-header">
+                        Trainer Name
+                        </div>
+                        <ul class="list-group list-group-flush text-start">
+                        <li class="list-group-item">First Name: </li>
+                        <li class="list-group-item">Last Name:</li>
+                        <li class="list-group-item">Gender:</li>
+                        <li class="list-group-item">Email Address: </li>
+                        <li class="list-group-item">Phone Number: </li>
+                        </ul>
+                        <!-- terminate button -->
+                        <div class="card-footer">
+                            <button type="button" class="btn darkBtn">Terminate Employee</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Hire Trainer Form -->
+        <!-- <div class="col-12 col-md-6 text-center background-dark">
+            <h2 class="div text-red my-3">Employee Information</h2>
+            <div class="row">
+                <div class="col-sm mx-auto">
+                    <div class = "card p-3">
+                        <form class="row g-3">
+                            <div class="row g-3">
+                                <div class="col">
+                                    <label for="inputEmail" class="form-label">Email Address</label>
+                                    <input type="email" class="form-control" placeholder= "Email Address" id="inputEmail">
+                                </div>
+                                <div class="col">
+                                    <label for="inputPassword" class="form-label">Password</label>
+                                    <input type="text" class="form-control" placeholder= "Password" id="inputPassword">
+                                </div>
+                            </div>
+                            <div class="row g-3">
+                                <div class="col">
+                                    <label for="inputFirstName" class="form-label">First Name</label>
+                                    <input type="text" id="firstName" class="form-control" placeholder="First Name" aria-label="First name">
+                                </div>
+                                <div class="col">
+                                    <label for="inputLastName" class="form-label">Last Name</label>
+                                    <input type="text" id="lastName" class="form-control" placeholder="Last Name" aria-label="Last name">
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <label for="inputGender" class="form-label">Gender</label>
+                                <select id="inputGender" class="form-select">
+                                    <option>Male</option>
+                                    <option>Female</option>
+                                    <option>Other</option>
+                                </select>
+                            </div>
+                            <div class="col-12">
+                                <label for="inputBirthday" class="form=label">Birthdate (yyyy-mm-dd)</label>
+                                <input type="text" class="form-control" id="inputBirthday" placeholder="Birthdate (yyyy-dd-mm)">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="inputPhone" class="form-label">Phone Number (ten digit number only, no parentheses or dashes please)</label>
+                                <input type="text" id="inputPhone" class="form-control" placeholder="Phone Number">
+                            </div>
+                            <div class="col=col-md-6">
+                                <label for="inputRole" class="form-label">Select Role</label>
+                                <select id="inputRole" class="form-select">
+                                    <option selected>Choose...</option>
+                                    <option>Manager</option>
+                                    <option>Trainer</option>
+                                </select>
+                            </div>
+                            <div class="col-8"></div>
+                            <div class="col-4">
+                                <button id="submitRegistration" type="button" class="btn btn-danger mt-3">Submit Registration</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div> -->
+        
+      </div>
+
+      <!--Schedule Section-->
+      <section class="container-fluid px-5">
+        <div class="row background-gray">
+          <div class=" col-sm-12 col-md-6 col-lg pt-2 border-teal">
+            <h3 class="text-red week-day text-center"></h3>
+            <p
+              class="date-of-year border-to-bottom border-teal pb-2 font-large text-center"
+            ></p>
+            <div class="weekday-placeholder"></div>
+          </div>
+
+          <div class="col-sm-12 col-md-6 col-lg text-center py-2 border-teal">
+            <h3 class="text-red week-day"></h3>
+            <p
+              class="date-of-year border-to-bottom border-teal pb-2 font-large"
+            ></p>
+            <div class="weekday-placeholder"></div>
+          </div>
+          <div class="col-sm-12 col-md-6 col-lg text-center py-2 border-teal">
+            <h3 class="text-red week-day"></h3>
+
+            <p
+              class="date-of-year border-to-bottom border-teal pb-2 font-large"
+            ></p>
+
+            <div class="weekday-placeholder"></div>
+          </div>
+          <div class="col-sm-12 col-md-6 col-lg text-center py-2 border-teal">
+            <h3 class="text-red week-day"></h3>
+            <p
+              class="date-of-year border-to-bottom border-teal pb-2 font-large"
+            ></p>
+
+            <div class="weekday-placeholder"></div>
+          </div>
+          <div class="col-sm-12 col-md-6 col-lg text-center py-2 border-teal">
+            <h3 class="text-red week-day"></h3>
+            <p
+              class="date-of-year border-to-bottom border-teal pb-2 font-large"
+            ></p>
+
+            <div class="weekday-placeholder"></div>
+          </div>
+          <div class="col-sm-12 col-md-6 col-lg text-center py-2 border-teal">
+            <h3 class="text-red week-day"></h3>
+            <p
+              class="date-of-year border-to-bottom border-teal pb-2 font-large"
+            ></p>
+
+            <div class="weekday-placeholder"></div>
+          </div>
+          <div class="col-sm-12 col-md-6 col-lg text-center py-2 border-teal">
+            <h3 class="text-red week-day"></h3>
+            <p
+              class="date-of-year border-to-bottom border-teal pb-2 font-large"
+            ></p>
+
+            <div class="weekday-placeholder"></div>
+          </div>
+        </div>
+      </section>
+      <footer class="mt-5 background-dark">
+        <p class="font-large text-red text-center pt-3">Phone: (555) 555 5555</p>
+        <p class="font-large text-red text-center mb-0 pb-3">
+          111 Stack Lift Ave Salem NH 03070
+        </p>
+      </footer>
+    </main>
+    <!--Link to schedule.js-->
+    <script defer src="./assets/js/manager.js"></script>
+
+    <!--Jquery CDN -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!--Bootstrap JS Bundle-->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>

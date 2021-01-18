@@ -79,12 +79,7 @@ module.exports = function (app) {
           })
           .catch((err) => res.status(401).json(err));
       })
-      .catch((err) => {
-        // user-friendly message to user in case of error
-        res
-          .status(401)
-          .send("The email and/or password is incorrect. Please try again.");
-      });
+      .catch((err) => res.status(401).send("Failed."));
   });
 
   // Query to insert the new employee registration record in the employee table in the database
@@ -233,54 +228,63 @@ module.exports = function (app) {
 
   // API GET route for deleting a trainer
   app.get("/api/manager/deleteTrainer/:id", (req, res) => {
-    db.Employee.destroy({ where: { id: trainer_id } })
+    db.Employee.destroy({ where: { id: req.params.id } })
       .then((result) => res.json({ message: "Success!" }))
       .catch((err) => res.status(401).json(err));
+  });
+
+  // GET API that allows a manager to view all the trainers
+  app.get("/api/manager/trainers", (req, res) => {
+    db.Employee.findAll({ where: { role: "trainer" } })
+      .then((result) => {
+        result.forEach((trainer) => {
+          delete trainer.dataValues.password;
+        });
+        res.json(result);
+      })
+      .catch((err) => res.json({ error: "Failed." }));
   });
 
   // POST API that allows a manager to add a member/client to a class
   app.post("/api/manager/addToClass", (req, res) => {
     db.Class.findOne({ where: { id: req.body.class_id } })
-      .then((result) => {
-        let oldRoster = result.roster.split(",");
-        oldRoster.push(req.body.member_id);
-        newRoster = oldRoster.join(",");
+      .then(function (result) {
+        // Ensures that when adding a member to an existing roster, if the roster is empty, then initialize it to an array.
+        const currentRosterArray = result.dataValues.roster
+          ? result.dataValues.roster.split(",")
+          : [];
+        currentRosterArray.push(req.body.member_id);
+        const class_size = currentRosterArray.length;
+        const updatedRoster = currentRosterArray.join(",");
         db.Class.update(
-          { roster: newRoster },
+          { roster: updatedRoster, current_size: class_size },
           { where: { id: req.body.class_id } }
         )
           .then((result) => res.json({ message: "Success!" }))
-          .catch((err) => res.status(401).json(err));
+          .catch((err) => res.json({ error: "Failed." }));
       })
-      .catch((err) => res.status(401).json(err));
+      .catch((err) => res.json({ error: "Failed." }));
   });
 
   // POST API that allows a manager to remove a member/client from a class
   app.post("/api/manager/removeFromClass", (req, res) => {
-    db.Class.findOne({
-      where: {
-        id: req.body.class_id,
-      },
-    })
-      .then((result) => {
-        const oldRoster = result.roster.split(",");
-        const index = oldRoster.indexOf(req.body.member_id);
+    db.Class.findOne({ where: { id: req.body.class_id } })
+      .then(function (result) {
+        const rosterArray = result.dataValues.roster.split(",");
+        const index = rosterArray.indexOf(req.body.member_id);
         if (index !== -1) {
-          const newRoster = oldRoster.splice(index, 1);
-          const newRosterJoined = newRoster.join(",");
+          rosterArray.splice(index, 1);
+          const class_size = rosterArray.length;
+          const updatedRoster = rosterArray.join(",");
           db.Class.update(
-            { roster: newRosterJoined },
+            { roster: updatedRoster, current_size: class_size },
             { where: { id: req.body.class_id } }
           )
             .then((result) => res.json({ message: "Success!" }))
-            .catch((err) => res.status(401).json(err));
-        } else {
-          res.json({
-            error: "Sorry! This member has not joined this class",
-          });
+            .catch((err) => res.json({ error: "Failed." }));
         }
       })
-      .catch((err) => res.status(401).json(err));
+      .catch((err) => res.json({ error: "Failed." }));
   });
 
   // GET API that allows a manager to view all the members

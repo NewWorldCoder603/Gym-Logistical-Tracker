@@ -46,10 +46,68 @@ $(document).ready(function () {
       url: `/api/classes/${localStorage.getItem("userId")}`,
       method: "GET",
     }).then(function (classData) {
+      //function displays member info and what classes they are signed up for.
+      //.replace borrowed from https://www.digitalocean.com/community/tutorials/js-capitalizing-strings
+      const displayMemberInfo = () => {
+        //grab divs in Member area
+        const $memberName = $(".member-name");
+        const $numberOfClassesTakenDiv = $(".number-of-classes-taken");
+        const $classesTakenDiv = $(".classes-taken");
+
+        //create variables that hold member info
+        function writeUserName() {
+          const membersName = `Hello ${classData[0].userName.replace(
+            /^\w/,
+            (c) => c.toUpperCase()
+          )}`;
+          const numOfClassesTaken = `<b>${classData[0].classJoined.length}</b>`;
+
+          $memberName.html(membersName);
+          $numberOfClassesTakenDiv.html(numOfClassesTaken);
+        }
+        writeUserName();
+
+        //takes each class the user is signed up for, then appends that class info to user info page
+        function classesTemplate() {
+          numOfClassesTaken = `${classData[0].classJoined.length}`;
+          for (i = 0; i < numOfClassesTaken; i++) {
+            const className = classData[i].class_name;
+            const startTime = tConvert(classData[i].start_time);
+            const trainerName = classData[i].trainer_name;
+            const dayOfClass = classData[i].day;
+            const $p = $("<p>");
+
+            $p.html(
+              `-${dayOfClass}, ${className} at ${startTime} with ${trainerName}-`
+            );
+            $classesTakenDiv.append($p);
+          }
+        }
+        classesTemplate();
+
+        //if user is signed up for one class, appends "class", else, appends "classes"
+        function isClassesPlural() {
+          $classText = $(".sentence-text-classes");
+
+          if (classData[0].classJoined.length === 1) {
+            $classText.append("class this week");
+          } else {
+            $classText.append("classes this week");
+          }
+        }
+        isClassesPlural();
+      };
+      displayMemberInfo();
+
       //iterates over each class that comes in from ajax list to populate schedule
       classData.map(function (fitClass) {
         //variable asking is the user enrolled in the current class
         let isEnrolled;
+
+        //if the user is signed up for no classes, assign isEnrolled to False for each class.
+        if (fitClass.classJoined.length === 0) {
+          isEnrolled = false;
+        }
 
         //check each class fit class id against ClassJoined Ids to see if the user joined this specific class
         for (i = 0; i < fitClass.classJoined.length; i++) {
@@ -61,30 +119,40 @@ $(document).ready(function () {
           }
         }
 
-        //if the user is enrolled, button will be a remove Button
-        if (isEnrolled) {
+        //if class is full and member has not joined, say "class full"
+        if (
+          isEnrolled === false &&
+          fitClass.max_size - fitClass.current_size === 0
+        ) {
+          joinOrRemoveBtn =
+            "<p class= 'align-self-center text-red'>Class Full</p>";
+        }
+        //if class is not full and member has not joined, create a join button
+        else if (isEnrolled === false) {
           joinOrRemoveBtn = `<button
           type="button"
-          onclick="removeFromClass()"
-          class="btn background-red text-white align-self-center join-btn"
-          data-id="${fitClass.id}"
-          data-joinedClassList="true"
-          >
-          Remove
-          </button>`;
-
-          //else, the button will be a join button
-        } else {
-          joinOrRemoveBtn = `<button
-          type="button"
-          onclick="addToClass()"
+          onclick="addToClass(), window.location.reload()"
           class="btn background-red text-white align-self-center join-btn"
           data-id="${fitClass.id}"
           data-joinedClassList="false"
           >
           Join
           </button>`;
+
+          //if member has joined, regardless of if class is full, create a remove button
+        } else {
+          joinOrRemoveBtn = `<button
+          type="button"
+          onclick="removeFromClass(), window.location.reload()"
+          class="btn background-red text-white align-self-center join-btn"
+          data-id="${fitClass.id}"
+          data-joinedClassList="true"
+          >
+          Remove
+          </button>`;
         }
+
+        //if the user is enrolled, button will be a remove Button
 
         //convert the ajax timestamp into more readable time to display on page.
         const twelveHourTime = tConvert(fitClass.start_time);
@@ -93,10 +161,16 @@ $(document).ready(function () {
         const classTemplate = `
         <div class="row m-0 pb-3 pt-3 border-to-bottom-thin font-large">
           <div class="col border-teal pb-3 text-center">
-            <h4 class="class-title-${fitClass.day} bold text-red">${fitClass.class_name}</h4>
+            <h4 class="class-title-${fitClass.day} bold text-red">${
+          fitClass.class_name
+        }</h4>
             <div class="class-time-${fitClass.day}">${twelveHourTime}</div>
-            <div class="class-trainer-${fitClass.day}" style="font-size:.9em;">${fitClass.trainer_name}</div>
-            <div class="class-spots-left-${fitClass.day}">${fitClass.max_size} slots </div>
+            <div class="class-trainer-${fitClass.day}" >${
+          fitClass.trainer_name
+        }</div>
+            <div class="class-spots-left-${fitClass.day}">${
+          fitClass.max_size - fitClass.current_size
+        } slots </div>
           </div>
           <div class="col border-to-right border-teal d-flex">
           ${joinOrRemoveBtn}
@@ -143,8 +217,6 @@ $(document).ready(function () {
       url: `/api/member/${window.localStorage.getItem("userId")}`,
       method: "GET",
     }).then(function (data) {
-      console.log(data);
-      console.log("hello");
       localStorage.clear();
       window.location.replace("/");
     });
