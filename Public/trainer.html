@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+
+    <!--Bootstrap-->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1"
+      crossorigin="anonymous"
+    />
+
+    <!--Link to CSS-->
+    <link
+      rel="stylesheet"
+      href="./assets/css/client-schedule.css"
+    />
+
+    <!--day.js cdn-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.9.4/dayjs.min.js"></script>
+
+    <title>Trainer Interface</title>
+  </head>
+  <body>
+    <main>
+      <!--Head Info-->
+      <section class="mb-5 background-dark container-fluid">
+        <div class="row align-items-center">
+          <div class="col">
+            <h1
+              class="big-heading-text less-big-heading text-end"
+            >
+              Dev
+            </h1>
+          </div>
+          <div class="col text-center">
+            <img
+              class="logo"
+              src="./assets/images/Color_Logo_dark_background.png"
+              alt="funny logo of skinny kid trying to lift a huge weight"
+            />
+          </div>
+          <div class="col">
+            <h1 class="big-heading-text less-big-heading">
+              &nbsp Fit
+            </h1>
+            <!--&nbsp adds space to even out heading spacing-->
+          </div>
+        </div>
+      </section>
+
+      <!--Container holding 2 sections. Left will be member info and stats, right will be "meet our trainers scroller"-->
+
+      <div class="container mb-5">
+        <div class="row">
+          <!--Client Info-->
+          <div
+            class="client-info col-12 col-md-6 text-center mb-5 mb-md-0"
+          >
+            <h2 class="my-3" id="trainerName">
+              Sup Robo Trainer!
+            </h2>
+
+            <button
+              type="button"
+              class="btn logout-btn mb-5"
+            >
+              Add Class
+            </button>
+
+            <button
+              type="button"
+              class="btn logout-btn mb-5"
+            >
+              Remove Class
+            </button>
+
+            <button
+              type="button"
+              class="btn logout-btn mb-5"
+            >
+              Log Out
+            </button>
+          </div>
+
+          <div
+            class="col-12 col-md-6 text-center background-dark"
+          >
+            <p id="classInfo"></p>
+          </div>
+        </div>
+      </div>
+
+      <footer class="mt-5 background-dark">
+        <p class="font-large text-red text-center">
+          Phone: (555) 555 5555
+        </p>
+        <p class="font-large text-red text-center mb-0">
+          111 Stack Lift Ave Salem NH 03070
+        </p>
+      </footer>
+    </main>
+    <!--Link to schedule.js-->
+    <script
+      defer
+      src="./assets/js/client-schedule.js"
+    ></script>
+
+    <!--Jquery CDN -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!--Bootstrap JS Bundle-->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
