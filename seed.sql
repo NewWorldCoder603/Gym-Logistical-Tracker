@@ -14,9 +14,9 @@ INSERT INTO `gym_management_systemdb`.`employees` ( `email`, `password`, `first_
 
 
 -- Seed data for class table
-INSERT INTO `gym_management_systemdb`.`classes` ( `class_name`, `day`, `start_time`,`current_size`, `max_size`, `trainer_id`, `createdAt`, `updatedAt`) VALUES ( 'Barbell Burn', 'Thursday', '9:30:00', '60', '0', '10', '2', '2010-00-00 00:00:00', '2010-00-00 00:00:00');
+INSERT INTO `gym_management_systemdb`.`classes` ( `class_name`, `day`, `start_time`,`current_size`, `max_size`, `roster`, `trainer_id`, `createdAt`, `updatedAt`) VALUES ( 'Kettle Bells', 'Friday', '9:30:00', '60', '0', '10', ',1', '2', '2010-00-00 00:00:00', '2010-00-00 00:00:00');
 UPDATE `gym_management_systemdb`.`classes` SET `start_time` = '12:00:00', `roster` = '' WHERE (`id` = '1');
-INSERT INTO `gym_management_systemdb`.`classes` ( `class_name`, `day`, `start_time`,`current_size`, `max_size`, `trainer_id`, `createdAt`, `updatedAt`) VALUES ( 'Zumba', 'Monday', '15:00:00', '60', '0', '8', '3', '2010-00-00 00:00:00', '2010-00-00 00:00:00');
+INSERT INTO `gym_management_systemdb`.`classes` ( `class_name`, `day`, `start_time`,`current_size`, `max_size`, `roster`,  `trainer_id`, `createdAt`, `updatedAt`) VALUES ( 'Zumba', 'Monday', '15:00:00', '60', '0', '8', '', '3', '2010-00-00 00:00:00', '2010-00-00 00:00:00');
 
 
 
