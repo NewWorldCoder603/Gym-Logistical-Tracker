@@ -2,6 +2,13 @@ body {
   background-color: rgb(238, 238, 238);
 }
 
+.client-info > p {
+  font-size: larger;
+}
+
+.classes-taken {
+  font-size: larger;
+}
 /*Heading Section*/
 
 /*Heading is larger during big screen size */
@@ -13,6 +20,13 @@ body {
 @media screen and (max-width: 800px) {
   .less-big-heading {
     font-size: 400%;
+  }
+}
+
+/*Heading shrinks at small screen size so it fits on one line */
+@media screen and (max-width: 481px) {
+  .no-heading {
+    display: none;
   }
 }
 
