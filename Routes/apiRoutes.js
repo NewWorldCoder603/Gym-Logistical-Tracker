@@ -44,6 +44,7 @@ module.exports = function (app) {
                 start_time: unit.dataValues.start_time,
                 current_size: unit.dataValues.current_size,
                 max_size: unit.dataValues.max_size,
+                trainer_id: unit.dataValues.trainer_id,
                 trainer_name: activeTrainer[0].dataValues.first_name,
                 userName: userName,
                 classJoined: classesJoined,
@@ -64,22 +65,37 @@ module.exports = function (app) {
     // finds if there exists a member with the logged in username and password
     db.Member.findOne({
       where: { email: req.body.username, password: md5(req.body.password) },
-    })
-      .then(function (dbMember) {
-        const member_id = dbMember.id;
-
-        // updates the is_logged_in column in member table to true to track the logged in user
-        db.Member.update({ is_logged_in: true }, { where: { id: member_id } })
-          .then((result) => {
-            // sends the logged in member's id as response
+    }).then((userMember) => {
+      if (!userMember) {
+        db.Employee.findOne({
+          where: {
+            email: req.body.username,
+            password: md5(req.body.password),
+          },
+        })
+          .then((userEmployee) => {
             res.json({
-              id: member_id,
-              badHombre: dbMember.first_name,
+              id: userEmployee.dataValues.id,
+              userName: userEmployee.dataValues.first_name,
+              role: userEmployee.dataValues.role,
             });
+            // updates the is_logged_in column in employee table to true to track the logged in user
+            db.Employee.update(
+              { is_logged_in: true },
+              { where: { id: userEmployee.dataValues.id } }
+            );
           })
-          .catch((err) => res.status(401).json(err));
-      })
-      .catch((err) => res.status(401).send("Failed."));
+          .catch((err) => res.status(401).send(err));
+      } else {
+        // updates the is_logged_in column in member table to true to track the logged in user
+        db.Member.update(
+          { is_logged_in: true },
+          { where: { id: userMember.id } }
+        )
+          .then((result) => res.json({ result }))
+          .catch((err) => res.status(401).send(err));
+      }
+    });
   });
 
   // Query to insert the new employee registration record in the employee table in the database
@@ -94,7 +110,7 @@ module.exports = function (app) {
       phone: req.body.phone,
       role: req.body.role,
     })
-      .then((result) => res.send("Success!"))
+      .then((result) => res.json(result))
       .catch((err) => res.status(401).json(err));
   });
 
@@ -128,8 +144,8 @@ module.exports = function (app) {
     // updates the is_logged_in column in db to false when member logs out
     db.Member.update({ is_logged_in: false }, { where: { id: req.params.id } })
       // send a logged out message to the user
-      .then((result) => res.json({ message: "Success." }))
-      .catch((err) => res.json({ message: "Failed." }));
+      .then((result) => res.json(result))
+      .catch((err) => res.json(err));
   });
 
   // Query to insert the member into chosen class
@@ -140,7 +156,7 @@ module.exports = function (app) {
       const oldRoster = result.dataValues.roster.split(",");
       oldRoster.forEach((member) => {
         if (req.body.memberid === member) {
-          res.json({ message: "Failed." });
+          res.json({ message: "Member already enrolled here." });
         }
       });
 
@@ -153,7 +169,7 @@ module.exports = function (app) {
         { roster: newRoster, current_size: newClassSize },
         { where: { id: req.body.id } }
       )
-        .then((result) => res.json({ message: "Success!" }))
+        .then((result) => res.json(result))
         .catch((err) => res.status(401).json(err));
     });
   });
@@ -183,7 +199,7 @@ module.exports = function (app) {
         },
         { where: { id: req.body.id } }
       )
-        .then((result) => res.json({ message: "Success!" }))
+        .then((result) => res.json(result))
         .catch((err) => res.status(401).json(err));
     });
   });
@@ -200,14 +216,14 @@ module.exports = function (app) {
       trainer_id: trainer_id,
       roster: roster,
     })
-      .then((result) => res.json({ message: "Success" }))
+      .then((result) => res.json(result))
       .catch((err) => res.status(401).json(err));
   });
 
   app.post("api/removeClass", (req, res) => {
     //Removes class from the database
     db.Class.destroy({ where: { id: req.body.id } })
-      .then((result) => res.json({ message: "Success!" }))
+      .then((result) => res.json(result))
       .catch((err) => res.status(401).json(err));
   });
 
@@ -222,14 +238,14 @@ module.exports = function (app) {
       phone: req.body.phone ? parseInt(req.body.phone) : null,
       role: "trainer",
     })
-      .then((dbTrainer) => res.json({ message: "Success!" }))
+      .then((result) => res.json(result))
       .catch((err) => res.status(401).json(err));
   });
 
   // API GET route for deleting a trainer
   app.get("/api/manager/deleteTrainer/:id", (req, res) => {
     db.Employee.destroy({ where: { id: req.params.id } })
-      .then((result) => res.json({ message: "Success!" }))
+      .then((result) => res.json(result))
       .catch((err) => res.status(401).json(err));
   });
 
@@ -242,7 +258,7 @@ module.exports = function (app) {
         });
         res.json(result);
       })
-      .catch((err) => res.json({ error: "Failed." }));
+      .catch((err) => res.json(err));
   });
 
   // POST API that allows a manager to add a member/client to a class
@@ -260,10 +276,10 @@ module.exports = function (app) {
           { roster: updatedRoster, current_size: class_size },
           { where: { id: req.body.class_id } }
         )
-          .then((result) => res.json({ message: "Success!" }))
-          .catch((err) => res.json({ error: "Failed." }));
+          .then((result) => res.json(result))
+          .catch((err) => res.json(err));
       })
-      .catch((err) => res.json({ error: "Failed." }));
+      .catch((err) => res.json(err));
   });
 
   // POST API that allows a manager to remove a member/client from a class
@@ -280,11 +296,11 @@ module.exports = function (app) {
             { roster: updatedRoster, current_size: class_size },
             { where: { id: req.body.class_id } }
           )
-            .then((result) => res.json({ message: "Success!" }))
-            .catch((err) => res.json({ error: "Failed." }));
+            .then((result) => res.json(result))
+            .catch((err) => res.json(err));
         }
       })
-      .catch((err) => res.json({ error: "Failed." }));
+      .catch((err) => res.json(err));
   });
 
   // GET API that allows a manager to view all the members
@@ -297,9 +313,11 @@ module.exports = function (app) {
   app.get("/api/trainer/:id", (req, res) => {
     db.Class.findAll({ where: { trainer_id: req.params.id } })
       .then((result) => {
-        db.Employee.findOne({ where: { id: req.params.id } })
-          .then((result) => res.json(result))
-          .catch((err) => res.status(401).json(err));
+        console.log(result);
+        //   db.Employee.findOne({ where: { id: req.params.id } })
+        //     .then((result) => res.json(result))
+        //     .catch((err) => res.status(401).json(err));
+        res.send(result);
       })
       .catch((err) => res.status(401).json(err));
   });
