@@ -53,7 +53,6 @@ $(document).ready(function () {
         const $memberName = $(".member-name");
         const $numberOfClassesTakenDiv = $(".number-of-classes-taken");
         const $classesTakenDiv = $(".classes-taken");
-     
 
         //create variables that hold member info
         function writeUserName() {
@@ -105,6 +104,11 @@ $(document).ready(function () {
         //variable asking is the user enrolled in the current class
         let isEnrolled;
 
+        //if the user is signed up for no classes, assign isEnrolled to False for each class.
+        if (fitClass.classJoined.length === 0) {
+          isEnrolled = false;
+        }
+
         //check each class fit class id against ClassJoined Ids to see if the user joined this specific class
         for (i = 0; i < fitClass.classJoined.length; i++) {
           if (fitClass.classJoined[i].id === fitClass.id) {
@@ -114,12 +118,17 @@ $(document).ready(function () {
             isEnrolled = false;
           }
         }
+
         //if class is full and member has not joined, say "class full"
-        if(isEnrolled === false && fitClass.max_size - fitClass.current_size === 0){
-          joinOrRemoveBtn = "<p class= 'align-self-center text-red'>Class Full</p>"
+        if (
+          isEnrolled === false &&
+          fitClass.max_size - fitClass.current_size === 0
+        ) {
+          joinOrRemoveBtn =
+            "<p class= 'align-self-center text-red'>Class Full</p>";
         }
         //if class is not full and member has not joined, create a join button
-         else if (isEnrolled === false) {
+        else if (isEnrolled === false) {
           joinOrRemoveBtn = `<button
           type="button"
           onclick="addToClass(), window.location.reload()"
@@ -130,9 +139,7 @@ $(document).ready(function () {
           Join
           </button>`;
 
-         
-
-        //if member has joined, regardless of if class is full, create a remove button
+          //if member has joined, regardless of if class is full, create a remove button
         } else {
           joinOrRemoveBtn = `<button
           type="button"
@@ -145,9 +152,7 @@ $(document).ready(function () {
           </button>`;
         }
 
-          //if the user is enrolled, button will be a remove Button
-         
-         
+        //if the user is enrolled, button will be a remove Button
 
         //convert the ajax timestamp into more readable time to display on page.
         const twelveHourTime = tConvert(fitClass.start_time);
@@ -160,9 +165,9 @@ $(document).ready(function () {
           fitClass.class_name
         }</h4>
             <div class="class-time-${fitClass.day}">${twelveHourTime}</div>
-            <div class="class-trainer-${
-              fitClass.day
-            }" >${fitClass.trainer_name}</div>
+            <div class="class-trainer-${fitClass.day}" >${
+          fitClass.trainer_name
+        }</div>
             <div class="class-spots-left-${fitClass.day}">${
           fitClass.max_size - fitClass.current_size
         } slots </div>
@@ -172,7 +177,7 @@ $(document).ready(function () {
           </div>
         </div>
 `;
-        console.log(fitClass);
+
         //search the divs for one with a class day that matches the classname, and append to that div.
         for (i = 0; i < $weekDayDiv.length; i++) {
           if ($weekDayDiv[i].className === fitClass.day) {
@@ -212,8 +217,6 @@ $(document).ready(function () {
       url: `/api/member/${window.localStorage.getItem("userId")}`,
       method: "GET",
     }).then(function (data) {
-      console.log(data);
-      console.log("hello");
       localStorage.clear();
       window.location.replace("/");
     });
