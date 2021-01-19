@@ -34,6 +34,7 @@ module.exports = function (sequelize, DataTypes) {
     roster: {
       type: DataTypes.STRING,
       default: "",
+      allowNull: false,
     },
   });
 
