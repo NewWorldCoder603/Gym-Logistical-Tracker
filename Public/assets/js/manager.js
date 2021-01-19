@@ -1,4 +1,4 @@
-$(".hireBtn").click(function () {
+$("#submitRegistration").click(function () {
   $.ajax({
     url: `/api/member/${window.localStorage.getItem("userId")}`,
     method: "GET",

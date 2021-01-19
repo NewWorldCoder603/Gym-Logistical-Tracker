@@ -113,3 +113,11 @@ body {
   color: whitesmoke;
   font-size: 150%;
 }
+
+.nav-link {
+  color: #d22e33;
+}
+
+.nav > a:hover {
+  color: whitesmoke;
+}
