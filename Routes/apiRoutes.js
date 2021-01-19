@@ -313,10 +313,9 @@ module.exports = function (app) {
   app.get("/api/trainer/:id", (req, res) => {
     db.Class.findAll({ where: { trainer_id: req.params.id } })
       .then((result) => {
-        console.log(result);
-        //   db.Employee.findOne({ where: { id: req.params.id } })
-        //     .then((result) => res.json(result))
-        //     .catch((err) => res.status(401).json(err));
+        db.Employee.findOne({ where: { id: req.params.id } })
+          .then((result) => res.json(result))
+          .catch((err) => res.status(401).json(err));
         res.send(result);
       })
       .catch((err) => res.status(401).json(err));
