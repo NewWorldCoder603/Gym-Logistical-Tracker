@@ -11,14 +11,14 @@ $("body").on("click", "#loginBtn", function () {
     },
     method: "POST",
     //Show alert modal on login failure
-    error: function (req, status, err) {
+    error: (err) => {
       if (err) alertModal("Login Failed");
     },
   }).then(function (response) {
     //Add if statements to check for manager, trainer, or member status
     if (response.role === "Trainer") {
       localStorage.setItem("userId", response.id);
-      window.location.assign("/trainer");
+      window.location.assign("/employee");
     } else if (response.role === "Manager") {
       localStorage.setItem("userId", response.id);
       window.location.assign("/manager");
