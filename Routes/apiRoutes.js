@@ -313,10 +313,31 @@ module.exports = function (app) {
   app.get("/api/trainer/:id", (req, res) => {
     db.Class.findAll({ where: { trainer_id: req.params.id } })
       .then((result) => {
+        const classBundle = [];
+        const classes = result;
         db.Employee.findOne({ where: { id: req.params.id } })
-          .then((result) => res.json(result))
+          .then((result) => {
+            const trainerName = `${result.dataValues.first_name} ${result.dataValues.last_name}`;
+
+            classes.forEach((unit) => {
+              //Object to be sent to UI
+              const reqClass = {
+                id: unit.dataValues.id,
+                class_name: unit.dataValues.class_name,
+                day: unit.dataValues.day,
+                start_time: unit.dataValues.start_time,
+                current_size: unit.dataValues.current_size,
+                max_size: unit.dataValues.max_size,
+                trainer_id: unit.dataValues.trainer_id,
+              };
+
+              classBundle.push(reqClass);
+            });
+            classBundle.push(trainerName);
+            console.log(classBundle);
+            res.send(classBundle);
+          })
           .catch((err) => res.status(401).json(err));
-        res.send(result);
       })
       .catch((err) => res.status(401).json(err));
   });
