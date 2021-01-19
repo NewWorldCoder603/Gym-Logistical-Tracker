@@ -23,30 +23,6 @@ body {
   }
 }
 
-/* Client Info */
-.client-info {
-  background: #d22e33;
-  color: whitesmoke;
-}
-
-.logout-btn {
-  background: rgb(49, 49, 49);
-  color: whitesmoke;
-}
-
-/*Meet our Trainers */
-.center {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  width: 50%;
-}
-
-.background-t-red {
-  background: #d22e33;
-  opacity: 0.9;
-}
-
 .background-dark {
   background: rgb(49, 49, 49);
 }
@@ -56,42 +32,18 @@ body {
   max-height: 400px;
 }
 
-/* schedule background */
+/* page background */
 .background-gray {
   background: whitesmoke;
 }
 
-/*for schedule column borders. */
-.border-to-right {
-  border-right: 1px solid #1783ee;
-}
-
-.border-to-bottom {
-  border-bottom: 2px solid;
-  border-color: #1783ee;
-}
-
-.border-to-bottom-thin {
-  border-bottom: 1px solid;
-  border-color: #1783ee;
-}
-
 /*html button background*/
-.background-red {
+#submitRegistration {
   background-color: #d22e33 !important;
 }
 
 .text-red {
   color: #d22e33;
-}
-
-/* for the join buttons */
-.float-left {
-  float: left;
-}
-
-.font-large {
-  font-size: 1.2em;
 }
 
 .logo {

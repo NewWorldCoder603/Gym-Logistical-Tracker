@@ -49,9 +49,10 @@
                       <!--Trainer Info-->
           <div class="background-red col-12 col-md-6 text-center mb-5 mb-md-0">
             <h2 class="my-3">Current Trainers</h2>
-            <div class="row ">
-                <div class = "col-12 d-flex justify-content-center">
-                    <ul style="list-style-type:none;">
+            <div class="row "><button id="testBtn" type="button" class="btn btn-primary mt-3">Testing</button>
+                <div class = "col-12 d-flex justify-content-center trainerNameList">
+                    
+                    <!-- <ul style="list-style-type:none;">
                         <li class="me-5 float-left text-white">Trainer name  </li>
                         <button type="button" class="btn darkBtn d-flex float-right ms-5 mb-3">View</button>
                         <li class="me-5 float-left text-white">Trainer name  </li>
@@ -62,7 +63,7 @@
                         <button type="button" class="btn darkBtn d-flex float-right ms-5 mb-3">View</button>
                         <li class="me-5 float-left text-white">Trainer name  </li>
                         <button type="button" class="btn darkBtn d-flex float-right ms-5 mb-3">View</button>
-                    </ul>  
+                    </ul>   -->
                 </div>
             </div>
             
@@ -123,7 +124,7 @@
                                         <input type="text" id="lastName" class="form-control" placeholder="Last Name" aria-label="Last name">
                                     </div>
                                 </div>
-                                <div class="col-12">
+                                <div class="col-6">
                                     <label for="inputGender" class="form-label">Gender</label>
                                     <select id="inputGender" class="form-select">
                                         <option>Male</option>
@@ -131,15 +132,7 @@
                                         <option>Other</option>
                                     </select>
                                 </div>
-                                <div class="col-12">
-                                    <label for="inputBirthday" class="form=label">Birthdate (yyyy-mm-dd)</label>
-                                    <input type="text" class="form-control" id="inputBirthday" placeholder="Birthdate (yyyy-dd-mm)">
-                                </div>
                                 <div class="col-md-6">
-                                    <label for="inputPhone" class="form-label">Phone Number (ten digit number only, no parentheses or dashes please)</label>
-                                    <input type="text" id="inputPhone" class="form-control" placeholder="Phone Number">
-                                </div>
-                                <div class="col=col-md-6">
                                     <label for="inputRole" class="form-label">Select Role</label>
                                     <select id="inputRole" class="form-select">
                                         <option selected>Choose...</option>
@@ -147,9 +140,18 @@
                                         <option>Trainer</option>
                                     </select>
                                 </div>
+                                <div class="col-12">
+                                    <label for="inputBirthday" class="form=label">Birthdate (yyyy-mm-dd)</label>
+                                    <input type="text" class="form-control" id="inputBirthday" placeholder="Birthdate (yyyy-dd-mm)">
+                                </div>
+                                <div class="col-md-12">
+                                    <label for="inputPhone" class="form-label">Phone Number <br>(ten digit number only, no parentheses/dashes please)</label>
+                                    <input type="text" id="inputPhone" class="form-control" placeholder="Phone Number">
+                                </div>
+                                
                                 <div class="col-8"></div>
                                 <div class="col-4">
-                                    <button id="submitRegistration" type="button" class="btn btn-danger mt-3">Submit Registration</button>
+                                    <button id="hireBtn" type="button" class="btn btn-danger mt-3">Hire Trainer</button>
                                 </div>
                             </form>
                         </div>
