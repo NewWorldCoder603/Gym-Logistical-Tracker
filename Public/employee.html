@@ -18,7 +18,7 @@
     <!--day.js cdn-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.9.4/dayjs.min.js"></script>
 
-    <title>Trainer Interface</title>
+    <title>Member Page</title>
   </head>
   <body>
     <main>
@@ -26,7 +26,7 @@
       <section class="mb-5 background-dark container-fluid">
         <div class="row align-items-center">
           <div class="col">
-            <h1 class="big-heading-text less-big-heading text-end">Dev</h1>
+            <h1 class="big-heading-text less-big-heading no-heading text-end">Dev</h1>
           </div>
           <div class="col text-center">
             <img
@@ -36,7 +36,7 @@
             />
           </div>
           <div class="col">
-            <h1 class="big-heading-text less-big-heading">&nbsp Fit</h1>
+            <h1 class="big-heading-text less-big-heading no-heading">&nbsp Fit</h1>
             <!--&nbsp adds space to even out heading spacing-->
           </div>
         </div>
@@ -52,30 +52,132 @@
           >
             <h2 class="mt-5 mb-5 member-name "></h2>
             <p>
-              You are teaching
+              Your are currently signed up for
               <span class="number-of-classes-taken"><b></b></span> <span class='sentence-text-classes'></span> 
             </p>
             <div class="classes-taken"></div>
         
 
-            <button type="button" class="btn logout-btn mb-5">Add Class</button>
-
-            <button type="button" class="btn logout-btn mb-5">
-              Remove Class
-            </button>
-
-            <button type="button" class="btn logout-btn mb-5">Log Out</button>
+            <button type="button" class="btn logout-btn mb-5 mt-5">Log Out</button>
           </div>
-
+          <!--Meet the Trainers-->
           <div class="col-12 col-md-6 text-center background-dark">
-            <p id="classInfo"></p>
+            <h2 class="div text-red my-3">Meet Your Trainers!</h2>
+            <div
+              id="carouselExampleSlidesOnly"
+              class="carousel slide"
+              data-bs-ride="carousel"
+            >
+              <div class="carousel-inner">
+                <div class="carousel-item active">
+                  <img
+                    src="./assets/images/trainer_abeer.jpg"
+                    class="d-block w-50 center max-height"
+                    alt="cover photo of trainer abeer"
+                  />
+                  <div
+                    class="carousel-caption d-none d-md-block center background-t-red"
+                  >
+                    <h5>Abeer</h5>
+                    <p>Zumba</p>
+                  </div>
+                </div>
+                <div class="carousel-item">
+                  <img
+                    src="./assets/images/trainer_arav.jpg"
+                    class="d-block w-50 center max-height"
+                    alt="cover photo of trainer arav"
+                  />
+                  <div
+                    class="carousel-caption d-none d-md-block center background-t-red"
+                  >
+                    <h5>Arav</h5>
+                    <p>Spin</p>
+                  </div>
+                </div>
+                <div class="carousel-item">
+                  <img
+                    src="./assets/images/trainer_felicia.jfif"
+                    class="d-block w-50 center max-height"
+                    alt="cover photo of trainer felicia"
+                  />
+                  <div
+                    class="carousel-caption d-none d-md-block center background-t-red"
+                  >
+                    <h5>Felicia</h5>
+                    <p>Barbell Blast</p>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
 
+      <!--Schedule Section-->
+      <section class="container-fluid px-5">
+        <div class="row background-gray">
+          <div class="col-sm-12 col-md-6 col-lg pt-2 border-teal">
+            <h3 class="text-red week-day text-center"></h3>
+            <p
+              class="date-of-year border-to-bottom border-teal pb-2 font-large text-center"
+            ></p>
+            <div class="weekday-placeholder"></div>
+          </div>
+
+          <div class="col-sm-12 col-md-6 col-lg text-center py-2 border-teal">
+            <h3 class="text-red week-day"></h3>
+            <p
+              class="date-of-year border-to-bottom border-teal pb-2 font-large"
+            ></p>
+            <div class="weekday-placeholder"></div>
+          </div>
+          <div class="col-sm-12 col-md-6 col-lg text-center py-2 border-teal">
+            <h3 class="text-red week-day"></h3>
+
+            <p
+              class="date-of-year border-to-bottom border-teal pb-2 font-large"
+            ></p>
+
+            <div class="weekday-placeholder"></div>
+          </div>
+          <div class="col-sm-12 col-md-6 col-lg text-center py-2 border-teal">
+            <h3 class="text-red week-day"></h3>
+            <p
+              class="date-of-year border-to-bottom border-teal pb-2 font-large"
+            ></p>
+
+            <div class="weekday-placeholder"></div>
+          </div>
+          <div class="col-sm-12 col-md-6 col-lg text-center py-2 border-teal">
+            <h3 class="text-red week-day"></h3>
+            <p
+              class="date-of-year border-to-bottom border-teal pb-2 font-large"
+            ></p>
+
+            <div class="weekday-placeholder"></div>
+          </div>
+          <div class="col-sm-12 col-md-6 col-lg text-center py-2 border-teal">
+            <h3 class="text-red week-day"></h3>
+            <p
+              class="date-of-year border-to-bottom border-teal pb-2 font-large"
+            ></p>
+
+            <div class="weekday-placeholder"></div>
+          </div>
+          <div class="col-sm-12 col-md-6 col-lg text-center py-2 border-teal">
+            <h3 class="text-red week-day"></h3>
+            <p
+              class="date-of-year border-to-bottom border-teal pb-2 font-large"
+            ></p>
+
+            <div class="weekday-placeholder"></div>
+          </div>
+        </div>
+      </section>
       <footer class="mt-5 background-dark">
-        <p class="font-large text-red text-center">Phone: (555) 555 5555</p>
-        <p class="font-large text-red text-center mb-0">
+        <p class="font-large text-red text-center pt-3">Phone: (555) 555 5555</p>
+        <p class="font-large text-red text-center mb-0 pb-3">
           111 Stack Lift Ave Salem NH 03070
         </p>
       </footer>

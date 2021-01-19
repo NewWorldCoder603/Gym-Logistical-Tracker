@@ -69,7 +69,6 @@ $(document).ready(function () {
 
         //takes each class the user is signed up for, then appends that class info to user info page
         function classesTemplate() {
-          console.log(classData.id)
           numOfClassesTaken = `${classData[0].classJoined.length}`;
           for (i = 0; i < numOfClassesTaken; i++) {
             const className = classData[i].class_name;
@@ -157,7 +156,6 @@ $(document).ready(function () {
 
         //convert the ajax timestamp into more readable time to display on page.
         const twelveHourTime = tConvert(fitClass.start_time);
-        console.log(fitClass)
 
         //dynamic template that inserts ajax response fitClasss into html
         const classTemplate = `
@@ -280,3 +278,14 @@ const removeFromClass = () => {
     },
   });
 };
+
+//Trainer Ajax grabs data about which trainer is signed in.
+function writeTrainerStats() {
+  $.ajax({
+    url: `/api/trainer/${localStorage.getItem("userId")}`,
+    method: "GET",
+  }).then(function (response) {
+    console.log(response);
+  });
+}
+writeTrainerStats() 
