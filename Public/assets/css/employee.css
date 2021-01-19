@@ -110,3 +110,17 @@ body {
   margin: 0 auto;
   display: block;
 }
+
+/* for delete class button */
+.deleteClassBtn{
+display: inline-block;
+background:rgb(49, 49, 49);
+color: whitesmoke;
+margin-left: 10px; 
+}
+
+/*text displaying which classes the trainer is teaching*/ 
+.trainerClassesDisplay{
+  color: whitesmoke; 
+  font-size: 1.2em;
+}
