@@ -11,7 +11,7 @@ $("body").on("click", "#loginBtn", function () {
     },
     method: "POST",
     //Show alert modal on login failure
-    error: function (req, status, err) {
+    error: (err) => {
       if (err) alertModal("Login Failed");
     },
   }).then(function (response) {
