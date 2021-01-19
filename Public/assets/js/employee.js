@@ -48,8 +48,8 @@ $(document).ready(function () {
     }).then(function (classData) {
       //function displays member info and what classes they are signed up for.
       //.replace borrowed from https://www.digitalocean.com/community/tutorials/js-capitalizing-strings
-      const displayMemberInfo = () => {
-        //grab divs in Member area
+      const displayMemberInfo = () =>{
+        //grab divs in Member area 
         const $memberName = $(".member-name");
         const $numberOfClassesTakenDiv = $(".number-of-classes-taken");
         const $classesTakenDiv = $(".classes-taken");
@@ -60,17 +60,17 @@ $(document).ready(function () {
             /^\w/,
             (c) => c.toUpperCase()
           )}`;
-          const numOfClassesTaken = `<b>${classData[0].classJoined.length}</b>`;
+          const numClasseseTaught = `<b>${classData[0].classJoined.length}</b>`;
 
           $memberName.html(membersName);
-          $numberOfClassesTakenDiv.html(numOfClassesTaken);
+          $numberOfClassesTakenDiv.html(numClasseseTaught);
         }
         writeUserName();
 
         //takes each class the user is signed up for, then appends that class info to user info page
         function classesTemplate() {
-          numOfClassesTaken = `${classData[0].classJoined.length}`;
-          for (i = 0; i < numOfClassesTaken; i++) {
+          numClasseseTaught = `${classData[0].classJoined.length}`;
+          for (i = 0; i < numClasseseTaught; i++) {
             const className = classData[i].class_name;
             const startTime = tConvert(classData[i].start_time);
             const trainerName = classData[i].trainer_name;
