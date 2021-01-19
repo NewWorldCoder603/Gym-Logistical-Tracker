@@ -68,7 +68,7 @@ $(document).ready(function () {
         writeUserName();
 
         //takes each class the user is signed up for, then appends that class info to user info page
-        function classesTemplate() {
+        function writeUsersClasses() {
           numOfClassesTaken = `${classData[0].classJoined.length}`;
           for (i = 0; i < numOfClassesTaken; i++) {
             const className = classData[i].class_name;
@@ -83,7 +83,7 @@ $(document).ready(function () {
             $classesTakenDiv.append($p);
           }
         }
-        classesTemplate();
+        writeUsersClasses();
 
         //if user is signed up for one class, appends "class", else, appends "classes"
         function isClassesPlural() {
@@ -99,37 +99,38 @@ $(document).ready(function () {
       };
       displayMemberInfo();
 
-      //iterates over each class that comes in from ajax list to populate schedule
-      classData.map(function (fitClass) {
-        //variable asking is the user enrolled in the current class
-        let isEnrolled;
+      const writeSchedule = () => {
+        //iterates over each class that comes in from ajax list to populate schedule
+        classData.map(function (fitClass) {
+          //variable asking is the user enrolled in the current class
+          let isEnrolled;
 
-        //if the user is signed up for no classes, assign isEnrolled to False for each class.
-        if (fitClass.classJoined.length === 0) {
-          isEnrolled = false;
-        }
-
-        //check each class fit class id against ClassJoined Ids to see if the user joined this specific class
-        for (i = 0; i < fitClass.classJoined.length; i++) {
-          if (fitClass.classJoined[i].id === fitClass.id) {
-            isEnrolled = true;
-            break;
-          } else {
+          //if the user is signed up for no classes, assign isEnrolled to False for each class.
+          if (fitClass.classJoined.length === 0) {
             isEnrolled = false;
           }
-        }
 
-        //if class is full and member has not joined, say "class full"
-        if (
-          isEnrolled === false &&
-          fitClass.max_size - fitClass.current_size === 0
-        ) {
-          joinOrRemoveBtn =
-            "<p class= 'align-self-center text-red'>Class Full</p>";
-        }
-        //if class is not full and member has not joined, create a join button
-        else if (isEnrolled === false) {
-          joinOrRemoveBtn = `<button
+          //check each class fit class id against ClassJoined Ids to see if the user joined this specific class
+          for (i = 0; i < fitClass.classJoined.length; i++) {
+            if (fitClass.classJoined[i].id === fitClass.id) {
+              isEnrolled = true;
+              break;
+            } else {
+              isEnrolled = false;
+            }
+          }
+
+          //if class is full and member has not joined, say "class full"
+          if (
+            isEnrolled === false &&
+            fitClass.max_size - fitClass.current_size === 0
+          ) {
+            joinOrRemoveBtn =
+              "<p class= 'align-self-center text-red'>Class Full</p>";
+          }
+          //if class is not full and member has not joined, create a join button
+          else if (isEnrolled === false) {
+            joinOrRemoveBtn = `<button
           type="button"
           onclick="addToClass(), window.location.reload()"
           class="btn background-red text-white align-self-center join-btn"
@@ -139,9 +140,9 @@ $(document).ready(function () {
           Join
           </button>`;
 
-          //if member has joined, regardless of if class is full, create a remove button
-        } else {
-          joinOrRemoveBtn = `<button
+            //if member has joined, regardless of if class is full, create a remove button
+          } else {
+            joinOrRemoveBtn = `<button
           type="button"
           onclick="removeFromClass(), window.location.reload()"
           class="btn background-red text-white align-self-center join-btn"
@@ -150,27 +151,27 @@ $(document).ready(function () {
           >
           Remove
           </button>`;
-        }
+          }
 
-        //if the user is enrolled, button will be a remove Button
+          //if the user is enrolled, button will be a remove Button
 
-        //convert the ajax timestamp into more readable time to display on page.
-        const twelveHourTime = tConvert(fitClass.start_time);
+          //convert the ajax timestamp into more readable time to display on page.
+          const twelveHourTime = tConvert(fitClass.start_time);
 
-        //dynamic template that inserts ajax response fitClasss into html
-        const classTemplate = `
+          //dynamic template that inserts ajax response fitClasss into html
+          const classTemplate = `
         <div class="row m-0 pb-3 pt-3 border-to-bottom-thin font-large">
           <div class="col border-teal pb-3 text-center">
             <h4 class="class-title-${fitClass.day} bold text-red">${
-          fitClass.class_name
-        }</h4>
+            fitClass.class_name
+          }</h4>
             <div class="class-time-${fitClass.day}">${twelveHourTime}</div>
             <div class="class-trainer-${fitClass.day}" >${
-          fitClass.trainer_name
-        }</div>
+            fitClass.trainer_name
+          }</div>
             <div class="class-spots-left-${fitClass.day}">${
-          fitClass.max_size - fitClass.current_size
-        } slots </div>
+            fitClass.max_size - fitClass.current_size
+          } slots </div>
           </div>
           <div class="col border-to-right border-teal d-flex">
           ${joinOrRemoveBtn}
@@ -178,13 +179,15 @@ $(document).ready(function () {
         </div>
 `;
 
-        //search the divs for one with a class day that matches the classname, and append to that div.
-        for (i = 0; i < $weekDayDiv.length; i++) {
-          if ($weekDayDiv[i].className === fitClass.day) {
-            $weekDayDiv.eq(i).append(classTemplate);
+          //search the divs for one with a class day that matches the classname, and append to that div.
+          for (i = 0; i < $weekDayDiv.length; i++) {
+            if ($weekDayDiv[i].className === fitClass.day) {
+              $weekDayDiv.eq(i).append(classTemplate);
+            }
           }
-        }
-      });
+        });
+      };
+      writeSchedule();
     });
   };
 
