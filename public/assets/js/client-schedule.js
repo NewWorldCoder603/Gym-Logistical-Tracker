@@ -1,4 +1,4 @@
-$(document).ready(function () {
+
   const $weekDay = $(".week-day");
   const $dateOfYear = $(".date-of-year");
   const $weekDayDiv = $(".weekday-placeholder");
@@ -46,6 +46,7 @@ $(document).ready(function () {
       url: `/api/classes/${localStorage.getItem("userId")}`,
       method: "GET",
     }).then(function (classData) {
+      $weekDayDiv.empty()
       //function displays member info and what classes they are signed up for.
       //.replace borrowed from https://www.digitalocean.com/community/tutorials/js-capitalizing-strings
       const displayMemberInfo = () => {
@@ -69,6 +70,7 @@ $(document).ready(function () {
 
         //takes each class the user is signed up for, then appends that class info to user info page
         function writeUsersClasses() {
+          $classesTakenDiv.empty()
           numOfClassesTaken = `${classData[0].classJoined.length}`;
           for (i = 0; i < numOfClassesTaken; i++) {
             const className = classData[i].class_name;
@@ -88,6 +90,8 @@ $(document).ready(function () {
         //if user is signed up for one class, appends "class", else, appends "classes"
         function isClassesPlural() {
           $classText = $(".sentence-text-classes");
+          //empties class text so it doesn't repeat during recursive 
+          $classText.empty()
 
           if (classData[0].classJoined.length === 1) {
             $classText.append("class this week");
@@ -99,7 +103,7 @@ $(document).ready(function () {
       };
       displayMemberInfo();
 
-      const writeSchedule = () => {
+      const populateSchedule = () => {
         //iterates over each class that comes in from ajax list to populate schedule
         classData.map(function (fitClass) {
           //variable asking is the user enrolled in the current class
@@ -132,7 +136,7 @@ $(document).ready(function () {
           else if (isEnrolled === false) {
             joinOrRemoveBtn = `<button
           type="button"
-          onclick="addToClass(), window.location.reload()"
+          onclick="addToClass()"
           class="btn background-red text-white align-self-center join-btn"
           data-id="${fitClass.id}"
           data-joinedClassList="false"
@@ -144,7 +148,7 @@ $(document).ready(function () {
           } else {
             joinOrRemoveBtn = `<button
           type="button"
-          onclick="removeFromClass(), window.location.reload()"
+          onclick="removeFromClass()"
           class="btn background-red text-white align-self-center join-btn"
           data-id="${fitClass.id}"
           data-joinedClassList="true"
@@ -187,7 +191,7 @@ $(document).ready(function () {
           }
         });
       };
-      writeSchedule();
+      populateSchedule();
     });
   };
 
@@ -224,7 +228,7 @@ $(document).ready(function () {
       window.location.replace("/");
     });
   });
-});
+
 
 //  tells the database the user has signed up for the class, and adds their to 'roster' in backend.
 const addToClass = () => {
@@ -247,9 +251,11 @@ const addToClass = () => {
       id: classId,
       date: classDate,
       memberid: memberId,
+      },
       success: function () {
         console.log("success");
-      },
+        //repopulates user data, then repopulates schedule data with updated info
+        getClasses()
     },
   });
 };
@@ -275,11 +281,11 @@ const removeFromClass = () => {
       id: classId,
       date: classDate,
       memberid: memberId,
-      },
-      success: function () {
-        console.log("User removed from Class");
+    },
+    success: function () {
+      console.log("User removed from Class");
+           //repopulates user data, then repopulates schedule data with updated info
+           getClasses()
     },
   });
 };
-
-

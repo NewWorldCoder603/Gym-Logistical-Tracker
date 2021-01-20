@@ -61,6 +61,7 @@ displayCurrentDate();
 
 //grab classes from database, then write a dynamic page.
 const populateSchedule = () => {
+  $weekDayDiv.empty()
   return $.ajax({
     //grabs user id from local storage(set in login page), then ajax calls for data for classes and that user.
     url: `/api/classes/${localStorage.getItem("userId")}`,
@@ -72,7 +73,7 @@ const populateSchedule = () => {
       if (fitClass.trainer_id === parseInt(localStorage.getItem("userId"))) {
         deleteBtn = `<button
           type="button"
-          onclick="deleteClass()"
+          onclick="deleteClass(), populateSchedule()"
           class="btn background-red text-white align-self-center join-btn"
           data-id="${fitClass.id}"
           data-joinedClassList="true"
@@ -107,6 +108,7 @@ const populateSchedule = () => {
 
       //search the divs for one with a class day that matches the classname, and append to that div.
       function appendtoWeekday() {
+   
         for (i = 0; i < $weekDayDiv.length; i++) {
           if ($weekDayDiv[i].className === fitClass.day) {
             $weekDayDiv.eq(i).append(classTemplate);
@@ -224,25 +226,47 @@ $(".add-class-btn").click(function () {
     data: {
       class_name: "Barbell",
       day: "Monday",
-      start_time: '9:00:00',
+      start_time: "9:00:00",
       current_size: 0,
       max_size: 10,
       trainer_id: 2,
-      roster: '',
+      roster: "",
     },
     success: function () {
-      console.log("User removed from Class");
+      console.log("class added");
+      populateSchedule()
+
     },
   });
 });
 
-function viewRoster(){
+function viewRoster() {
+  const classId = event.target.getAttribute("data-id")
   $.ajax({
-    url: `/api/trainer/${localStorage.getItem("userId")}`,
+    url: `/api/roster/${classId}`,
     method: "GET",
-  }).then(function (trainerClassInfo) {
-    function displayNameGreeting() {
+  }).then(function (classRoster) {
+
+    function writeRoster(){
+      $rosterList = $('.displayPage')
+
+      //empty out any previous list items
+      $rosterList.empty()
+
+      //if the class is empty, display no one has signed up for the class
+      if(classRoster.length === 1){
+        listItemTeamplate = `<li class="list-group-item">No members signed up yet </li>`
+        $rosterList.append(listItemTeamplate)
+      }
+      //otherwise, display each member who signed up for the class
+      else{
+      for(let i=0; i<classRoster.length-1; i++){
+        console.log(i)
+        listItemTeamplate = `<li class="list-group-item">${i+1}.   ${classRoster[i]} </li>`
+        $rosterList.append(listItemTeamplate)
+      }}
+
+    }
+    writeRoster()
+  });
 }
-
-
-
