@@ -56,7 +56,7 @@ module.exports = function (app) {
             res.json(classBundle);
           });
         })
-        .catch((err) => res.status(401).json(err));
+        .catch((err) => res.json(err));
     });
   });
 
@@ -85,7 +85,7 @@ module.exports = function (app) {
               { where: { id: userEmployee.dataValues.id } }
             );
           })
-          .catch((err) => res.status(401).send(err));
+          .catch((err) => res.json(err));
       } else {
         // updates the is_logged_in column in member table to true to track the logged in user
         db.Member.update(
@@ -93,7 +93,7 @@ module.exports = function (app) {
           { where: { id: userMember.id } }
         )
           .then((result) => res.json({ result }))
-          .catch((err) => res.status(401).send(err));
+          .catch((err) => res.json(err));
       }
     });
   });
@@ -111,7 +111,7 @@ module.exports = function (app) {
       role: req.body.role,
     })
       .then((result) => res.json(result))
-      .catch((err) => res.status(401).json(err));
+      .catch((err) => res.json(err));
   });
 
   // POST API and query to insert the new member registration record in the member table in the database
@@ -135,7 +135,7 @@ module.exports = function (app) {
           message = "This email is already registered with us.";
         }
         // any other error, send it as a response to be handled at front-end
-        res.json({ error: message });
+        res.status(500).json({ error: message });
       });
   });
 
@@ -170,7 +170,7 @@ module.exports = function (app) {
         { where: { id: req.body.id } }
       )
         .then((result) => res.json(result))
-        .catch((err) => res.status(401).json(err));
+        .catch((err) => res.json(err));
     });
   });
 
@@ -200,11 +200,11 @@ module.exports = function (app) {
         { where: { id: req.body.id } }
       )
         .then((result) => res.json(result))
-        .catch((err) => res.status(401).json(err));
+        .catch((err) => res.json(err));
     });
   });
 
-  // API POST route for adding a member/client to a class
+  // API POST route for adding a class
   app.post("/api/addClass", (req, res) => {
     //Adds a new class to the database
     db.Class.create({
@@ -217,7 +217,7 @@ module.exports = function (app) {
       roster: req.body.roster,
     })
       .then((result) => res.json(result))
-      .catch((err) => res.status(401).json(err));
+      .catch((err) => res.json(err));
   });
 
   app.delete("/api/removeClass/:id", (req, res) => {
@@ -228,7 +228,7 @@ module.exports = function (app) {
       .catch((err) => res.status(500).json(err));
   });
 
-  // POST API that allows a manager to add a trainer to the employee table in the database
+  // POST API that allows a manager to add a trainer/manager to the employee table in the database
   app.post("/api/manager/addTrainer", (req, res) => {
     db.Employee.create({
       email: req.body.email,
@@ -237,23 +237,24 @@ module.exports = function (app) {
       last_name: req.body.last_name,
       gender: req.body.gender,
       phone: req.body.phone ? parseInt(req.body.phone) : null,
-      role: "trainer",
+      role: req.body.role,
     })
       .then((result) => res.json(result))
       .catch((err) => res.json(err));
   });
 
-  // API GET route for deleting a trainer
+  // GET API that allows a manager to delete a trainer
   app.get("/api/manager/deleteTrainer/:id", (req, res) => {
     db.Employee.destroy({ where: { id: req.params.id } })
       .then((result) => res.json(result))
-      .catch((err) => res.status(401).json(err));
+      .catch((err) => res.json(err));
   });
 
   // GET API that allows a manager to view all the trainers
   app.get("/api/manager/trainers", (req, res) => {
     db.Employee.findAll({ where: { role: "trainer" } })
       .then((result) => {
+        // removing password from the result records for security reasons
         result.forEach((trainer) => {
           delete trainer.dataValues.password;
         });
@@ -307,8 +308,13 @@ module.exports = function (app) {
   // GET API that allows a manager to view all the members
   app.get("/api/manager/members", (req, res) => {
     db.Members.findAll({})
-      .then((result) => res.json(result))
-      .catch((err) => res.status(401).json(err));
+      .then((result)=>{
+        result.forEach((member) => {
+          delete member.dataValues.password;
+        });
+        res.json(result);
+      })
+      .catch((err) => res.json(err));
   });
 
   app.get("/api/trainer/:id", (req, res) => {
@@ -368,6 +374,6 @@ module.exports = function (app) {
           res.json(classRoster);
         });
       })
-      .catch((err) => res.status(401).json(err));
+      .catch((err) => res.json(err));
   });
 };

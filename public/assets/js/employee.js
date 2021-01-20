@@ -61,6 +61,7 @@ displayCurrentDate();
 
 //grab classes from database, then write a dynamic page.
 const populateSchedule = () => {
+  $weekDayDiv.empty();
   return $.ajax({
     //grabs user id from local storage(set in login page), then ajax calls for data for classes and that user.
     url: `/api/classes/${localStorage.getItem("userId")}`,
@@ -72,7 +73,7 @@ const populateSchedule = () => {
       if (fitClass.trainer_id === parseInt(localStorage.getItem("userId"))) {
         deleteBtn = `<button
           type="button"
-          onclick="deleteClass()"
+          onclick="deleteClass(), populateSchedule()"
           class="btn background-red text-white align-self-center join-btn"
           data-id="${fitClass.id}"
           data-joinedClassList="true"
@@ -216,25 +217,136 @@ const deleteClass = () => {
 };
 
 //on logout click, let database know, erase user local storage id, redirect back to login page.
-$(".add-class-btn").click(function () {
-  console.log("clicked");
-  return $.ajax({
-    url: "/api/addClass",
-    method: "POST",
-    data: {
-      class_name: "Barbell",
-      day: "Monday",
-      start_time: '9:00:00',
-      current_size: 0,
-      max_size: 10,
-      trainer_id: 2,
-      roster: '',
-    },
-    success: function () {
-      console.log("User removed from Class");
-    },
-  });
+$(".add-class-form-btn").click(function () {
+  const rosterOrClassDiv = $(".roster-or-addClass");
+  rosterOrClassDiv.empty();
+
+  addClassTemplate = `<div class = "card p-3 mt-5 mb-5">
+  <div class="card-header"> Add Class</div>
+  <form class="row g-3">
+      <div class="row g-3">
+          <div class="col">
+          <label for="inputClassName" class="form-label">Class Name</label>
+          <input type="text" id="inputClassName" class="form-control" placeholder="Class Name" aria-label="Class name">
+          </div>
+          <div class="col">
+          <label for="inputWeekday" class="form-label">Weekday</label>
+          <select id="inputWeekDay" class="form-select">
+              <option>Monday</option>
+              <option>Tuesday</option>
+              <option>Wednesday</option>
+              <option>Thursday</option>
+              <option>Friday</option>
+              <option>Saturday</option>
+              <option>Sunday</option>
+          </select>
+          </div>
+      </div>
+      <div class="row g-3">
+          <div class="col">
+          <label for="inputStartTime" class="form-label">Class Start Time</label>
+          <select id="inputStartTime" class="form-select">
+              <option>06:00:00</option>
+              <option>07:00:00</option>
+              <option>08:00:00</option>
+              <option>09:00:00</option>
+              <option>10:00:00</option>
+              <option>11:00:00</option>
+              <option>12:00:00</option>
+              <option>13:00:00</option>
+              <option>14:00:00</option>
+              <option>15:00:00</option>
+              <option>16:00:00</option>
+              <option>17:00:00</option>
+              <option>18:00:00</option>
+          </select>
+          </div>
+          <div class="col">
+          <label for="inputMaxSize" class="form-label">Max Class Size</label>
+          <select id="inputMaxSize" class="form-select">
+              <option>10</option>
+              <option>11</option>
+              <option>12</option>
+              <option>13</option>
+              <option>14</option>
+              <option>15</option>
+              <option>16</option>
+              <option>17</option>
+              <option>18</option>
+              <option>19</option>
+              <option>20</option>
+          </select>
+          </div>
+      </div>
+      <div class="col-8"></div>
+      <div class="col-4">
+          <button onclick= "createClass()" type="button" class="btn btn-danger mt-3">Create Class</button>
+      </div>
+  </form>
+</div>
+</div>`;
+  rosterOrClassDiv.append(addClassTemplate);
+
+
 });
 
 
 
+function createClass() {
+  const $inputClassName = $('#inputClassName').val()
+  const $inputWeekDay = $('#inputWeekDay').val()
+  const $inputStartTime = $('#inputStartTime').val()
+  const $inputMaxSize = $('#inputMaxSize').val()
+  const userId = localStorage.getItem('userId')
+
+  return $.ajax({
+    url: "/api/addClass",
+    method: "POST",
+    data: {
+      class_name: $inputClassName,
+      day: $inputWeekDay,
+      start_time: $inputStartTime,
+      current_size: 0,
+      max_size: $inputMaxSize,
+      trainer_id: userId,
+      roster: "",
+    },
+    success: function () {
+      console.log("class added");
+      populateSchedule()
+
+    },
+  });
+}
+
+function viewRoster() {
+  const classId = event.target.getAttribute("data-id");
+  $.ajax({
+    url: `/api/roster/${classId}`,
+    method: "GET",
+  }).then(function (classRoster) {
+    function writeRoster() {
+      $rosterList = $(".displayPage");
+
+      //empty out any previous list items
+      $rosterList.empty();
+
+      //if the class is empty, display no one has signed up for the class
+      if (classRoster.length === 1) {
+        listItemTeamplate = `<li class="list-group-item">No members signed up yet </li>`;
+        $rosterList.append(listItemTeamplate);
+      }
+      //otherwise, display each member who signed up for the class
+      else {
+        for (let i = 0; i < classRoster.length - 1; i++) {
+          console.log(i);
+          listItemTeamplate = `<li class="list-group-item">${i + 1}.   ${
+            classRoster[i]
+          } </li>`;
+          $rosterList.append(listItemTeamplate);
+        }
+      }
+    }
+    writeRoster();
+  });
+}
