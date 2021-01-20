@@ -72,7 +72,7 @@ const populateSchedule = () => {
       if (fitClass.trainer_id === parseInt(localStorage.getItem("userId"))) {
         deleteBtn = `<button
           type="button"
-          onclick="removeClass(), window.location.reload()"
+          onclick="deleteClass()"
           class="btn background-red text-white align-self-center join-btn"
           data-id="${fitClass.id}"
           data-trainer-id="${fitClass.trainer_id}"
@@ -210,7 +210,6 @@ const deleteClass = () => {
   return $.ajax({
     url: `/api/removeClass/${id}`,
     method: "DELETE",
-
     success: function () {
       console.log("Delete Request Sent");
     },
