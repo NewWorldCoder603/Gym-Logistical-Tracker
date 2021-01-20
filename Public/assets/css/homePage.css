@@ -2,11 +2,6 @@ body {
   background-color: #eeeeee;
 }
 
-/* #member {
-  color: #d22e33;
-  font-weight: bold;
-} */
-
 .text-red {
   color: #d22e33;
   font-weight: bold;
@@ -60,4 +55,3 @@ body {
     display: none;
   }
 }
-

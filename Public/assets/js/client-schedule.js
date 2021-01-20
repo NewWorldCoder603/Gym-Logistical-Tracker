@@ -275,9 +275,11 @@ const removeFromClass = () => {
       id: classId,
       date: classDate,
       memberid: memberId,
+      },
       success: function () {
         console.log("User removed from Class");
-      },
     },
   });
 };
+
+

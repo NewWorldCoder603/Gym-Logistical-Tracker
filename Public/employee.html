@@ -57,70 +57,45 @@
             <h2 class="mt-5 mb-5 trainer-name"></h2>
             <p>
               Your are currently teaching
-              <span class="num-classes-taught"><b></b></span> <span class='sentence-text-classes'></span> 
+              <span class="num-classes-taught"><b></b></span>
+              <span class="sentence-text-classes"></span>
             </p>
             <div class="classes-taught"></div>
 
-            <button type="button" class="btn logout-btn mb-5 mt-5">
+            <button
+              type="button"
+              class="btn logout-btn mb-5 mt-5 dflex justify-self-center"
+            >
               Log Out
             </button>
+
+            <button type="button" class="btn add-class-btn mb-5 mt-5">
+              Add Class
+            </button>
           </div>
-          <!--Meet the Trainers-->
+          <!--Show Class Roster-->
           <div class="col-12 col-md-6 text-center background-dark">
-            <h2 class="div text-red my-3">Meet Your Trainers!</h2>
-            <div
-              id="carouselExampleSlidesOnly"
-              class="carousel slide"
-              data-bs-ride="carousel"
-            >
-              <div class="carousel-inner">
-                <div class="carousel-item active">
-                  <img
-                    src="./assets/images/trainer_abeer.jpg"
-                    class="d-block w-50 center max-height"
-                    alt="cover photo of trainer abeer"
-                  />
-                  <div
-                    class="carousel-caption d-none d-md-block center background-t-red"
-                  >
-                    <h5>Abeer</h5>
-                    <p>Zumba</p>
-                  </div>
+            <h2 class="div text-red my-3">Class Roster</h2>
+            <div class="row ">
+                <div class = "col-12 d-flex justify-content-center">
+                    <div class="card mb-5 background-red" style="width: 100%;">
+                    
+                        <ul class="list-group list-group-flush text-start">
+                        <li class="list-group-item">First Name: </li>
+                        <li class="list-group-item">Last Name:</li>
+                        <li class="list-group-item">Gender:</li>
+                        <li class="list-group-item">Email Address: </li>
+                        <li class="list-group-item">Phone Number: </li>
+                        </ul>
+                        
+                    </div>
                 </div>
-                <div class="carousel-item">
-                  <img
-                    src="./assets/images/trainer_arav.jpg"
-                    class="d-block w-50 center max-height"
-                    alt="cover photo of trainer arav"
-                  />
-                  <div
-                    class="carousel-caption d-none d-md-block center background-t-red"
-                  >
-                    <h5>Arav</h5>
-                    <p>Spin</p>
-                  </div>
-                </div>
-                <div class="carousel-item">
-                  <img
-                    src="./assets/images/trainer_felicia.jfif"
-                    class="d-block w-50 center max-height"
-                    alt="cover photo of trainer felicia"
-                  />
-                  <div
-                    class="carousel-caption d-none d-md-block center background-t-red"
-                  >
-                    <h5>Felicia</h5>
-                    <p>Barbell Blast</p>
-                  </div>
-                </div>
-              </div>
             </div>
-          </div>
         </div>
       </div>
 
       <!--Schedule Section-->
-      <section class="container-fluid px-5">
+      <section class="container-fluid px-5 mt-5">
         <div class="row background-gray">
           <div class="col-sm-12 col-md-6 col-lg pt-2 border-teal">
             <h3 class="text-red week-day text-center"></h3>

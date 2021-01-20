@@ -64,7 +64,8 @@
                                     <input type="text" id="lastName" class="form-control" placeholder="Last Name" aria-label="Last name">
                                 </div>
                             </div>
-                            <div class="col-12">
+                            <div class="row g-3">
+                            <div class="col">
                                 <label for="inputGender" class="form-label">Gender</label>
                                 <select id="inputGender" class="form-select">
                                     <option>Male</option>
@@ -72,26 +73,20 @@
                                     <option>Other</option>
                                 </select>
                             </div>
-                            <div class="col-12">
-                                <label for="inputBirthday" class="form=label">Birthdate (yyyy-mm-dd)</label>
+                            <div class="col">
+                                <label for="inputBirthday" class="form-label">Birthdate (yyyy-mm-dd)</label>
+                                <!--Change type to date instead of text-->
                                 <input type="text" class="form-control" id="inputBirthday" placeholder="Birthdate (yyyy-dd-mm)">
                             </div>
-                            <div class="col-md-6">
-                                <label for="inputPhone" class="form-label">Phone Number (ten digit number only, no parentheses or dashes please)</label>
+                            </div>
+                            <div class="col-md-12">
+                                <label for="inputPhone" class="form-label">Phone Number <br> (ten digit number only, no parentheses / dashes please)</label>
                                 <input type="text" id="inputPhone" class="form-control" placeholder="Phone Number">
                             </div>
-                            <!-- Maybe use this for Manager page? -->
-                            <!-- <div class="col=col-md-6">
-                                <label for="inputRole" class="form-label">Select Role</label>
-                                <select id="inputRole" class="form-select">
-                                    <option selected>Choose...</option>
-                                    <option>New Employee</option>
-                                    <option>New Member</option>
-                                </select> -->
                             </div>
                             <div class="col-8"></div>
                             <div class="col-4">
-                                <button id="submitRegistration" type="button" class="btn btn-danger">Submit Registration</button>
+                                <button id="submitRegistration" type="button" class="btn btn-danger mt-3">Submit Registration</button>
                             </div>
                         </form>
                     </div>

@@ -1,41 +1,75 @@
-$(".hireBtn").click(function () {
+//hire trainer variables
+const email = $("#inputEmail");
+const password = $("#inputPassword");
+const firstName = $("#firstName");
+const lastName = $("#lastName");
+const birthday = $("#inputBirthday");
+const gender = $("#inputGender");
+const phone = $("#inputPhone");
+const role = $("#inputRole");
+//trainer list variables
+const trainerList = $(".trainerNameList");
+
+loadTrainers();
+
+//Get trainer list on page load.
+function loadTrainers() {
   $.ajax({
-    url: `/api/member/${window.localStorage.getItem("userId")}`,
+    url: `/api/manager/trainers`,
     method: "GET",
-  }).then(function (data) {
-    console.log(data);
-    console.log("hello");
-    localStorage.clear();
-    window.location.replace("/");
+  }).then(function (trainerNames) {
+    // $(trainerList).empty();
+    console.log(trainerNames);
+    for (let i = 0; i < trainerNames.length; i++) {
+      const firstName = trainerNames[i].first_name;
+      const lastName = trainerNames[i].last_name;
+      $(trainerList).append(`
+        <li class="me-5 d-flex float-left text-white">${firstName} ${lastName} <button type="button" class="btn darkBtn d-flex float-right ms-5 mb-3 viewBtn">View</button></li>`);
+    }
+  });
+}
+//View button sends individual trainer's information to the right hand box.
+// $("body").on("click", ".viewBtn", function () {
+//   $.ajax({
+//     url: `/api/manager/trainers`,
+//     method: "GET",
+//   }).then(function (trainerInfo) {
+// })
+
+//submit button listener for hire new trainer
+$("body").on("click", "#hireBtn", function () {
+  $.ajax({
+    url: "/api/manager/addTrainer/",
+    data: {
+      email: email.val().trim(),
+      password: password.val().trim(),
+      first_name: firstName.val().trim(),
+      last_name: lastName.val().trim(),
+      gender: gender.val().trim(),
+      phone: phone.val().trim(),
+      role: role.val().trim(),
+    },
+    method: "POST",
+
+    error: function (req, status, err) {
+      if (err) alertModal(err);
+    },
+  }).then(function (response) {
+    console.log(response);
+    //If sign-up goes through, refresh manager page
+    window.location.href = "/manager";
   });
 });
 
-//   //Clear trails list at start of each search so that results don't stack. - SM
-//   $('#trailResults').empty();
+//function to display Alert Modal on login error
+function alertModal(title, body) {
+  // Display error message to the user in a modal
+  $("#alert-modal-title").html(title);
+  $("#alert-modal-body").html(body);
+  $("#alert-modal").modal("show");
+}
 
-//   //Set trail information variables for ajax call and create for loop - SM
-//   for (let i = 0; i < response.trails.length; i++) {
-//     let trailName = response.trails[i].name;
-//     let trailLocation = response.trails[i].location;
-//     let trailSummary = response.trails[i].summary;
-//     let trailDifficulty = response.trails[i].difficulty;
-
-//     console.log(response.trails[i].name);
-
-//     //Populate trail information list on page. -SM and TW
-//     $("#trailResults").append(`<div class="trailListResults">
-//     <div class="left-align">
-//     <a class=" trailButton waves-effect waves-light btn-small">${trailName}</a>
-//     </div>
-//     <div id="trailLocation" class="left-align trailData">
-//       <b>Location:</b> ${trailLocation}
-//     </div>
-
-//     <div id="trailSummary" class="left-align trailData">
-//       <b>Summary:</b> ${trailSummary}
-//     </div>
-
-//     <div id="trailRating" class="left-align trailData">
-//       <b>Difficulty:</b> ${trailDifficulty}
-//     </div>`);
-//   }
+//Close modal on close button click
+$(".modalBtn").click(function () {
+  $("#alert-modal").modal("hide");
+});

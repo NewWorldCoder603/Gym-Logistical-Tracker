@@ -26,7 +26,7 @@
       <section class="mb-5 background-dark container-fluid ">
         <div class="row align-items-center ">
           <div class="col">
-            <h1 class="big-heading-text less-big-heading text-end no-heading">Dev</h1>
+            <h1 class="big-heading-text less-big-heading text-end ">Dev</h1>
           </div>
           <div class="col text-center ">
             <img
@@ -36,7 +36,7 @@
             />
           </div>
           <div class="col">
-            <h1 class="big-heading-text less-big-heading no-heading"> &nbsp Fit</h1> <!--&nbsp adds space to even out heading spacing-->
+            <h1 class="big-heading-text less-big-heading"> &nbsp Fit</h1> <!--&nbsp adds space to even out heading spacing-->
           </div>
         </div>
         
@@ -46,13 +46,15 @@
 
       <div class="container mb-5">
         <div class="row align-content-center">
-          <!--Trainer Info-->
+                      <!--Trainer Info-->
           <div class="background-red col-12 col-md-6 text-center mb-5 mb-md-0">
             <h2 class="my-3">Current Trainers</h2>
             <div class="row ">
+                <!-- <button id="testBtn" type="button" class="btn btn-primary mt-3">Testing</button> -->
                 <div class = "col-12 d-flex justify-content-center">
-                    <ul style="list-style-type:none;">
-                        <li class="me-5 float-left text-white">Trainer name  </li>
+                    
+                    <ul class="trainerNameList" style="list-style-type:none;">
+                        <!-- <li class="me-5 float-left text-white">Trainer name  </li>
                         <button type="button" class="btn darkBtn d-flex float-right ms-5 mb-3">View</button>
                         <li class="me-5 float-left text-white">Trainer name  </li>
                         <button type="button" class="btn darkBtn d-flex float-right ms-5 mb-3">View</button>
@@ -61,98 +63,114 @@
                         <li class="me-5 float-left text-white">Trainer name  </li>
                         <button type="button" class="btn darkBtn d-flex float-right ms-5 mb-3">View</button>
                         <li class="me-5 float-left text-white">Trainer name  </li>
-                        <button type="button" class="btn darkBtn d-flex float-right ms-5 mb-3">View</button>
-                    </ul>  
+                        <button type="button" class="btn darkBtn d-flex float-right ms-5 mb-3">View</button> -->
+                    </ul>
                 </div>
             </div>
-            <button type="button" class="btn darkBtn  mb-5">Hire New Trainer</button>
+            
           </div>
-          <!--View Trainer Info-->
-          <div class="col-12 col-md-6 text-center background-dark">
-            <h2 class="div text-red my-3">Employee Information</h2>
-            <div class="row ">
-                <div class = "col-12 d-flex justify-content-center">
-                    <div class="card mb-5 background-red" style="width: 18rem;">
-                        <div class="card-header">
-                        Trainer Name
-                        </div>
-                        <ul class="list-group list-group-flush text-start">
-                        <li class="list-group-item">First Name: </li>
-                        <li class="list-group-item">Last Name:</li>
-                        <li class="list-group-item">Gender:</li>
-                        <li class="list-group-item">Email Address: </li>
-                        <li class="list-group-item">Phone Number: </li>
-                        </ul>
-                        <!-- terminate button -->
-                        <div class="card-footer">
-                            <button type="button" class="btn darkBtn">Terminate Employee</button>
-                        </div>
+          <!--Trainer Info-->
+          <div class="background-dark col-12 col-md-6 text-center mb-5 mb-md-0">
+            <h2 class="my-3 text-red">Manage Trainers</h2>
+            <div class="container d-flex justify-content-center">
+                <div class="row">
+                  <div class="col-xs-12 ">
+                    <nav>
+                      <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
+                        <a class="nav-item nav-link active" id="nav-trainerInfo-tab" data-toggle="tab" href="#nav-trainerInfo" role="tab" aria-controls="nav-trainerInfo" aria-selected="true">Trainer Info</a>
+                        <a class="nav-item nav-link" id="nav-hireNewTrainer-tab" data-toggle="tab" href="#nav-hireNewTrainer" role="tab" aria-controls="nav-hireNewTrainer" aria-selected="false">Hire New Trainer</a>
+                        <!-- <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-contact" role="tab" aria-controls="nav-contact" aria-selected="false">Contact</a>
+                        <a class="nav-item nav-link" id="nav-about-tab" data-toggle="tab" href="#nav-about" role="tab" aria-controls="nav-about" aria-selected="false">About</a> -->
+                      </div>
+                    </nav>
+                    <div class="tab-content py-3 px-3 px-sm-0" id="nav-tabContent">
+                      <div class="tab-pane fade show active" id="nav-trainerInfo" role="tabpanel" aria-labelledby="nav-trainerInfo-tab">
+                        <div class="card mb-5 background-red" style="width: 18rem;">
+                            <div class="card-header">
+                            Trainer Name
+                            </div>
+                            <ul class="list-group list-group-flush text-start">
+                            <li class="list-group-item">First Name: </li>
+                            <li class="list-group-item">Last Name:</li>
+                            <li class="list-group-item">Gender:</li>
+                            <li class="list-group-item">Email Address: </li>
+                            <li class="list-group-item">Phone Number: </li>
+                            </ul>
+                            <!-- terminate button -->
+                            <div class="card-footer">
+                                <button type="button" class="btn darkBtn">Terminate Employee</button>
+                            </div>
+                        </div>                      
                     </div>
+                      <div class="tab-pane fade" id="nav-hireNewTrainer" role="tabpanel" aria-labelledby="nav-hireNewTrainer-tab">
+                        <div class = "card p-3">
+                            <form class="row g-3">
+                                <div class="row g-3">
+                                    <div class="col">
+                                        <label for="inputEmail" class="form-label">Email Address</label>
+                                        <input type="email" class="form-control" placeholder= "Email Address" id="inputEmail">
+                                    </div>
+                                    <div class="col">
+                                        <label for="inputPassword" class="form-label">Password</label>
+                                        <input type="text" class="form-control" placeholder= "Password" id="inputPassword">
+                                    </div>
+                                </div>
+                                <div class="row g-3">
+                                    <div class="col">
+                                        <label for="inputFirstName" class="form-label">First Name</label>
+                                        <input type="text" id="firstName" class="form-control" placeholder="First Name" aria-label="First name">
+                                    </div>
+                                    <div class="col">
+                                        <label for="inputLastName" class="form-label">Last Name</label>
+                                        <input type="text" id="lastName" class="form-control" placeholder="Last Name" aria-label="Last name">
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <label for="inputGender" class="form-label">Gender</label>
+                                    <select id="inputGender" class="form-select">
+                                        <option>Male</option>
+                                        <option>Female</option>
+                                        <option>Other</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="inputRole" class="form-label">Select Role</label>
+                                    <select id="inputRole" class="form-select">
+                                        <option selected>Choose...</option>
+                                        <option>Manager</option>
+                                        <option>Trainer</option>
+                                    </select>
+                                </div>
+                                <div class="col-12">
+                                    <label for="inputBirthday" class="form=label">Birthdate (yyyy-mm-dd)</label>
+                                    <input type="text" class="form-control" id="inputBirthday" placeholder="Birthdate (yyyy-dd-mm)">
+                                </div>
+                                <div class="col-md-12">
+                                    <label for="inputPhone" class="form-label">Phone Number <br>(ten digit number only, no parentheses/dashes please)</label>
+                                    <input type="text" id="inputPhone" class="form-control" placeholder="Phone Number">
+                                </div>
+                                
+                                <div class="col-8"></div>
+                                <div class="col-4">
+                                    <button id="hireBtn" type="button" class="btn btn-danger mt-3">Hire Trainer</button>
+                                </div>
+                            </form>
+                        </div>
+                      </div>
+                      <!-- <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
+                        Et et consectetur ipsum labore excepteur est proident excepteur ad velit occaecat qui minim occaecat veniam. Fugiat veniam incididunt anim aliqua enim pariatur veniam sunt est aute sit dolor anim. Velit non irure adipisicing aliqua ullamco irure incididunt irure non esse consectetur nostrud minim non minim occaecat. Amet duis do nisi duis veniam non est eiusmod tempor incididunt tempor dolor ipsum in qui sit. Exercitation mollit sit culpa nisi culpa non adipisicing reprehenderit do dolore. Duis reprehenderit occaecat anim ullamco ad duis occaecat ex.
+                      </div>
+                      <div class="tab-pane fade" id="nav-about" role="tabpanel" aria-labelledby="nav-about-tab">
+                        Et et consectetur ipsum labore excepteur est proident excepteur ad velit occaecat qui minim occaecat veniam. Fugiat veniam incididunt anim aliqua enim pariatur veniam sunt est aute sit dolor anim. Velit non irure adipisicing aliqua ullamco irure incididunt irure non esse consectetur nostrud minim non minim occaecat. Amet duis do nisi duis veniam non est eiusmod tempor incididunt tempor dolor ipsum in qui sit. Exercitation mollit sit culpa nisi culpa non adipisicing reprehenderit do dolore. Duis reprehenderit occaecat anim ullamco ad duis occaecat ex.
+                      </div> -->
+                    </div>
+                  
+                  </div>
                 </div>
-            </div>
+          </div>
         </div>
-
-        <!-- Hire Trainer Form -->
-        <!-- <div class="col-12 col-md-6 text-center background-dark">
-            <h2 class="div text-red my-3">Employee Information</h2>
-            <div class="row">
-                <div class="col-sm mx-auto">
-                    <div class = "card p-3">
-                        <form class="row g-3">
-                            <div class="row g-3">
-                                <div class="col">
-                                    <label for="inputEmail" class="form-label">Email Address</label>
-                                    <input type="email" class="form-control" placeholder= "Email Address" id="inputEmail">
-                                </div>
-                                <div class="col">
-                                    <label for="inputPassword" class="form-label">Password</label>
-                                    <input type="text" class="form-control" placeholder= "Password" id="inputPassword">
-                                </div>
-                            </div>
-                            <div class="row g-3">
-                                <div class="col">
-                                    <label for="inputFirstName" class="form-label">First Name</label>
-                                    <input type="text" id="firstName" class="form-control" placeholder="First Name" aria-label="First name">
-                                </div>
-                                <div class="col">
-                                    <label for="inputLastName" class="form-label">Last Name</label>
-                                    <input type="text" id="lastName" class="form-control" placeholder="Last Name" aria-label="Last name">
-                                </div>
-                            </div>
-                            <div class="col-12">
-                                <label for="inputGender" class="form-label">Gender</label>
-                                <select id="inputGender" class="form-select">
-                                    <option>Male</option>
-                                    <option>Female</option>
-                                    <option>Other</option>
-                                </select>
-                            </div>
-                            <div class="col-12">
-                                <label for="inputBirthday" class="form=label">Birthdate (yyyy-mm-dd)</label>
-                                <input type="text" class="form-control" id="inputBirthday" placeholder="Birthdate (yyyy-dd-mm)">
-                            </div>
-                            <div class="col-md-6">
-                                <label for="inputPhone" class="form-label">Phone Number (ten digit number only, no parentheses or dashes please)</label>
-                                <input type="text" id="inputPhone" class="form-control" placeholder="Phone Number">
-                            </div>
-                            <div class="col=col-md-6">
-                                <label for="inputRole" class="form-label">Select Role</label>
-                                <select id="inputRole" class="form-select">
-                                    <option selected>Choose...</option>
-                                    <option>Manager</option>
-                                    <option>Trainer</option>
-                                </select>
-                            </div>
-                            <div class="col-8"></div>
-                            <div class="col-4">
-                                <button id="submitRegistration" type="button" class="btn btn-danger mt-3">Submit Registration</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div> -->
-        
+  </div>
+  
       </div>
 
       <!--Schedule Section-->
@@ -217,8 +235,8 @@
         </div>
       </section>
       <footer class="mt-5 background-dark">
-        <p class="font-large text-red text-center pt-3">Phone: (555) 555 5555</p>
-        <p class="font-large text-red text-center mb-0 pb-3">
+        <p class="font-large text-red text-center">Phone: (555) 555 5555</p>
+        <p class="font-large text-red text-center mb-0">
           111 Stack Lift Ave Salem NH 03070
         </p>
       </footer>
@@ -235,5 +253,8 @@
       integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
       crossorigin="anonymous"
     ></script>
+    <!--Bootstrap links for card tabs-->
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   </body>
 </html>
