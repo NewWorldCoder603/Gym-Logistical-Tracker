@@ -230,7 +230,7 @@ module.exports = function (app) {
   // POST API that allows a manager to add a trainer to the employee table in the database
   app.post("/api/manager/addTrainer", (req, res) => {
     db.Employee.create({
-      email: req.body.userName,
+      email: req.body.email,
       password: md5(req.body.password),
       first_name: req.body.first_name,
       last_name: req.body.last_name,
@@ -239,7 +239,7 @@ module.exports = function (app) {
       role: "trainer",
     })
       .then((result) => res.json(result))
-      .catch((err) => res.status(401).json(err));
+      .catch((err) => res.json(err));
   });
 
   // API GET route for deleting a trainer

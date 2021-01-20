@@ -10,28 +10,31 @@ const role = $("#inputRole");
 //trainer list variables
 const trainerList = $(".trainerNameList");
 
+loadTrainers();
+
 //Get trainer list on page load.
-$("body").on("click", "#testBtn", function () {
+function loadTrainers() {
   $.ajax({
     url: `/api/manager/trainers`,
     method: "GET",
   }).then(function (trainerNames) {
     // $(trainerList).empty();
     console.log(trainerNames);
-    function loadTrainers() {
-      for (let i = 0; i < trainerNames.length; i++) {
-        console.log(trainerNames.first_name);
-        const firstName = trainerNames.first_name;
-        const lastName = trainerNames.last_name;
-        $(trainerList).append(`<ul style="list-style-type:none;">
-    <li class="me-5 float-left text-white">${firstName}${lastName} </li>
-    <button type="button" class="btn darkBtn d-flex float-right ms-5 mb-3">View</button>
-    </ul>  `);
-      }
+    for (let i = 0; i < trainerNames.length; i++) {
+      const firstName = trainerNames[i].first_name;
+      const lastName = trainerNames[i].last_name;
+      $(trainerList).append(`
+        <li class="me-5 d-flex float-left text-white">${firstName} ${lastName} <button type="button" class="btn darkBtn d-flex float-right ms-5 mb-3 viewBtn">View</button></li>`);
     }
-    loadTrainers();
   });
-});
+}
+//View button sends individual trainer's information to the right hand box.
+$("body").on("click", ".viewBtn", function () {
+  $.ajax({
+    url: `/api/manager/trainers`,
+    method: "GET",
+  }).then(function (trainerInfo) {
+})
 
 //submit button listener for hire new trainer
 $("body").on("click", "#hireBtn", function () {
@@ -42,7 +45,6 @@ $("body").on("click", "#hireBtn", function () {
       password: password.val().trim(),
       first_name: firstName.val().trim(),
       last_name: lastName.val().trim(),
-      date_of_birth: birthday.val().trim(),
       gender: gender.val().trim(),
       phone: phone.val().trim(),
       role: role.val().trim(),
@@ -55,7 +57,7 @@ $("body").on("click", "#hireBtn", function () {
   }).then(function (response) {
     console.log(response);
     //If sign-up goes through, refresh manager page
-    window.location.href("/manager");
+    window.location.href = "/manager";
   });
 });
 
