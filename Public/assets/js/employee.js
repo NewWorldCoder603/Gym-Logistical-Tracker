@@ -206,15 +206,13 @@ displayTrainerInfo();
 
 //Not working properly. Perhaps my and dustins tables named differently? Look into this tonight.
 const deleteClass = () => {
-  id = parseInt(event.target.getAttribute("data-id"));
+  const id = parseInt(event.target.getAttribute("data-id"));
   return $.ajax({
-    url: "/api/removeClass",
-    method: "POST",
-    data: {
-      id: id,
-      success: function () {
-        console.log("Delete Request Sent");
-      },
+    url: `/api/removeClass/${id}`,
+    method: "DELETE",
+
+    success: function () {
+      console.log("Delete Request Sent");
     },
   });
 };
