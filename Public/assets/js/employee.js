@@ -236,5 +236,13 @@ $(".add-class-btn").click(function () {
   });
 });
 
+function viewRoster(){
+  $.ajax({
+    url: `/api/trainer/${localStorage.getItem("userId")}`,
+    method: "GET",
+  }).then(function (trainerClassInfo) {
+    function displayNameGreeting() {
+}
+
 
 

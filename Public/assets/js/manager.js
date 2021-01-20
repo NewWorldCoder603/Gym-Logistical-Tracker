@@ -10,6 +10,8 @@ $(".hireBtn").click(function () {
   });
 });
 
+
+
 //   //Clear trails list at start of each search so that results don't stack. - SM
 //   $('#trailResults').empty();
 
