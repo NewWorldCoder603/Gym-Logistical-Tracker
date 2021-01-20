@@ -72,10 +72,9 @@ const populateSchedule = () => {
       if (fitClass.trainer_id === parseInt(localStorage.getItem("userId"))) {
         deleteBtn = `<button
           type="button"
-          onclick="removeClass(), window.location.reload()"
+          onclick="deleteClass()"
           class="btn background-red text-white align-self-center join-btn"
           data-id="${fitClass.id}"
-          data-trainer-id="${fitClass.trainer_id}"
           data-joinedClassList="true"
           >
            Delete 
@@ -137,12 +136,12 @@ function displayTrainerInfo() {
   $.ajax({
     url: `/api/trainer/${localStorage.getItem("userId")}`,
     method: "GET",
-  }).then(function (response) {
+  }).then(function (trainerClassInfo) {
     function displayNameGreeting() {
       $trainerNameDiv = $(".trainer-name");
 
       //grabs just the first name from the full name
-      const fullTrainerName = response[response.length - 1];
+      const fullTrainerName = trainerClassInfo[trainerClassInfo.length - 1];
       const splitName = fullTrainerName.split(" ");
       const trainerFirstName = splitName[0];
 
@@ -152,11 +151,11 @@ function displayTrainerInfo() {
     displayNameGreeting();
 
     function displayHowManyClasses() {
-      console.log(response);
+      console.log(trainerClassInfo);
       const $numOfClassesDiv = $(".num-classes-taught");
 
       //minus 1 because last array item is always just trainers name.
-      const classNumTaught = response.length - 1;
+      const classNumTaught = trainerClassInfo.length - 1;
 
       $numOfClassesDiv.html(`<b>${classNumTaught}</b>`);
     }
@@ -165,21 +164,21 @@ function displayTrainerInfo() {
     function displayTaughtClasses() {
       const $classesTaughtDiv = $(".classes-taught");
 
-      for (let i = 0; i < response.length - 1; i++) {
+      for (let i = 0; i < trainerClassInfo.length - 1; i++) {
         const viewRosterBtn = `<button
       type="button"
       onclick="viewRoster() "
       class="btn align-self-center deleteClassBtn"
-      data-id="${response[i].id}"
+      data-id="${trainerClassInfo[i].id}"
       >
       View Roster
       </button>`;
-        const readableTime = tConvert(response[i].start_time);
+        const readableTime = tConvert(trainerClassInfo[i].start_time);
         const $p = $("<p>");
         $p.attr("class", "trainerClassesDisplay");
-        const className = response[i].class_name;
-        const dayOfWeek = response[i].day;
-        const startTime = response[i].start_time;
+        const className = trainerClassInfo[i].class_name;
+        const dayOfWeek = trainerClassInfo[i].day;
+        const startTime = trainerClassInfo[i].start_time;
 
         $p.html(
           `-${dayOfWeek}, ${className} at ${readableTime}-${viewRosterBtn}`
@@ -193,7 +192,7 @@ function displayTrainerInfo() {
     function isClassesPlural() {
       const $classText = $(".sentence-text-classes");
       //two because the last element in ajax is the trainer name, not a class.
-      if (response.length === 2) {
+      if (trainerClassInfo.length === 2) {
         $classText.append("class this week");
       } else {
         $classText.append("classes this week");
@@ -207,9 +206,10 @@ displayTrainerInfo();
 //Not working properly. Perhaps my and dustins tables named differently? Look into this tonight.
 const deleteClass = () => {
   id = parseInt(event.target.getAttribute("data-id"));
+  console.log(id)
   return $.ajax({
-    url: "/api/removeClass",
-    method: "POST",
+    url: `/api/removeClass/${id}`,
+    method: "DELETE",
     data: {
       id: id,
       success: function () {
@@ -218,3 +218,4 @@ const deleteClass = () => {
     },
   });
 };
+

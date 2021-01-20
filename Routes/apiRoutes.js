@@ -205,7 +205,7 @@ module.exports = function (app) {
   });
 
   // API POST route for adding a member/client to a class
-  app.post("api/addClass", (req, res) => {
+  app.post("/api/addClass", (req, res) => {
     //Adds a new class to the database
     db.Class.create({
       class_name: req.body.class_name,
@@ -220,7 +220,7 @@ module.exports = function (app) {
       .catch((err) => res.status(401).json(err));
   });
 
-  app.post("api/removeClass", (req, res) => {
+  app.post("/api/removeClass", (req, res) => {
     //Removes class from the database
     db.Class.destroy({ where: { id: req.body.id } })
       .then((result) => res.json(result))
