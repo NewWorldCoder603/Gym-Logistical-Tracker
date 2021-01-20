@@ -19,12 +19,13 @@ function loadTrainers() {
     method: "GET",
   }).then(function (trainerNames) {
     // $(trainerList).empty();
-    console.log(trainerNames);
+    // console.log(trainerNames);
     for (let i = 0; i < trainerNames.length; i++) {
       const firstName = trainerNames[i].first_name;
       const lastName = trainerNames[i].last_name;
+      const trainerId = trainerNames[i].id;
       $(trainerList).append(`
-        <li class="me-5 d-flex float-left text-white">${firstName} ${lastName} <button type="button" class="btn darkBtn d-flex float-right ms-5 mb-3 viewBtn">View</button></li>`);
+        <li class="me-5 d-flex float-left text-white" data-id= ${trainerId}">${firstName} ${lastName} <button type="button" class="btn darkBtn d-flex float-right ms-5 mb-3 viewBtn">View</button></li>`);
     }
   });
 }
@@ -34,7 +35,9 @@ function loadTrainers() {
 //     url: `/api/manager/trainers`,
 //     method: "GET",
 //   }).then(function (trainerInfo) {
-// })
+//     console.log(trainerInfo);
+//   });
+// });
 
 //submit button listener for hire new trainer
 $("body").on("click", "#hireBtn", function () {
