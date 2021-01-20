@@ -39,6 +39,7 @@ body {
 .logout-btn {
   background: rgb(49, 49, 49);
   color: whitesmoke;
+    display: inline-block;
 }
 
 /*Meet our Trainers */
@@ -92,11 +93,6 @@ body {
   color: #d22e33;
 }
 
-/* for the join buttons */
-.float-left {
-  float: left;
-}
-
 .font-large {
   font-size: 1.2em;
 }
@@ -104,11 +100,6 @@ body {
 .logo {
   max-width: 10rem;
   height: auto;
-}
-
-.btn {
-  margin: 0 auto;
-  display: block;
 }
 
 /* for delete class button */
@@ -124,3 +115,12 @@ margin-left: 10px;
   color: whitesmoke; 
   font-size: 1.2em;
 }
+
+/* for delete class button */
+.add-class-btn{
+  display: inline-block;
+  background:rgb(49, 49, 49);
+  color: whitesmoke;
+  margin-left: 10px; 
+  }
+

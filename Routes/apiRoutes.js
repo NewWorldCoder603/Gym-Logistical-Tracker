@@ -213,8 +213,8 @@ module.exports = function (app) {
       start_time: req.body.start_time,
       current_size: req.body.current_size,
       max_size: req.body.max_size,
-      trainer_id: trainer_id,
-      roster: roster,
+      trainer_id: req.body.trainer_id,
+      roster: req.body.roster,
     })
       .then((result) => res.json(result))
       .catch((err) => res.status(401).json(err));
