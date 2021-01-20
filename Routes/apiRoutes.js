@@ -342,4 +342,32 @@ module.exports = function (app) {
       })
       .catch((err) => res.status(401).json(err));
   });
+
+  // Query to get class roster
+  app.get("/api/roster/:id", (req, res) => {
+    //Finds class roster
+    db.Class.findOne({ where: { id: req.params.id } })
+      .then((result) => {
+        //Pulls class roster and checks member is in this class
+        const classRoster = [];
+        const currentRosterIds = result.dataValues.roster.split(",");
+        db.Member.findAll({}).then((members) => {
+          members.forEach((member) => {
+            const isMember = currentRosterIds.includes(
+              `${member.dataValues.id}`
+            );
+
+            if (isMember) {
+              const memberName = `${member.dataValues.first_name} ${member.dataValues.last_name}`;
+
+              classRoster.push(memberName);
+            }
+          });
+          classRoster.push(currentRosterIds);
+          console.log(classRoster);
+          res.json(classRoster);
+        });
+      })
+      .catch((err) => res.status(401).json(err));
+  });
 };
