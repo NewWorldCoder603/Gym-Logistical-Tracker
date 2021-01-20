@@ -101,3 +101,7 @@ body {
 .nav > a:hover {
   color: whitesmoke;
 }
+
+.view-roster-btn {
+  color: whitesmoke;
+}
