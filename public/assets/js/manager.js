@@ -59,11 +59,11 @@ $("body").on("click", ".terminateBtn", function () {
   const termBtnId = event.target.getAttribute("data-id");
   console.log(termBtnId);
   $.ajax({
-    url: "/api/manager/deleteTrainer/:id",
-    data: {
-      id: termBtnId,
-    },
-    method: "GET",
+    url: `/api/manager/deleteTrainer/${termBtnId}`,
+    // data: {
+    //   id: termBtnId,
+    // },
+    method: "DELETE", //Should this be a get request or a delete request?
 
     error: function (req, status, err) {
       if (err) alertModal(err);
@@ -71,7 +71,7 @@ $("body").on("click", ".terminateBtn", function () {
   }).then(function (response) {
     console.log(response);
     //If sign-up goes through, refresh manager page
-    // window.location.href = "/manager";
+    window.location.href = "/manager";
   });
 });
 

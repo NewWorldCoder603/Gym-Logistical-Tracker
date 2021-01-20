@@ -244,7 +244,7 @@ module.exports = function (app) {
   });
 
   // GET API that allows a manager to delete a trainer
-  app.get("/api/manager/deleteTrainer/:id", (req, res) => {
+  app.delete("/api/manager/deleteTrainer/:id", (req, res) => {
     db.Employee.destroy({ where: { id: req.params.id } })
       .then((result) => res.json(result))
       .catch((err) => res.json(err));
