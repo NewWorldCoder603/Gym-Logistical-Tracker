@@ -19,7 +19,7 @@ function loadTrainers() {
     method: "GET",
   }).then(function (trainerNames) {
     // $(trainerList).empty();
-    // console.log(trainerNames);
+    console.log(trainerNames);
     for (let i = 0; i < trainerNames.length; i++) {
       const firstName = trainerNames[i].first_name;
       const lastName = trainerNames[i].last_name;
