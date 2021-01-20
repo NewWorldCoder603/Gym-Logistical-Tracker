@@ -205,7 +205,7 @@ module.exports = function (app) {
   });
 
   // API POST route for adding a member/client to a class
-  app.post("api/addClass", (req, res) => {
+  app.post("/api/addClass", (req, res) => {
     //Adds a new class to the database
     db.Class.create({
       class_name: req.body.class_name,
@@ -213,18 +213,19 @@ module.exports = function (app) {
       start_time: req.body.start_time,
       current_size: req.body.current_size,
       max_size: req.body.max_size,
-      trainer_id: trainer_id,
-      roster: roster,
+      trainer_id: req.body.trainer_id,
+      roster: req.body.roster,
     })
       .then((result) => res.json(result))
       .catch((err) => res.status(401).json(err));
   });
 
-  app.post("api/removeClass", (req, res) => {
+  app.delete("/api/removeClass/:id", (req, res) => {
     //Removes class from the database
-    db.Class.destroy({ where: { id: req.body.id } })
+    console.log(req.params);
+    db.Class.destroy({ where: { id: req.params.id } })
       .then((result) => res.json(result))
-      .catch((err) => res.status(401).json(err));
+      .catch((err) => res.status(500).json(err));
   });
 
   // POST API that allows a manager to add a trainer to the employee table in the database
@@ -338,6 +339,34 @@ module.exports = function (app) {
             res.send(classBundle);
           })
           .catch((err) => res.status(401).json(err));
+      })
+      .catch((err) => res.status(401).json(err));
+  });
+
+  // Query to get class roster
+  app.get("/api/roster/:id", (req, res) => {
+    //Finds class roster
+    db.Class.findOne({ where: { id: req.params.id } })
+      .then((result) => {
+        //Pulls class roster and checks member is in this class
+        const classRoster = [];
+        const currentRosterIds = result.dataValues.roster.split(",");
+        db.Member.findAll({}).then((members) => {
+          members.forEach((member) => {
+            const isMember = currentRosterIds.includes(
+              `${member.dataValues.id}`
+            );
+
+            if (isMember) {
+              const memberName = `${member.dataValues.first_name} ${member.dataValues.last_name}`;
+
+              classRoster.push(memberName);
+            }
+          });
+          classRoster.push(currentRosterIds);
+          console.log(classRoster);
+          res.json(classRoster);
+        });
       })
       .catch((err) => res.status(401).json(err));
   });
