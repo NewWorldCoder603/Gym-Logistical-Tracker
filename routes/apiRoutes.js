@@ -4,9 +4,11 @@ const md5 = require("md5");
 module.exports = function (app) {
   // GET object to populate divs with class info
   app.get("/api/classes/:id", function (req, res) {
-    db.Class.findAll({}).then((classes) => {
+    db.Class.findAll({ order: [["start_time", "ASC"]] }).then((classes) => {
       //Finds user info
-      db.Member.findOne({ where: { id: req.params.id } })
+      db.Member.findOne({
+        where: { id: req.params.id },
+      })
         .then((currentUser) => {
           //Call to get class trainer names
           db.Employee.findAll({}).then((trainers) => {
@@ -52,7 +54,7 @@ module.exports = function (app) {
 
               classBundle.push(reqClass);
             });
-
+            console.log(classBundle);
             res.json(classBundle);
           });
         })
@@ -308,7 +310,7 @@ module.exports = function (app) {
   // GET API that allows a manager to view all the members
   app.get("/api/manager/members", (req, res) => {
     db.Members.findAll({})
-      .then((result)=>{
+      .then((result) => {
         result.forEach((member) => {
           delete member.dataValues.password;
         });
