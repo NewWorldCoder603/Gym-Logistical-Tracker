@@ -219,7 +219,7 @@ const deleteClass = () => {
 
 //on logout click, let database know, erase user local storage id, redirect back to login page.
 $(".add-class-btn").click(function () {
-  console.log("clicked");
+  
   return $.ajax({
     url: "/api/addClass",
     method: "POST",
