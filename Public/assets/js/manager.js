@@ -29,12 +29,12 @@ function loadTrainers() {
   });
 }
 //View button sends individual trainer's information to the right hand box.
-$("body").on("click", ".viewBtn", function () {
-  $.ajax({
-    url: `/api/manager/trainers`,
-    method: "GET",
-  }).then(function (trainerInfo) {
-})
+// $("body").on("click", ".viewBtn", function () {
+//   $.ajax({
+//     url: `/api/manager/trainers`,
+//     method: "GET",
+//   }).then(function (trainerInfo) {
+// })
 
 //submit button listener for hire new trainer
 $("body").on("click", "#hireBtn", function () {
