@@ -244,7 +244,7 @@ module.exports = function (app) {
   });
 
   // GET API that allows a manager to delete a trainer
-  app.get("/api/manager/deleteTrainer/:id", (req, res) => {
+  app.delete("/api/manager/deleteTrainer/:id", (req, res) => {
     db.Employee.destroy({ where: { id: req.params.id } })
       .then((result) => res.json(result))
       .catch((err) => res.json(err));
@@ -308,7 +308,7 @@ module.exports = function (app) {
   // GET API that allows a manager to view all the members
   app.get("/api/manager/members", (req, res) => {
     db.Members.findAll({})
-      .then((result)=>{
+      .then((result) => {
         result.forEach((member) => {
           delete member.dataValues.password;
         });
