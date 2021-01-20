@@ -10,26 +10,26 @@ body {
 }
 
 /*Heading shrinks at small screen size so it fits on one line */
-@media screen and (max-width: 771px) {
+@media screen and (max-width: 800px) {
   .less-big-heading {
     font-size: 400%;
   }
 }
 
 /*Heading shrinks at small screen size so it fits on one line */
-@media screen and (max-width: 495px) {
+@media screen and (max-width: 580px) {
   .no-heading {
     display: none;
   }
 }
 
-/* Client Info */
-.client-info {
-  background: #d22e33;
-  color: whitesmoke;
+/* Trainer Info */
+.trainerInfo {
+  background: whitesmoke;
+  color: rgb(49, 49, 49);
 }
 
-.logout-btn {
+.darkBtn {
   background: rgb(49, 49, 49);
   color: whitesmoke;
 }
@@ -49,11 +49,6 @@ body {
 
 .background-dark {
   background: rgb(49, 49, 49);
-}
-
-/* Stops bigger pictures from stretching out div */
-.max-height {
-  max-height: 400px;
 }
 
 /* schedule background */
@@ -76,7 +71,6 @@ body {
   border-color: #1783ee;
 }
 
-/*html button background*/
 .background-red {
   background-color: #d22e33 !important;
 }
@@ -85,21 +79,25 @@ body {
   color: #d22e33;
 }
 
-/* for the join buttons */
-.float-left {
-  float: left;
-}
-
-.font-large {
-  font-size: 1.2em;
-}
-
 .logo {
   max-width: 10rem;
   height: auto;
 }
 
-.btn {
-  margin: 0 auto;
-  display: block;
+.terminateBtn {
+  border-color: #d22e33;
+  color: #d22e33;
+}
+
+.text-white {
+  color: whitesmoke;
+  font-size: 150%;
+}
+
+.nav-link {
+  color: #d22e33;
+}
+
+.nav > a:hover {
+  color: whitesmoke;
 }
