@@ -209,10 +209,32 @@ const deleteClass = () => {
   return $.ajax({
     url: `/api/removeClass/${id}`,
     method: "DELETE",
-
     success: function () {
       console.log("Delete Request Sent");
     },
   });
 };
+
+//on logout click, let database know, erase user local storage id, redirect back to login page.
+$(".add-class-btn").click(function () {
+  console.log("clicked");
+  return $.ajax({
+    url: "/api/addClass",
+    method: "POST",
+    data: {
+      class_name: "Barbell",
+      day: "Monday",
+      start_time: '9:00:00',
+      current_size: 0,
+      max_size: 10,
+      trainer_id: 2,
+      roster: '',
+    },
+    success: function () {
+      console.log("User removed from Class");
+    },
+  });
+});
+
+
 
