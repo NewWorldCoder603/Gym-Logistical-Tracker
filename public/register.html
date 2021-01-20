@@ -43,25 +43,26 @@
             <div class="row">
                 <div class="col-sm mx-auto">
                     <div class = "card p-3">
-                        <form class="row g-3">
+                        <form name="registration" id="register_form" class="row g-3">
                             <div class="row g-3">
                                 <div class="col">
-                                    <label for="inputEmail" class="form-label">Email Address</label>
-                                    <input type="email" class="form-control" placeholder= "Email Address" id="inputEmail">
+                                    <label for="inputEmail" class="form-label">Email Address*</label>
+                                    <input type="email" class="form-control" placeholder= "Email Address" id="inputEmail" pattern="[^@\s]+@[^@\s]+\.[^@\s]+" required 
+                                    oninvalid="this.setCustomValidity('Please enter a valid email address')" onchange="this.setCustomValidity('')">
                                 </div>
                                 <div class="col">
-                                    <label for="inputPassword" class="form-label">Password</label>
-                                    <input type="text" class="form-control" placeholder= "Password" id="inputPassword">
+                                    <label for="inputPassword" class="form-label">Password*</label>
+                                    <input type="password" class="form-control" placeholder= "Password" id="inputPassword" required>
                                 </div>
                             </div>
                             <div class="row g-3">
                                 <div class="col">
-                                    <label for="inputFirstName" class="form-label">First Name</label>
-                                    <input type="text" id="firstName" class="form-control" placeholder="First Name" aria-label="First name">
+                                    <label for="inputFirstName" class="form-label">First Name*</label>
+                                    <input type="text" id="firstName" class="form-control" placeholder="First Name" aria-label="First name" required>
                                 </div>
                                 <div class="col">
-                                    <label for="inputLastName" class="form-label">Last Name</label>
-                                    <input type="text" id="lastName" class="form-control" placeholder="Last Name" aria-label="Last name">
+                                    <label for="inputLastName" class="form-label">Last Name*</label>
+                                    <input type="text" id="lastName" class="form-control" placeholder="Last Name" aria-label="Last name" required>
                                 </div>
                             </div>
                             <div class="row g-3">
@@ -74,14 +75,14 @@
                                 </select>
                             </div>
                             <div class="col">
-                                <label for="inputBirthday" class="form-label">Birthdate (yyyy-mm-dd)</label>
+                                <label for="inputBirthday" class="form-label">Birthdate</label>
                                 <!--Change type to date instead of text-->
-                                <input type="text" class="form-control" id="inputBirthday" placeholder="Birthdate (yyyy-dd-mm)">
+                                <input type="date" class="form-control" id="inputBirthday" placeholder="Birthdate (yyyy-dd-mm)">
                             </div>
                             </div>
-                            <div class="col-md-12">
+                            <div class="col-md-6">
                                 <label for="inputPhone" class="form-label">Phone Number <br> (ten digit number only, no parentheses / dashes please)</label>
-                                <input type="text" id="inputPhone" class="form-control" placeholder="Phone Number">
+                                <input type="text" id="inputPhone" class="form-control" placeholder="Phone Number" pattern="[0-9]{10}">
                             </div>
                             </div>
                             <div class="col-8"></div>
@@ -98,12 +99,12 @@
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
+              <h4 id="alert-modal-title" class="modal-title" style="color: red;">Signup Failed</h4>
               <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-              <h4 id="alert-modal-title" class="modal-title">Signup Failed</h4>
             </div>
             <div id="alert-modal-body" class="modal-body"></div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-default modalBtn" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-danger modalBtn" data-dismiss="modal">Close</button>
             </div>
           </div>
         </div>
