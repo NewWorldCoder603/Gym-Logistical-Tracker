@@ -18,26 +18,62 @@ function loadTrainers() {
     url: `/api/manager/trainers`,
     method: "GET",
   }).then(function (trainerNames) {
-    // $(trainerList).empty();
-    // console.log(trainerNames);
+    console.log(trainerNames);
     for (let i = 0; i < trainerNames.length; i++) {
       const firstName = trainerNames[i].first_name;
       const lastName = trainerNames[i].last_name;
       const trainerId = trainerNames[i].id;
       $(trainerList).append(`
-        <li class="me-5 d-flex float-left text-white" data-id= ${trainerId}">${firstName} ${lastName} <button type="button" class="btn darkBtn d-flex float-right ms-5 mb-3 viewBtn">View</button></li>`);
+        <li class="me-5 d-flex float-left text-white" >${firstName} ${lastName} <button type="button" class="btn darkBtn d-flex float-right ms-5 mb-3 viewBtn" data-id="${trainerId}">View</button></li>`);
     }
+
+    //View button sends individual trainer's information to the right hand box.
+    $("body").on("click", ".viewBtn", function () {
+      const $trainerFirstName = $(".trainerFirstName");
+      const $trainerLastName = $(".trainerLastName");
+      const $trainerGender = $(".trainerGender");
+      const $trainerEmail = $(".trainerEmail");
+      const $trainerPhone = $(".trainerPhone");
+      const btnId = event.target.getAttribute("data-id");
+      $trainerFirstName.empty();
+      $trainerLastName.empty();
+      $trainerGender.empty();
+      $trainerEmail.empty();
+      $trainerPhone.empty();
+      for (let i = 0; i < trainerNames.length; i++) {
+        if (parseInt(btnId) === trainerNames[i].id) {
+          $trainerFirstName.append("First Name: " + trainerNames[i].first_name);
+          $trainerLastName.append("Last Name: " + trainerNames[i].last_name);
+          $trainerGender.append("Gender: " + trainerNames[i].gender);
+          $trainerEmail.append("Email Address: " + trainerNames[i].email);
+          $trainerPhone.append("Phone Number: " + trainerNames[i].phone);
+          $(".terminateBtn").attr("data-id", trainerNames[i].id);
+        }
+      }
+    });
   });
 }
-//View button sends individual trainer's information to the right hand box.
-// $("body").on("click", ".viewBtn", function () {
-//   $.ajax({
-//     url: `/api/manager/trainers`,
-//     method: "GET",
-//   }).then(function (trainerInfo) {
-//     console.log(trainerInfo);
-//   });
-// });
+
+//Terminate Trainer button Deletes trainer from database.
+$("body").on("click", ".terminateBtn", function () {
+  const termBtnId = event.target.getAttribute("data-id");
+  console.log(termBtnId);
+  $.ajax({
+    url: "/api/manager/deleteTrainer/:id",
+    data: {
+      id: termBtnId,
+    },
+    method: "GET",
+
+    error: function (req, status, err) {
+      if (err) alertModal(err);
+    },
+  }).then(function (response) {
+    console.log(response);
+    //If sign-up goes through, refresh manager page
+    // window.location.href = "/manager";
+  });
+});
 
 //submit button listener for hire new trainer
 $("body").on("click", "#hireBtn", function () {

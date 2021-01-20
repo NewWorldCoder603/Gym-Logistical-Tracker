@@ -308,7 +308,7 @@ module.exports = function (app) {
   // GET API that allows a manager to view all the members
   app.get("/api/manager/members", (req, res) => {
     db.Members.findAll({})
-      .then((result)=>{
+      .then((result) => {
         result.forEach((member) => {
           delete member.dataValues.password;
         });
