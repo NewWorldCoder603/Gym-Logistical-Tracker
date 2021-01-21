@@ -54,7 +54,7 @@ module.exports = function (app) {
 
               classBundle.push(reqClass);
             });
-            console.log(classBundle);
+
             res.json(classBundle);
           });
         })
@@ -68,6 +68,7 @@ module.exports = function (app) {
     db.Member.findOne({
       where: { email: req.body.username, password: md5(req.body.password) },
     }).then((userMember) => {
+      console.log(userMember.dataValues.id);
       if (!userMember) {
         db.Employee.findOne({
           where: {
@@ -89,13 +90,15 @@ module.exports = function (app) {
           })
           .catch((err) => res.json(err));
       } else {
+        res.json({
+          id: userMember.dataValues.id,
+        });
         // updates the is_logged_in column in member table to true to track the logged in user
         db.Member.update(
           { is_logged_in: true },
           { where: { id: userMember.id } }
         )
-          .then((result) => res.json({ result }))
-          .catch((err) => res.json(err));
+        .catch((err) => res.json(err));
       }
     });
   });
