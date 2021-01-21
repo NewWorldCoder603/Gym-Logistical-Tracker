@@ -124,7 +124,7 @@ populateSchedule();
 //on logout click, let database know, erase user local storage id, redirect back to login page.
 $(".logout-btn").click(function () {
   $.ajax({
-    url: `/api/member/${window.localStorage.getItem("userId")}`,
+    url: `/api/employee/logout/${window.localStorage.getItem("userId")}`,
     method: "GET",
   }).then(function (data) {
     localStorage.clear();

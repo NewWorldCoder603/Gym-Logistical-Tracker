@@ -21,18 +21,18 @@ $("body").on("click", "#loginBtn", function () {
     }).then(function (response) {
       console.log(response);
       //Add if statements to check for manager, trainer, or member status
-      if (response.role === "Trainer") {
+      if(!response.role){
+          //if correct login, set user id to local storage, and redirect to client schedule page.
+          localStorage.setItem("userId", response.id);
+          window.location.assign("/client-schedule");
+      } else if (response.role === "trainer") {
         localStorage.setItem("userId", response.id);
         window.location.assign("/employee");
-      } else if (response.role === "Manager") {
+      } else{
         localStorage.setItem("userId", response.id);
         window.location.assign("/manager");
-      } else {
-        //if correct login, set user id to local storage, and redirect to client schedule page.
-        localStorage.setItem("userId", response.id);
-        window.location.assign("/client-schedule");
-      }
-    })
+      }      
+    });
   } else{
     // when form invalid, prevents submission and focuses into the 1st invalid field
     document.querySelector('input:invalid').reportValidity();
