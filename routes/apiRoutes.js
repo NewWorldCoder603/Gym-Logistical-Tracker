@@ -1,5 +1,7 @@
 const db = require("../models");
 const md5 = require("md5");
+const memberMap = require("../utilities/memberMap");
+const buildRoster = require("../utilities/buildRoster");
 
 module.exports = function (app) {
   // GET object to populate divs with class info
@@ -226,7 +228,7 @@ module.exports = function (app) {
 
   app.delete("/api/removeClass/:id", (req, res) => {
     //Removes class from the database
-    console.log(req.params);
+
     db.Class.destroy({ where: { id: req.params.id } })
       .then((result) => res.json(result))
       .catch((err) => res.status(500).json(err));
@@ -333,7 +335,7 @@ module.exports = function (app) {
               classBundle.push(reqClass);
             });
             classBundle.push(trainerName);
-            console.log(classBundle);
+
             res.send(classBundle);
           })
           .catch((err) => res.status(401).json(err));
@@ -345,26 +347,12 @@ module.exports = function (app) {
   app.get("/api/roster/:id", (req, res) => {
     //Finds class roster
     db.Class.findOne({ where: { id: req.params.id } })
-      .then((result) => {
+      .then((selectedClass) => {
         //Pulls class roster and checks member is in this class
-        const classRoster = [];
-        const currentRosterIds = result.dataValues.roster.split(",");
-        db.Member.findAll({}).then((members) => {
-          members.forEach((member) => {
-            const isMember = currentRosterIds.includes(
-              `${member.dataValues.id}`
-            );
 
-            if (isMember) {
-              const memberName = `${member.dataValues.first_name} ${member.dataValues.last_name}`;
-
-              classRoster.push(memberName);
-            }
-          });
-          classRoster.push(currentRosterIds);
-
-          res.json(classRoster);
-        });
+        db.Member.findAll({}).then((members) =>
+          res.json(buildRoster(members, selectedClass))
+        );
       })
       .catch((err) => res.json(err));
   });
@@ -372,18 +360,7 @@ module.exports = function (app) {
   // GET API that gets list of all member names and ids
   app.get("/api/manager/memberList", (req, res) => {
     db.Member.findAll({})
-      .then((members) => {
-        const memberList = [];
-        members.map((member) => {
-          const oneMember = {
-            id: member.dataValues.id,
-            fullName: `${member.dataValues.first_name} ${member.dataValues.last_name}`,
-          };
-          memberList.push(oneMember);
-        });
-        console.log(memberList);
-        res.json(memberList);
-      })
+      .then((members) => res.json(memberMap(members)))
       .catch((err) => res.json(err));
   });
 };
