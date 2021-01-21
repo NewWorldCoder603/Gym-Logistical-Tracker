@@ -34,30 +34,32 @@ module.exports = function (app) {
             password: md5(req.body.password),
           },
         })
-        .then((userEmployee) => {
-          // updates the is_logged_in column in employee table to true to track the logged in user
-          db.Employee.update(
-            { is_logged_in: true },
-            { where: { id: userEmployee.dataValues.id } }
-          ).then((result)=>{
-            res.json({
-              id: userEmployee.dataValues.id,
-              userName: userEmployee.dataValues.first_name,
-              role: userEmployee.dataValues.role,
-            })
-          }).catch((err) => res.json(err));
-        }).catch((err) => res.json(err));
+          .then((userEmployee) => {
+            // updates the is_logged_in column in employee table to true to track the logged in user
+            db.Employee.update(
+              { is_logged_in: true },
+              { where: { id: userEmployee.dataValues.id } }
+            )
+              .then(() => {
+                res.json({
+                  id: userEmployee.dataValues.id,
+                  userName: userEmployee.dataValues.first_name,
+                  role: userEmployee.dataValues.role,
+                });
+              })
+              .catch((err) => res.json(err));
+          })
+          .catch((err) => res.json(err));
       } else {
         const userId = userMember.dataValues.id;
         // updates the is_logged_in column in member table to true to track the logged in user
-        db.Member.update(
-          { is_logged_in: true },
-          { where: { id: userId } }
-        ).then((result)=>{
-          res.json({
-            id: userId,
+        db.Member.update({ is_logged_in: true }, { where: { id: userId } })
+          .then(() => {
+            res.json({
+              id: userId,
+            });
           })
-        }).catch((err) => res.json(err));
+          .catch((err) => res.json(err));
       }
     });
   });
@@ -74,7 +76,7 @@ module.exports = function (app) {
       phone: req.body.phone ? parseInt(req.body.phone) : null,
       role: req.body.role.toLowerCase(),
     })
-      .then((result) => res.json(result))
+      .then(() => res.send("Success!"))
       .catch((err) => res.json(err));
   });
 
@@ -108,7 +110,7 @@ module.exports = function (app) {
     // updates the is_logged_in column in db to false when member logs out
     db.Member.update({ is_logged_in: false }, { where: { id: req.params.id } })
       // send a logged out message to the user
-      .then((result) => res.json(result))
+      .then(() => res.send("Success!"))
       .catch((err) => res.json(err));
   });
 
@@ -143,14 +145,14 @@ module.exports = function (app) {
       trainer_id: req.body.trainer_id,
       roster: req.body.roster,
     })
-      .then((result) => res.json(result))
+      .then(() => res.send("Success!"))
       .catch((err) => res.json(err));
   });
 
   //API to remove class from the database
   app.delete("/api/removeClass/:id", (req, res) => {
     db.Class.destroy({ where: { id: req.params.id } })
-      .then((result) => res.json(result))
+      .then(() => res.send("Success!"))
       .catch((err) => res.status(500).json(err));
   });
 
@@ -175,7 +177,7 @@ module.exports = function (app) {
   // DELETE API that allows a manager to delete a trainer
   app.delete("/api/manager/deleteTrainer/:id", (req, res) => {
     db.Employee.destroy({ where: { id: req.params.id } })
-      .then((result) => res.json(result))
+      .then(() => res.send("Success!"))
       .catch((err) => res.json(err));
   });
 
@@ -194,20 +196,11 @@ module.exports = function (app) {
 
   // POST API that allows a manager to add a member/client to a class
   app.post("/api/manager/addToClass", (req, res) => {
-    db.Class.findOne({ where: { id: req.body.class_id } })
-      .then(function (result) {
-        // Ensures that when adding a member to an existing roster, if the roster is empty, then initialize it to an array.
-        const currentRosterArray = result.dataValues.roster
-          ? result.dataValues.roster.split(",")
-          : [];
-        currentRosterArray.push(req.body.member_id);
-        const class_size = currentRosterArray.length;
-        const updatedRoster = currentRosterArray.join(",");
-        db.Class.update(
-          { roster: updatedRoster, current_size: class_size },
-          { where: { id: req.body.class_id } }
-        )
-          .then((result) => res.json(result))
+    db.Class.findOne({ where: { id: req.body.id } })
+      .then((selectedClass) => {
+        const classUpdate = addToClass(selectedClass, req.body.memberid);
+        db.Class.update(classUpdate, { where: { id: req.body.id } })
+          .then(() => res.send("Success!"))
           .catch((err) => res.json(err));
       })
       .catch((err) => res.json(err));
@@ -215,30 +208,17 @@ module.exports = function (app) {
 
   // POST API that allows a manager to remove a member/client from a class
   app.post("/api/manager/removeFromClass", (req, res) => {
-    db.Class.findOne({ where: { id: req.body.class_id } })
-      .then(function (result) {
-        const rosterArray = result.dataValues.roster.split(",");
-        const index = rosterArray.indexOf(req.body.member_id);
-        if (index !== -1) {
-          rosterArray.splice(index, 1);
-          const class_size = rosterArray.length;
-          const updatedRoster = rosterArray.join(",");
-          db.Class.update(
-            { roster: updatedRoster, current_size: class_size },
-            { where: { id: req.body.class_id } }
-          )
-            .then((result) => res.json(result))
-            .catch((err) => res.json(err));
-        }
+    db.Class.findOne({ where: { id: req.body.id } })
+      .then((selectedClass) => {
+        const classUpdate = removeClassMember(selectedClass, req.body.memberid);
+        db.Class.update(classUpdate, { where: { id: req.body.id } })
+          .then(() => res.send("Success!"))
+          .catch((err) => res.json(err));
       })
       .catch((err) => res.json(err));
   });
 
-<<<<<<< HEAD
   //API to get trainer schedule
-=======
-
->>>>>>> master
   app.get("/api/trainer/:id", (req, res) => {
     db.Class.findAll({ where: { trainer_id: req.params.id } })
       .then((classes) => {
