@@ -18,7 +18,9 @@ function loadTrainers() {
     url: `/api/manager/trainers`,
     method: "GET",
   }).then(function (trainerNames) {
-    console.log(trainerNames);
+    //empty the trainer list to avoid double values on function call
+    $(trainerList).empty();
+
     for (let i = 0; i < trainerNames.length; i++) {
       const firstName = trainerNames[i].first_name;
       const lastName = trainerNames[i].last_name;
@@ -34,7 +36,7 @@ function loadTrainers() {
       const $trainerGender = $(".trainerGender");
       const $trainerEmail = $(".trainerEmail");
       const $trainerPhone = $(".trainerPhone");
-      const btnId = event.target.getAttribute("data-id");
+      const btnId = $(this).attr("data-id");
       $trainerFirstName.empty();
       $trainerLastName.empty();
       $trainerGender.empty();
@@ -56,8 +58,7 @@ function loadTrainers() {
 
 //Terminate Trainer button Deletes trainer from database.
 $("body").on("click", ".terminateBtn", function () {
-  const termBtnId = event.target.getAttribute("data-id");
-  console.log(termBtnId);
+  const termBtnId = $(this).attr("data-id");
   $.ajax({
     url: `/api/manager/deleteTrainer/${termBtnId}`,
     // data: {
@@ -69,9 +70,18 @@ $("body").on("click", ".terminateBtn", function () {
       if (err) alertModal(err);
     },
   }).then(function (response) {
-    console.log(response);
-    //If sign-up goes through, refresh manager page
-    window.location.href = "/manager";
+    //reset trainer list
+    loadTrainers();
+
+    //resets the form on button click
+    function resetFormValues() {
+      $(".trainerFirstName").html("First Name:");
+      $(".trainerLastName").html("Last Name:");
+      $(".trainerGender").html("Gender:");
+      $(".trainerEmail").html("Email Address:");
+      $(".trainerPhone").html("Phone Number:");
+    }
+    resetFormValues();
   });
 });
 
@@ -94,9 +104,18 @@ $("body").on("click", "#hireBtn", function () {
       if (err) alertModal(err);
     },
   }).then(function (response) {
-    console.log(response);
     //If sign-up goes through, refresh manager page
-    window.location.href = "/manager";
+    loadTrainers();
+
+    //empty out the html after hire button is clicked
+    function resetHireForm() {
+      email.val("");
+      password.val("");
+      firstName.val("");
+      lastName.val("");
+      phone.val("");
+    }
+    resetHireForm();
   });
 });
 
@@ -189,8 +208,7 @@ const populateSchedule = () => {
       //if statement only creates a delete button if the current trainer is logged in
       const viewRosterBtn = `<button
             type="button"
-            onclick="viewRoster()"
-            class="btn background-red  align-self-center view-roster-btn"
+            class="btn background-red  align-self-center view-roster-btn" id="view-roster-btn"
             data-id="${fitClass.id}"
             data-toggle="modal"
              data-target="#exampleModal"
@@ -239,19 +257,25 @@ const populateSchedule = () => {
 populateSchedule();
 
 //the onclick function that displays everyone who signed for a class and the ability to remove them
-function viewRoster() {
-  const classId = event.target.getAttribute("data-id");
-  const classDate = event.target.parentElement.parentElement.parentElement.parentElement
-    .querySelector("p")
-    .getAttribute("data-timestamp");
-
+$(document.body).on("click", ".view-roster-btn", function () {
+  const classId = $(this).attr("data-id");
+  const classDate = $(this)
+    .parent()
+    .parent()
+    .parent()
+    .parent()
+    .find("p")
+    .attr("data-timestamp");
+  // .querySelector("p")
+  // .getAttribute("data-timestamp");
+  console.log(classDate);
   //get the roster from the database
   $.ajax({
     url: `/api/roster/${classId}`,
     method: "GET",
   }).then(function (classRoster) {
     //Write the names and their associated remove button onto the modal body
-    function writeRoster() {
+    function writeRosterModal() {
       const $modalBody = $(".modal-body");
 
       //empty div before adding elements
@@ -261,42 +285,52 @@ function viewRoster() {
       for (let i = 0; i < classRoster.length - 1; i++) {
         const memberId = classRoster[classRoster.length - 1][i];
         const memberName = classRoster[i];
-        const removeMemberBtn = `<button type="button" onclick= "removeMember()" class="btn red-button float-right ms-5 mb-3 viewBtn" data-id="
-        ${memberId}" data-class-id="${classId}" data-class-date="${classDate}" "classId">Remove</button>`;
-        
-         $modalBody.append(
+        const removeMemberBtn = `<button type="button" class="btn red-button float-right ms-5 mb-3 removeMember" 
+        data-id="${memberId}" data-class-id="${classId}" data-class-date="${classDate}" "classId">Remove</button>`;
+
+        $modalBody.append(
           `<p class="modal-p" data-member-id="${memberId}">${
             i + 1
           }. ${memberName} ${removeMemberBtn}<p>`
         );
       }
-      
+
       //add the AddMember form to the bottom
-      const addMemberFormTemplate= ` <div class="col">
+      const addMemberFormTemplate = ` <div class="col">
       <label for="inputAddMember" class="form-label">Add Member</label>
-      <select id="inputAddMember" class="form-select">
-          <option>Monday</option>
-          <option>Tuesday</option>
-          <option>Wednesday</option>
-          <option>Thursday</option>
-          <option>Friday</option>
-          <option>Saturday</option>
-          <option>Sunday</option>
+      <input type="text" name ="inputAddMember" list="memberList">
+      <datalist id="memberList">
       </select>
-      </div>`
+      </div>`;
 
-      $modalBody.append(addMemberFormTemplate)
+      $modalBody.append(addMemberFormTemplate);
 
+      //grab All members from database then make them text input autofill options
+      function addMemberOptions() {
+        $.ajax({
+          url: `/api/manager/memberList`,
+          method: "GET",
+        }).then(function (data) {
+          $optionsList = $("#memberList");
+
+          data.forEach((member) => {
+            $optionsList.append(`<option>${member.fullName}</option>`);
+          });
+        });
+      }
+      addMemberOptions();
     }
-    writeRoster();
+
+    writeRosterModal();
   });
-}
+});
 
 //on remove button click, delete the associated user from the class
-function removeMember() {
-  const memberId = event.target.getAttribute("data-id");
-  const classId = event.target.getAttribute("data-class-id");
-  const classDate = event.target.getAttribute("data-class-date");
+$(document.body).on("click", ".removeMember", function () {
+  const memberId = $(this).attr("data-id");
+  const classId = $(this).attr("data-class-id");
+  const classDate = $(this).attr("data-class-date");
+  const currentThis = $(this);
 
   //this one was a rough hack. I couldn't use writeRoster again, because its data relied on a btn click.
   //I added the member's id to both the button and the p tag. On Click, a for loop runs and when it matches the p tag to
@@ -306,9 +340,9 @@ function removeMember() {
     const $modalP = $(".modal-p");
 
     for (i = 0; i < $modalP.length; i++) {
-      const btnId = event.target.getAttribute("data-id");
+      const memberBtnId = currentThis.attr("data-id");
       let $pId = $modalP[i].getAttribute("data-member-id");
-      if ($pId === btnId) {
+      if ($pId === memberBtnId) {
         $modalP.eq(i).empty();
       }
     }
@@ -328,4 +362,4 @@ function removeMember() {
       console.log("User removed from Class");
     },
   });
-}
+});
