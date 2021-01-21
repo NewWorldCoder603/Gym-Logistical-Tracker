@@ -9,8 +9,8 @@ body {
   font-size: x-large;
 }
 
-.text-dark {
-  color: rgb(49, 49, 49);
+.login-text {
+  color: whitesmoke;
   font-weight: bold;
   font-family: verdana, sans-serif;
   font-size: x-large;
