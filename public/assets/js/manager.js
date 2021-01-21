@@ -86,6 +86,21 @@ $("body").on("click", ".terminateBtn", function () {
   });
 });
 
+//Logout button function
+$("body").on("click", ".logoutBtn", function () {
+  $.ajax({
+    url: `/api/employee/logout/${window.localStorage.getItem("userId")}`,
+    method: "GET",
+
+    error: function (req, status, err) {
+      if (err) alertModal(err);
+    },
+  }).then(function (response) {
+    localStorage.clear();
+    window.location.assign("/");
+  });
+});
+
 //submit button listener for hire new trainer
 $("body").on("click", "#hireBtn", function () {
   $.ajax({
