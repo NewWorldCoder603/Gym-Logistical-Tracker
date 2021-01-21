@@ -202,7 +202,7 @@ const populateSchedule = () => {
       //convert the ajax timestamp into more readable time to display on page.
       const twelveHourTime = tConvert(fitClass.start_time);
 
-      //] template for class with dynamic information
+      // template for class with dynamic information
       const classTemplate = `
           <div class="row m-0 pb-3 pt-3 border-to-bottom-thin font-large">
             <div class="col border-teal pb-3 text-center">
@@ -241,67 +241,79 @@ populateSchedule();
 //the onclick function that displays everyone who signed for a class and the ability to remove them
 function viewRoster() {
   const classId = event.target.getAttribute("data-id");
-  const classDate =  event.target.parentElement.parentElement.parentElement.parentElement
+  const classDate = event.target.parentElement.parentElement.parentElement.parentElement
     .querySelector("p")
-    .getAttribute("data-timestamp")
+    .getAttribute("data-timestamp");
 
   //get the roster from the database
   $.ajax({
     url: `/api/roster/${classId}`,
     method: "GET",
   }).then(function (classRoster) {
-
-
     //Write the names and their associated remove button onto the modal body
     function writeRoster() {
       const $modalBody = $(".modal-body");
-  
-    
+
       //empty div before adding elements
       $modalBody.empty();
 
-      //for each member, add their name and a remove button linked to them 
+      //for each member, add their name and a remove button linked to them
       for (let i = 0; i < classRoster.length - 1; i++) {
-        const memberId = (classRoster[classRoster.length-1][i])
+        const memberId = classRoster[classRoster.length - 1][i];
         const memberName = classRoster[i];
-        const removeMemberBtn = `<button type="button" onclick= "removeMember()" class="btn red-button float-right ms-5 mb-3 viewBtn" data-id="${
-          memberId
-        }" data-class-id="${classId}" data-class-date="${classDate}" "classId">Remove</button>`;
-
-        $modalBody.append(`<p class="modal-p" data-member-id="${memberId}">${i + 1}. ${memberName} ${removeMemberBtn}<p>`);
+        const removeMemberBtn = `<button type="button" onclick= "removeMember()" class="btn red-button float-right ms-5 mb-3 viewBtn" data-id="
+        ${memberId}" data-class-id="${classId}" data-class-date="${classDate}" "classId">Remove</button>`;
+        
+         $modalBody.append(
+          `<p class="modal-p" data-member-id="${memberId}">${
+            i + 1
+          }. ${memberName} ${removeMemberBtn}<p>`
+        );
       }
-
       
+      //add the AddMember form to the bottom
+      const addMemberFormTemplate= ` <div class="col">
+      <label for="inputAddMember" class="form-label">Add Member</label>
+      <select id="inputAddMember" class="form-select">
+          <option>Monday</option>
+          <option>Tuesday</option>
+          <option>Wednesday</option>
+          <option>Thursday</option>
+          <option>Friday</option>
+          <option>Saturday</option>
+          <option>Sunday</option>
+      </select>
+      </div>`
+
+      $modalBody.append(addMemberFormTemplate)
+
     }
     writeRoster();
-
-   
   });
 }
 
 //on remove button click, delete the associated user from the class
-function removeMember(){
-  const memberId = event.target.getAttribute("data-id")
-  const classId = event.target.getAttribute("data-class-id")
-  const classDate = event.target.getAttribute("data-class-date")
+function removeMember() {
+  const memberId = event.target.getAttribute("data-id");
+  const classId = event.target.getAttribute("data-class-id");
+  const classDate = event.target.getAttribute("data-class-date");
 
+  //this one was a rough hack. I couldn't use writeRoster again, because its data relied on a btn click.
+  //I added the member's id to both the button and the p tag. On Click, a for loop runs and when it matches the p tag to
+  //the id, it deletes both. This updates the modal for the user immediately. I KNOW this is not a great way and will try to improve.
+  function reWriteModal() {
+    //grab all the ptags in the modal
+    const $modalP = $(".modal-p");
 
-//this one was a rough hack. I couldn't use writeRoster again, because its data relied on a btn click. 
-//I added the member's id to both the button and the p tag. On Click, a for loop runs and when it matches the p tag to 
-//the id, it deletes both. This updates the modal for the user immediately. I KNOW this is not a great way and will try to improve. 
-  function reWriteModal(){
-    //grab all the ptags in the modal 
-    const $modalP = $('.modal-p')
-   
-    for(i=0; i<$modalP.length; i++){
+    for (i = 0; i < $modalP.length; i++) {
       const btnId = event.target.getAttribute("data-id");
-      let $pId = $modalP[i].getAttribute("data-member-id")
-      if($pId === btnId){
-        $modalP.eq(i).empty()
+      let $pId = $modalP[i].getAttribute("data-member-id");
+      if ($pId === btnId) {
+        $modalP.eq(i).empty();
       }
     }
   }
-  reWriteModal()
+  reWriteModal();
 
   return $.ajax({
     url: "/api/removeFromClass",
@@ -313,7 +325,6 @@ function removeMember(){
       memberid: memberId,
     },
     success: function () {
-      
       console.log("User removed from Class");
     },
   });
