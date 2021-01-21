@@ -15,6 +15,7 @@ $("body").on("click", "#loginBtn", function () {
       if (err) alertModal("Login Failed");
     },
   }).then(function (response) {
+    console.log(response);
     //Add if statements to check for manager, trainer, or member status
     if (response.role === "Trainer") {
       localStorage.setItem("userId", response.id);
