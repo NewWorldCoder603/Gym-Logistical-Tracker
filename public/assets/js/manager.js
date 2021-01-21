@@ -250,7 +250,7 @@ function viewRoster() {
     method: "GET",
   }).then(function (classRoster) {
     //Write the names and their associated remove button onto the modal body
-    function writeRoster() {
+    function writeRosterModal() {
       const $modalBody = $(".modal-body");
 
       //empty div before adding elements
@@ -262,37 +262,41 @@ function viewRoster() {
         const memberName = classRoster[i];
         const removeMemberBtn = `<button type="button" onclick= "removeMember()" class="btn red-button float-right ms-5 mb-3 viewBtn" data-id="
         ${memberId}" data-class-id="${classId}" data-class-date="${classDate}" "classId">Remove</button>`;
-        
-         $modalBody.append(
+
+        $modalBody.append(
           `<p class="modal-p" data-member-id="${memberId}">${
             i + 1
           }. ${memberName} ${removeMemberBtn}<p>`
         );
       }
 
-      function getMemberList(){
-        
-      }
-
       //add the AddMember form to the bottom
-      const addMemberFormTemplate= ` <div class="col">
+      const addMemberFormTemplate = ` <div class="col">
       <label for="inputAddMember" class="form-label">Add Member</label>
       <input type="text" name ="inputAddMember" list="memberList">
       <datalist id="memberList">
-          <option>Monday</option>
-          <option>Tuesday</option>
-          <option>Wednesday</option>
-          <option>Thursday</option>
-          <option>Friday</option>
-          <option>Saturday</option>
-          <option>Sunday</option>
       </select>
-      </div>`
+      </div>`;
 
-      $modalBody.append(addMemberFormTemplate)
+      $modalBody.append(addMemberFormTemplate);
 
+      //grab All members from database then make them text input autofill options
+      function addMemberOptions() {
+        $.ajax({
+          url: `/api/manager/memberList`,
+          method: "GET",
+        }).then(function (data) {
+          $optionsList = $("#memberList");
+
+          data.forEach((member) => {
+            $optionsList.append(`<option>${member.fullName}</option>`);
+          });
+        });
+      }
+      addMemberOptions();
     }
-    writeRoster();
+
+    writeRosterModal();
   });
 }
 
