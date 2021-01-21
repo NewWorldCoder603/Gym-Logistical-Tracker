@@ -122,9 +122,22 @@ margin-left: 10px;
   background:rgb(49, 49, 49);
   color: whitesmoke;
   margin-left: 10px; 
-  }
+}
 
-  .roster-text {
+.roster-text {
     color: whitesmoke;
     font-size: larger;
-  }
+}
+
+/* for class form validation*/
+input:invalid {
+  border: 1px solid red;
+}
+
+input:valid {
+  border: 1px solid black;
+}
+
+select:valid {
+  border: 1px solid black;
+}
