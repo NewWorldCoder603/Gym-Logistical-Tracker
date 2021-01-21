@@ -234,11 +234,7 @@ module.exports = function (app) {
       .catch((err) => res.json(err));
   });
 
-<<<<<<< HEAD
   //API to get trainer schedule
-=======
-
->>>>>>> master
   app.get("/api/trainer/:id", (req, res) => {
     db.Class.findAll({ where: { trainer_id: req.params.id } })
       .then((classes) => {
