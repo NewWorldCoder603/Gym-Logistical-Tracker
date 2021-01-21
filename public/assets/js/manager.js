@@ -270,10 +270,15 @@ function viewRoster() {
         );
       }
 
+      function getMemberList(){
+        
+      }
+
       //add the AddMember form to the bottom
       const addMemberFormTemplate= ` <div class="col">
       <label for="inputAddMember" class="form-label">Add Member</label>
-      <select id="inputAddMember" class="form-select">
+      <input type="text" name ="inputAddMember" list="memberList">
+      <datalist id="memberList">
           <option>Monday</option>
           <option>Tuesday</option>
           <option>Wednesday</option>
