@@ -1,61 +1,20 @@
 const db = require("../models");
 const md5 = require("md5");
+const memberMap = require("../utilities/memberMap");
+const buildRoster = require("../utilities/buildRoster");
+const trainerSchedule = require("../utilities/trainerSchedule");
+const removeClassMember = require("../utilities/removeClassMember");
+const addToClass = require("../utilities/addToClass");
+const getClassBundle = require("../utilities/classBundle");
 
 module.exports = function (app) {
   // GET object to populate divs with class info
   app.get("/api/classes/:id", function (req, res) {
     db.Class.findAll({ order: [["start_time", "ASC"]] }).then((classes) => {
-      //Finds user info
-      db.Member.findOne({
-        where: { id: req.params.id },
-      })
+      db.Member.findOne({ where: { id: req.params.id } })
         .then((currentUser) => {
-          //Call to get class trainer names
           db.Employee.findAll({}).then((trainers) => {
-            let classesJoined = [];
-            let roster = [];
-            let classBundle = [];
-
-            const userName = currentUser.dataValues.first_name;
-            //Loop to match trainer with class and build object for each class
-            classes.forEach((unit) => {
-              const activeTrainer = trainers.filter(
-                (trainer) =>
-                  trainer.dataValues.id === unit.dataValues.trainer_id
-              );
-              //If roster is not empty then split and search for user's id
-              if (roster) {
-                const roster = unit.dataValues.roster.split(",");
-
-                roster.filter((participant) => {
-                  if (currentUser.dataValues.id === parseInt(participant)) {
-                    let thisClass = {
-                      id: unit.dataValues.id,
-                      class_name: unit.dataValues.class_name,
-                    };
-                    //Add class to user's joined classes to show in UI
-                    classesJoined.push(thisClass);
-                  }
-                });
-              }
-              //Object to be sent to UI
-              const reqClass = {
-                id: unit.dataValues.id,
-                class_name: unit.dataValues.class_name,
-                day: unit.dataValues.day,
-                start_time: unit.dataValues.start_time,
-                current_size: unit.dataValues.current_size,
-                max_size: unit.dataValues.max_size,
-                trainer_id: unit.dataValues.trainer_id,
-                trainer_name: activeTrainer[0].dataValues.first_name,
-                userName: userName,
-                classJoined: classesJoined,
-              };
-
-              classBundle.push(reqClass);
-            });
-            console.log(classBundle);
-            res.json(classBundle);
+            res.json(getClassBundle(classes, currentUser, trainers));
           });
         })
         .catch((err) => res.json(err));
@@ -75,27 +34,30 @@ module.exports = function (app) {
             password: md5(req.body.password),
           },
         })
-          .then((userEmployee) => {
+        .then((userEmployee) => {
+          // updates the is_logged_in column in employee table to true to track the logged in user
+          db.Employee.update(
+            { is_logged_in: true },
+            { where: { id: userEmployee.dataValues.id } }
+          ).then((result)=>{
             res.json({
               id: userEmployee.dataValues.id,
               userName: userEmployee.dataValues.first_name,
               role: userEmployee.dataValues.role,
-            });
-            // updates the is_logged_in column in employee table to true to track the logged in user
-            db.Employee.update(
-              { is_logged_in: true },
-              { where: { id: userEmployee.dataValues.id } }
-            );
-          })
-          .catch((err) => res.json(err));
+            })
+          }).catch((err) => res.json(err));
+        }).catch((err) => res.json(err));
       } else {
+        const userId = userMember.dataValues.id;
         // updates the is_logged_in column in member table to true to track the logged in user
         db.Member.update(
           { is_logged_in: true },
-          { where: { id: userMember.id } }
-        )
-          .then((result) => res.json({ result }))
-          .catch((err) => res.json(err));
+          { where: { id: userId } }
+        ).then((result)=>{
+          res.json({
+            id: userId,
+          })
+        }).catch((err) => res.json(err));
       }
     });
   });
@@ -109,8 +71,8 @@ module.exports = function (app) {
       last_name: req.body.last_name,
       gender: req.body.gender,
       email: req.body.email,
-      phone: req.body.phone,
-      role: req.body.role,
+      phone: req.body.phone ? parseInt(req.body.phone) : null,
+      role: req.body.role.toLowerCase(),
     })
       .then((result) => res.json(result))
       .catch((err) => res.json(err));
@@ -150,65 +112,28 @@ module.exports = function (app) {
       .catch((err) => res.json(err));
   });
 
-  // Query to insert the member into chosen class
+  //API to add member into chosen class
   app.post("/api/addToClass", (req, res) => {
-    //Finds class to add user to
-    db.Class.findOne({ where: { id: req.body.id } }).then((result) => {
-      //Pulls class roster and checks if user is already joined
-      const oldRoster = result.dataValues.roster.split(",");
-      oldRoster.forEach((member) => {
-        if (req.body.memberid === member) {
-          res.json({ message: "Member already enrolled here." });
-        }
-      });
-
-      //Adds user to roster and updates class size
-      oldRoster.push(req.body.memberid);
-      const newClassSize = oldRoster.length;
-      const newRoster = oldRoster.join(",");
-
-      db.Class.update(
-        { roster: newRoster, current_size: newClassSize },
-        { where: { id: req.body.id } }
-      )
-        .then((result) => res.json(result))
+    db.Class.findOne({ where: { id: req.body.id } }).then((selectedClass) => {
+      const classUpdate = addToClass(selectedClass, req.body.memberid);
+      db.Class.update(classUpdate, { where: { id: req.body.id } })
+        .then(() => res.send("Success!"))
         .catch((err) => res.json(err));
     });
   });
 
-  // API POST route for removing a member/client from a class
+  // API for removing a member from a class
   app.post("/api/removeFromClass", (req, res) => {
-    //Finds class to remove user from
-    db.Class.findOne({ where: { id: req.body.id } }).then((result) => {
-      const newRoster = [];
-      const oldRoster = result.dataValues.roster.split(",");
-      //Rewrites roster to NOT include the user
-      oldRoster.forEach(function (member) {
-        if (req.body.memberid === member) {
-          return;
-        } else {
-        }
-
-        newRoster.push(member);
-      });
-      const newClassSize = newRoster.length;
-      const newRosterJoined = newRoster.join(",");
-      //Updates roster and class size
-      db.Class.update(
-        {
-          roster: newRosterJoined,
-          current_size: newClassSize,
-        },
-        { where: { id: req.body.id } }
-      )
-        .then((result) => res.json(result))
+    db.Class.findOne({ where: { id: req.body.id } }).then((selectedClass) => {
+      const classUpdate = removeClassMember(selectedClass, req.body.memberid);
+      db.Class.update(classUpdate, { where: { id: req.body.id } })
+        .then(() => res.send("Success!"))
         .catch((err) => res.json(err));
     });
   });
 
-  // API POST route for adding a class
+  // API for adding a class
   app.post("/api/addClass", (req, res) => {
-    //Adds a new class to the database
     db.Class.create({
       class_name: req.body.class_name,
       day: req.body.day,
@@ -222,9 +147,8 @@ module.exports = function (app) {
       .catch((err) => res.json(err));
   });
 
+  //API to remove class from the database
   app.delete("/api/removeClass/:id", (req, res) => {
-    //Removes class from the database
-    console.log(req.params);
     db.Class.destroy({ where: { id: req.params.id } })
       .then((result) => res.json(result))
       .catch((err) => res.status(500).json(err));
@@ -239,13 +163,16 @@ module.exports = function (app) {
       last_name: req.body.last_name,
       gender: req.body.gender,
       phone: req.body.phone ? parseInt(req.body.phone) : null,
-      role: req.body.role,
+      role: req.body.role.toLowerCase(),
     })
-      .then((result) => res.json(result))
+      .then((result) => {
+        delete result.dataValues.password;
+        res.json(result);
+      })
       .catch((err) => res.json(err));
   });
 
-  // GET API that allows a manager to delete a trainer
+  // DELETE API that allows a manager to delete a trainer
   app.delete("/api/manager/deleteTrainer/:id", (req, res) => {
     db.Employee.destroy({ where: { id: req.params.id } })
       .then((result) => res.json(result))
@@ -255,12 +182,12 @@ module.exports = function (app) {
   // GET API that allows a manager to view all the trainers
   app.get("/api/manager/trainers", (req, res) => {
     db.Employee.findAll({ where: { role: "trainer" } })
-      .then((result) => {
+      .then((trainers) => {
         // removing password from the result records for security reasons
-        result.forEach((trainer) => {
+        trainers.forEach((trainer) => {
           delete trainer.dataValues.password;
         });
-        res.json(result);
+        res.json(trainers);
       })
       .catch((err) => res.json(err));
   });
@@ -307,75 +234,32 @@ module.exports = function (app) {
       .catch((err) => res.json(err));
   });
 
-  // GET API that allows a manager to view all the members
-  app.get("/api/manager/members", (req, res) => {
-    db.Members.findAll({})
-      .then((result) => {
-        result.forEach((member) => {
-          delete member.dataValues.password;
-        });
-        res.json(result);
-      })
-      .catch((err) => res.json(err));
-  });
-
+  //API to get trainer schedule
   app.get("/api/trainer/:id", (req, res) => {
     db.Class.findAll({ where: { trainer_id: req.params.id } })
-      .then((result) => {
-        const classBundle = [];
-        const classes = result;
+      .then((classes) => {
         db.Employee.findOne({ where: { id: req.params.id } })
-          .then((result) => {
-            const trainerName = `${result.dataValues.first_name} ${result.dataValues.last_name}`;
-
-            classes.forEach((unit) => {
-              //Object to be sent to UI
-              const reqClass = {
-                id: unit.dataValues.id,
-                class_name: unit.dataValues.class_name,
-                day: unit.dataValues.day,
-                start_time: unit.dataValues.start_time,
-                current_size: unit.dataValues.current_size,
-                max_size: unit.dataValues.max_size,
-                trainer_id: unit.dataValues.trainer_id,
-              };
-
-              classBundle.push(reqClass);
-            });
-            classBundle.push(trainerName);
-            console.log(classBundle);
-            res.send(classBundle);
-          })
+          .then((trainer) => res.send(trainerSchedule(trainer, classes)))
           .catch((err) => res.status(401).json(err));
       })
       .catch((err) => res.status(401).json(err));
   });
 
-  // Query to get class roster
+  // API to get class roster
   app.get("/api/roster/:id", (req, res) => {
-    //Finds class roster
     db.Class.findOne({ where: { id: req.params.id } })
-      .then((result) => {
-        //Pulls class roster and checks member is in this class
-        const classRoster = [];
-        const currentRosterIds = result.dataValues.roster.split(",");
-        db.Member.findAll({}).then((members) => {
-          members.forEach((member) => {
-            const isMember = currentRosterIds.includes(
-              `${member.dataValues.id}`
-            );
-
-            if (isMember) {
-              const memberName = `${member.dataValues.first_name} ${member.dataValues.last_name}`;
-
-              classRoster.push(memberName);
-            }
-          });
-          classRoster.push(currentRosterIds);
-          console.log(classRoster);
-          res.json(classRoster);
-        });
+      .then((selectedClass) => {
+        db.Member.findAll({}).then((members) =>
+          res.json(buildRoster(members, selectedClass))
+        );
       })
+      .catch((err) => res.json(err));
+  });
+
+  // GET API that gets list of all member names and ids
+  app.get("/api/manager/memberList", (req, res) => {
+    db.Member.findAll({})
+      .then((members) => res.json(memberMap(members)))
       .catch((err) => res.json(err));
   });
 };
