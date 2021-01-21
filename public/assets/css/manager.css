@@ -90,12 +90,17 @@ body {
 
 .terminateBtn {
   border-color: #d22e33;
-  color: #d22e33;
+  color: whitesmoke;
 }
 
 .text-white {
   color: whitesmoke;
   font-size: 150%;
+}
+
+#currentTrainers {
+  color: whitesmoke;
+  font-size: 200%;
 }
 
 .nav-link {
@@ -117,4 +122,19 @@ body {
 .red-button {
   background: #d22e33;
   color: whitesmoke;
+}
+
+.nav-tabs .nav-link {
+  background-color: #d22e33;
+  color: whitesmoke;
+}
+
+.card-header {
+  font-weight: bold;
+}
+
+.logout-btn {
+  background: rgb(49, 49, 49);
+  color: whitesmoke;
+  display: inline-block;
 }

@@ -10,9 +10,10 @@ const role = $("#inputRole");
 //trainer list variables
 const trainerList = $(".trainerNameList");
 
+//load Trainer list on page load
 loadTrainers();
 
-//Get trainer list on page load.
+//function to Get trainer list on page load.
 function loadTrainers() {
   $.ajax({
     url: `/api/manager/trainers`,
@@ -36,12 +37,15 @@ function loadTrainers() {
       const $trainerGender = $(".trainerGender");
       const $trainerEmail = $(".trainerEmail");
       const $trainerPhone = $(".trainerPhone");
+      //add trainer id to each button
       const btnId = $(this).attr("data-id");
+      //empty View Trainer Info box in between each view
       $trainerFirstName.empty();
       $trainerLastName.empty();
       $trainerGender.empty();
       $trainerEmail.empty();
       $trainerPhone.empty();
+      //Fill View trainers box with individual trainer's info on View button click
       for (let i = 0; i < trainerNames.length; i++) {
         if (parseInt(btnId) === trainerNames[i].id) {
           $trainerFirstName.append("First Name: " + trainerNames[i].first_name);
@@ -61,10 +65,7 @@ $("body").on("click", ".terminateBtn", function () {
   const termBtnId = $(this).attr("data-id");
   $.ajax({
     url: `/api/manager/deleteTrainer/${termBtnId}`,
-    // data: {
-    //   id: termBtnId,
-    // },
-    method: "DELETE", //Should this be a get request or a delete request?
+    method: "DELETE",
 
     error: function (req, status, err) {
       if (err) alertModal(err);
@@ -82,6 +83,21 @@ $("body").on("click", ".terminateBtn", function () {
       $(".trainerPhone").html("Phone Number:");
     }
     resetFormValues();
+  });
+});
+
+//Logout button function
+$("body").on("click", ".logoutBtn", function () {
+  $.ajax({
+    url: `/api/employee/logout/${window.localStorage.getItem("userId")}`,
+    method: "GET",
+
+    error: function (req, status, err) {
+      if (err) alertModal(err);
+    },
+  }).then(function (response) {
+    localStorage.clear();
+    window.location.assign("/");
   });
 });
 
