@@ -75,29 +75,30 @@ module.exports = function (app) {
             password: md5(req.body.password),
           },
         })
-          .then((userEmployee) => {
+        .then((userEmployee) => {
+          // updates the is_logged_in column in employee table to true to track the logged in user
+          db.Employee.update(
+            { is_logged_in: true },
+            { where: { id: userEmployee.dataValues.id } }
+          ).then((result)=>{
             res.json({
               id: userEmployee.dataValues.id,
               userName: userEmployee.dataValues.first_name,
               role: userEmployee.dataValues.role,
-            });
-            // updates the is_logged_in column in employee table to true to track the logged in user
-            db.Employee.update(
-              { is_logged_in: true },
-              { where: { id: userEmployee.dataValues.id } }
-            );
-          })
-          .catch((err) => res.json(err));
+            })
+          }).catch((err) => res.json(err));
+        }).catch((err) => res.json(err));
       } else {
         const userId = userMember.dataValues.id;
-        res.json({
-          id: userId,
-        });
         // updates the is_logged_in column in member table to true to track the logged in user
         db.Member.update(
           { is_logged_in: true },
-          { where: { id: userMember.id } }
-        ).catch((err) => res.json(err));
+          { where: { id: userId } }
+        ).then((result)=>{
+          res.json({
+            id: userId,
+          })
+        }).catch((err) => res.json(err));
       }
     });
   });
@@ -111,8 +112,8 @@ module.exports = function (app) {
       last_name: req.body.last_name,
       gender: req.body.gender,
       email: req.body.email,
-      phone: req.body.phone,
-      role: req.body.role,
+      phone: req.body.phone ? parseInt(req.body.phone) : null,
+      role: req.body.role.toLowerCase(),
     })
       .then((result) => res.json(result))
       .catch((err) => res.json(err));
@@ -241,14 +242,17 @@ module.exports = function (app) {
       last_name: req.body.last_name,
       gender: req.body.gender,
       phone: req.body.phone ? parseInt(req.body.phone) : null,
-      role: req.body.role,
+      role: req.body.role.toLowerCase(),
     })
-      .then((result) => res.json(result))
+      .then((result) => {
+        delete result.dataValues.password;
+        res.json(result);
+      })
       .catch((err) => res.json(err));
   });
 
-  // GET API that allows a manager to delete a trainer
-  app.get("/api/manager/deleteTrainer/:id", (req, res) => {
+  // DELETE API that allows a manager to delete a trainer
+  app.delete("/api/manager/deleteTrainer/:id", (req, res) => {
     db.Employee.destroy({ where: { id: req.params.id } })
       .then((result) => res.json(result))
       .catch((err) => res.json(err));
@@ -318,6 +322,15 @@ module.exports = function (app) {
         });
         res.json(result);
       })
+      .catch((err) => res.json(err));
+  });
+
+  // GET API route for logging out the employee
+  app.get("/api/employee/logout/:id", (req, res) => {
+    // updates the is_logged_in column in db to false when member logs out
+    db.Employee.update({ is_logged_in: false }, { where: { id: req.params.id } })
+      // send a logged out message to the user
+      .then((result) => res.json(result))
       .catch((err) => res.json(err));
   });
 

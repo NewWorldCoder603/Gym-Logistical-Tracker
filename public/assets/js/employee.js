@@ -124,7 +124,7 @@ populateSchedule();
 //on logout click, let database know, erase user local storage id, redirect back to login page.
 $(".logout-btn").click(function () {
   $.ajax({
-    url: `/api/member/${window.localStorage.getItem("userId")}`,
+    url: `/api/employee/logout/${window.localStorage.getItem("userId")}`,
     method: "GET",
   }).then(function (data) {
     localStorage.clear();
@@ -223,11 +223,11 @@ $(".add-class-form-btn").click(function () {
 
   addClassTemplate = `<div class = "card p-3 mt-5 mb-5">
   <div class="card-header"> Add Class</div>
-  <form class="row g-3">
+  <form id="class_form" class="row g-3">
       <div class="row g-3">
           <div class="col">
-          <label for="inputClassName" class="form-label">Class Name</label>
-          <input type="text" id="inputClassName" class="form-control" placeholder="Class Name" aria-label="Class name">
+          <label for="inputClassName" class="form-label">Class Name*</label>
+          <input type="text" id="inputClassName" class="form-control" placeholder="Class Name" aria-label="Class name" required>
           </div>
           <div class="col">
           <label for="inputWeekday" class="form-label">Weekday</label>
@@ -286,38 +286,43 @@ $(".add-class-form-btn").click(function () {
 </div>
 </div>`;
   rosterOrClassDiv.append(addClassTemplate);
-
-
 });
 
 
-
 function createClass() {
-  const $inputClassName = $('#inputClassName').val()
-  const $inputWeekDay = $('#inputWeekDay').val()
-  const $inputStartTime = $('#inputStartTime').val()
-  const $inputMaxSize = $('#inputMaxSize').val()
-  const userId = localStorage.getItem('userId')
+  const formElem = document.getElementById("class_form");
+  // checks for form validation and sends an ajax call only when form fields are valid
+  const checkValid = formElem.checkValidity();
+  if(checkValid){
+    const $inputClassName = $('#inputClassName').val()
+    const $inputWeekDay = $('#inputWeekDay').val()
+    const $inputStartTime = $('#inputStartTime').val()
+    const $inputMaxSize = $('#inputMaxSize').val()
+    const userId = localStorage.getItem('userId')
 
-  return $.ajax({
-    url: "/api/addClass",
-    method: "POST",
-    data: {
-      class_name: $inputClassName,
-      day: $inputWeekDay,
-      start_time: $inputStartTime,
-      current_size: 0,
-      max_size: $inputMaxSize,
-      trainer_id: userId,
-      roster: "",
-    },
-    success: function () {
-      console.log("class added");
-      populateSchedule()
-
-    },
-  });
-}
+    return $.ajax({
+      url: "/api/addClass",
+      method: "POST",
+      data: {
+        class_name: $inputClassName,
+        day: $inputWeekDay,
+        start_time: $inputStartTime,
+        current_size: 0,
+        max_size: $inputMaxSize,
+        trainer_id: userId,
+        roster: "",
+      },
+      success: function () {
+        console.log("class added");
+        populateSchedule()
+      },
+    });
+  } else{
+  // when form invalid, prevents submission and focuses into the 1st invalid field
+  document.querySelector('input:invalid').reportValidity();
+  document.querySelector('input:invalid').focus();
+  };
+};
 
 function viewRoster() {
   const classId = event.target.getAttribute("data-id");
