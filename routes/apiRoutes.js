@@ -309,18 +309,6 @@ module.exports = function (app) {
       .catch((err) => res.json(err));
   });
 
-  // GET API that allows a manager to view all the members
-  app.get("/api/manager/members", (req, res) => {
-    db.Members.findAll({})
-      .then((result) => {
-        result.forEach((member) => {
-          delete member.dataValues.password;
-        });
-        res.json(result);
-      })
-      .catch((err) => res.json(err));
-  });
-
   app.get("/api/trainer/:id", (req, res) => {
     db.Class.findAll({ where: { trainer_id: req.params.id } })
       .then((result) => {
@@ -377,6 +365,24 @@ module.exports = function (app) {
 
           res.json(classRoster);
         });
+      })
+      .catch((err) => res.json(err));
+  });
+
+  // GET API that gets list of all member names and ids
+  app.get("/api/manager/memberList", (req, res) => {
+    db.Member.findAll({})
+      .then((members) => {
+        const memberList = [];
+        members.map((member) => {
+          const oneMember = {
+            id: member.dataValues.id,
+            fullName: `${member.dataValues.first_name} ${member.dataValues.last_name}`,
+          };
+          memberList.push(oneMember);
+        });
+        console.log(memberList);
+        res.json(memberList);
       })
       .catch((err) => res.json(err));
   });
