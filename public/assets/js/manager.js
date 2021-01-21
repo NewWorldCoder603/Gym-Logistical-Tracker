@@ -18,7 +18,6 @@ function loadTrainers() {
     url: `/api/manager/trainers`,
     method: "GET",
   }).then(function (trainerNames) {
-    console.log(trainerNames);
     for (let i = 0; i < trainerNames.length; i++) {
       const firstName = trainerNames[i].first_name;
       const lastName = trainerNames[i].last_name;
@@ -270,7 +269,7 @@ function viewRoster() {
           }. ${memberName} ${removeMemberBtn}<p>`
         );
       }
-      
+
       //add the AddMember form to the bottom
       const addMemberFormTemplate= ` <div class="col">
       <label for="inputAddMember" class="form-label">Add Member</label>
