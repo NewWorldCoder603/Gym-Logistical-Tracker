@@ -54,16 +54,7 @@
                 <div class = "col-12 d-flex justify-content-center">
                     
                     <ul class="trainerNameList" style="list-style-type:none;">
-                        <!-- <li class="me-5 float-left text-white">Trainer name  </li>
-                        <button type="button" class="btn darkBtn d-flex float-right ms-5 mb-3">View</button>
-                        <li class="me-5 float-left text-white">Trainer name  </li>
-                        <button type="button" class="btn darkBtn d-flex float-right ms-5 mb-3">View</button>
-                        <li class="me-5 float-left text-white">Trainer name  </li>
-                        <button type="button" class="btn darkBtn d-flex float-right ms-5 mb-3">View</button>
-                        <li class="me-5 float-left text-white">Trainer name  </li>
-                        <button type="button" class="btn darkBtn d-flex float-right ms-5 mb-3">View</button>
-                        <li class="me-5 float-left text-white">Trainer name  </li>
-                        <button type="button" class="btn darkBtn d-flex float-right ms-5 mb-3">View</button> -->
+                        
                     </ul>
                 </div>
             </div>
@@ -90,15 +81,15 @@
                             Trainer Name
                             </div>
                             <ul class="list-group list-group-flush text-start">
-                            <li class="list-group-item">First Name: </li>
-                            <li class="list-group-item">Last Name:</li>
-                            <li class="list-group-item">Gender:</li>
-                            <li class="list-group-item">Email Address: </li>
-                            <li class="list-group-item">Phone Number: </li>
+                            <li class="list-group-item trainerFirstName">First Name: </li>
+                            <li class="list-group-item trainerLastName">Last Name:</li>
+                            <li class="list-group-item trainerGender">Gender:</li>
+                            <li class="list-group-item trainerEmail">Email Address: </li>
+                            <li class="list-group-item trainerPhone">Phone Number: </li>
                             </ul>
                             <!-- terminate button -->
                             <div class="card-footer">
-                                <button type="button" class="btn darkBtn">Terminate Employee</button>
+                                <button type="button" class="btn darkBtn terminateBtn">Terminate Employee</button>
                             </div>
                         </div>                      
                     </div>
@@ -141,10 +132,6 @@
                                         <option>Trainer</option>
                                     </select>
                                 </div>
-                                <div class="col-12">
-                                    <label for="inputBirthday" class="form=label">Birthdate (yyyy-mm-dd)</label>
-                                    <input type="text" class="form-control" id="inputBirthday" placeholder="Birthdate (yyyy-dd-mm)">
-                                </div>
                                 <div class="col-md-12">
                                     <label for="inputPhone" class="form-label">Phone Number <br>(ten digit number only, no parentheses/dashes please)</label>
                                     <input type="text" id="inputPhone" class="form-control" placeholder="Phone Number">
@@ -157,12 +144,6 @@
                             </form>
                         </div>
                       </div>
-                      <!-- <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
-                        Et et consectetur ipsum labore excepteur est proident excepteur ad velit occaecat qui minim occaecat veniam. Fugiat veniam incididunt anim aliqua enim pariatur veniam sunt est aute sit dolor anim. Velit non irure adipisicing aliqua ullamco irure incididunt irure non esse consectetur nostrud minim non minim occaecat. Amet duis do nisi duis veniam non est eiusmod tempor incididunt tempor dolor ipsum in qui sit. Exercitation mollit sit culpa nisi culpa non adipisicing reprehenderit do dolore. Duis reprehenderit occaecat anim ullamco ad duis occaecat ex.
-                      </div>
-                      <div class="tab-pane fade" id="nav-about" role="tabpanel" aria-labelledby="nav-about-tab">
-                        Et et consectetur ipsum labore excepteur est proident excepteur ad velit occaecat qui minim occaecat veniam. Fugiat veniam incididunt anim aliqua enim pariatur veniam sunt est aute sit dolor anim. Velit non irure adipisicing aliqua ullamco irure incididunt irure non esse consectetur nostrud minim non minim occaecat. Amet duis do nisi duis veniam non est eiusmod tempor incididunt tempor dolor ipsum in qui sit. Exercitation mollit sit culpa nisi culpa non adipisicing reprehenderit do dolore. Duis reprehenderit occaecat anim ullamco ad duis occaecat ex.
-                      </div> -->
                     </div>
                   
                   </div>
@@ -173,10 +154,11 @@
   
       </div>
 
+     
       <!--Schedule Section-->
       <section class="container-fluid px-5">
         <div class="row background-gray">
-          <div class=" col-sm-12 col-md-6 col-lg pt-2 border-teal">
+          <div class="col-sm-12 col-md-6 col-lg pt-2 border-teal">
             <h3 class="text-red week-day text-center"></h3>
             <p
               class="date-of-year border-to-bottom border-teal pb-2 font-large text-center"
@@ -234,6 +216,31 @@
           </div>
         </div>
       </section>
+
+      <!--Roster Modal-->
+
+      <!--Altered from bootstrap documentation-->
+
+      <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Roster</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body roster-body">
+             
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn background-red text-white " data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!--End Roster Modal-->
       <footer class="mt-5 background-dark">
         <p class="font-large text-red text-center">Phone: (555) 555 5555</p>
         <p class="font-large text-red text-center mb-0">
