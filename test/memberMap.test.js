@@ -1,7 +1,7 @@
 const memberMap = require("../utilities/memberMap.js");
 
-describe("addToClass", () => {
-  it("should return an object that is the class roster", () => {
+describe("memberMap", () => {
+  it("should return an object that is all gym members", () => {
     const members = [
       {
         dataValues: {

@@ -1,6 +1,6 @@
 const buildRoster = require("../utilities/buildRoster.js");
 
-describe("addToClass", () => {
+describe("buildRoster", () => {
   it("should return an object that is the class roster", () => {
     const testClass = {
       dataValues: {
