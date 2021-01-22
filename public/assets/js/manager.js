@@ -87,7 +87,7 @@ $("body").on("click", ".terminateBtn", function () {
 });
 
 //Logout button function
-$("body").on("click", ".logoutBtn", function () {
+$("body").on("click", ".logout-btn", function () {
   $.ajax({
     url: `/api/employee/logout/${window.localStorage.getItem("userId")}`,
     method: "GET",

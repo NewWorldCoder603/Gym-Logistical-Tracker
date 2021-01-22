@@ -6,17 +6,19 @@ This is a gym tracker app which allows clients to create accounts, log in with e
 
 ## Screenshots
 
-![HomePage](..png)
+![HomePage](./Public/assets/images/screenshots/homePage.png)
 
-![RegistrationPage](..png)
+![RegistrationPage](./Public/assets/images/screenshots/registrationPage.png)
 
-![ClientSchedulePage](..png)
+![ClientSchedulePage](./Public/assets/images/screenshots/clientSchedulePage.png)
 
-![TrainerPage](..png)
+![TrainerPage](./Public/assets/images/screenshots/trainerPage.png)
 
-![ManagerPageInfo](..png)
+![ManagerPageView](./Public/assets/images/screenshots/managerPageView.png)
 
-![ManagerPageHire](..png)
+![ManagerPageHire](./Public/assets/images/screenshots/managerPageHire.png)
+
+![ManagerPageAdd](./Public/assets/images/screenshots/managerPageAdd.png)
 
 ## Table of Contents
 
@@ -25,34 +27,37 @@ This is a gym tracker app which allows clients to create accounts, log in with e
 - [Installation](#Installation)
 - [Feedback](#Feedback)
 - [Challenges](#Challenges)
-- [Walkthrough](#Walkthrough)
+- [Future Development](#Future_Development)
 
 ## Technologies
 
 - node.js
-- inquirer package
-- file system (fs)
+- mysql
+- sequelize
+- body-parser
+- dotenv
+- express
+- jest
+- md5
+- mysql2
+- nodemon
+- server
 
 ## Usage
-
-In the node.js integrated terminal, run "node index.js"
-Type in answers to each question prompt that pops up in the command line.
-Upon completion of the inquirer prompts, a .md file will be created with the title you provided as an answer to the first question. You can then attach that file to your new project.
 
 ## Installation
 
 - Install [node.js](https://nodejs.org/en/download/)
-- In node.js Integrated Terminal, run `npm install inquirer`
+-
 
 ## Feedback
 
 Contact me with any feedback or questions through GitHub or by email.
 
-- [GitHub](https://github.com/smanter82)
-- Email: sarahmanter@gmail.com
+-
 
 ## Challenges
 
-- writeFile
-- the idea of a markdown file
-- licenses/badges
+-
+
+## Future_Development
