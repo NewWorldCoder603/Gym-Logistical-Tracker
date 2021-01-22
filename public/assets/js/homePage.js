@@ -31,7 +31,6 @@ $("body").on("click", "#loginBtn", function () {
         localStorage.setItem("userId", response.id);
         window.location.assign("/manager");
       }
-      console.log("neither");
     });
   } else {
     // when form invalid, prevents submission and focuses into the 1st invalid field
