@@ -45,6 +45,7 @@ const getClasses = () => {
     url: `/api/classes/${localStorage.getItem("userId")}`,
     method: "GET",
   }).then(function (classData) {
+    console.log(classData);
     $weekDayDiv.empty();
     //function displays member info and what classes they are signed up for.
     //.replace borrowed from https://www.digitalocean.com/community/tutorials/js-capitalizing-strings
@@ -121,7 +122,7 @@ const getClasses = () => {
             isEnrolled = false;
           }
         }
-        let joinOrRemoveBtn; 
+        let joinOrRemoveBtn;
 
         //if class is full and member has not joined, say "class full"
         if (
@@ -133,7 +134,7 @@ const getClasses = () => {
         }
         //if class is not full and member has not joined, create a join button
         else if (isEnrolled === false) {
-           joinOrRemoveBtn = `<button
+          joinOrRemoveBtn = `<button
           type="button"
           
           class="btn background-red text-white align-self-center join-btn"
@@ -145,7 +146,7 @@ const getClasses = () => {
 
           //if member has joined, regardless of if class is full, create a remove button
         } else {
-           joinOrRemoveBtn = `<button
+          joinOrRemoveBtn = `<button
           type="button"
           class="btn background-red text-white align-self-center remove-btn"
           data-id="${fitClass.id}"
@@ -231,7 +232,6 @@ $(".logout-btn").click(function () {
 $(document.body).on("click", ".join-btn", function () {
   //grabs classId
 
-
   const classId = $(this).attr("data-id");
 
   //grab classDate from div's class name.
@@ -265,15 +265,15 @@ $(document.body).on("click", ".join-btn", function () {
 
 //remove user from a particular class when remove button is clicked
 
-  $(document.body).on("click", ".remove-btn", function () {
-    const classId = $(this).attr("data-id");
-    const classDate = $(this)
-      .parent()
-      .parent()
-      .parent()
-      .parent()
-      .find("p")
-      .attr("data-timestamp");
+$(document.body).on("click", ".remove-btn", function () {
+  const classId = $(this).attr("data-id");
+  const classDate = $(this)
+    .parent()
+    .parent()
+    .parent()
+    .parent()
+    .find("p")
+    .attr("data-timestamp");
 
   //grab memberId from local storage
   const memberId = localStorage.getItem("userId");
