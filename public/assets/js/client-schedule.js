@@ -65,7 +65,7 @@ const getClasses = () => {
         $memberName.html(membersName);
         $numberOfClassesTakenDiv.html(numOfClassesTaken);
       }
-      writeUserName();
+       writeUserName();
 
       //takes each class the user is signed up for, then appends that class info to user info page
       function writeUsersClasses() {
