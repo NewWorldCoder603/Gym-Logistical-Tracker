@@ -13,6 +13,7 @@ module.exports = function (app) {
     db.Class.findAll({ order: [["start_time", "ASC"]] }).then((classes) => {
       db.Member.findOne({ where: { id: req.params.id } })
         .then((currentUser) => {
+          console.log(currentUser);
           db.Employee.findAll({}).then((trainers) => {
             res.json(getClassBundle(classes, currentUser, trainers));
           });
