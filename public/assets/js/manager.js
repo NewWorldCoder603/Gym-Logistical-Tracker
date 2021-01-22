@@ -216,7 +216,7 @@ const populateSchedule = () => {
   $weekDayDiv.empty();
   return $.ajax({
     //grabs user id from local storage(set in login page), then ajax calls for data for classes and that user.
-    url: `/api/classes/${localStorage.getItem("userId")}`,
+    url: `/api/employee/classes/${localStorage.getItem("userId")}`,
     method: "GET",
   }).then(function (classData) {
     //iterates over each class that comes in from ajax list to populate schedule
