@@ -4,7 +4,7 @@ const $weekDayDiv = $(".weekday-placeholder");
 
 //grabs 7 days of the week, updates day, date, and classes based on date.
 const setUpDivs = () => {
-  for (i = 0; i < $weekDay.length; i++) {
+  for (let i = 0; i < $weekDay.length; i++) {
     //updates day of the week
     const dayofWeek = dayjs()
       .add([i - 1 + 1], "day")
@@ -45,6 +45,7 @@ const getClasses = () => {
     url: `/api/classes/${localStorage.getItem("userId")}`,
     method: "GET",
   }).then(function (classData) {
+    console.log(classData[0].classJoined);
     $weekDayDiv.empty();
     //function displays member info and what classes they are signed up for.
     //.replace borrowed from https://www.digitalocean.com/community/tutorials/js-capitalizing-strings
@@ -70,19 +71,17 @@ const getClasses = () => {
       function writeUsersClasses() {
         $classesTakenDiv.empty();
         numOfClassesTaken = `${classData[0].classJoined.length}`;
-        for (i = 0; i < numOfClassesTaken; i++) {
-        
-          const className = classData[i].class_name;
+        for (let i = 0; i < numOfClassesTaken; i++) {
+          const className = classData[i].classJoined[i].class_name;
           const startTime = tConvert(classData[i].start_time);
           const trainerName = classData[i].trainer_name;
           const dayOfClass = classData[i].day;
           const $p = $("<p>");
-
+          console.log(dayOfClass, className, startTime, trainerName);
           $p.html(
             `-${dayOfClass}, ${className} at ${startTime} with ${trainerName}-`
           );
           $classesTakenDiv.append($p);
-      
         }
       }
       writeUsersClasses();
@@ -115,7 +114,7 @@ const getClasses = () => {
         }
 
         //check each class fit class id against ClassJoined Ids to see if the user joined this specific class
-        for (i = 0; i < fitClass.classJoined.length; i++) {
+        for (let i = 0; i < fitClass.classJoined.length; i++) {
           if (fitClass.classJoined[i].id === fitClass.id) {
             isEnrolled = true;
             break;
@@ -184,7 +183,7 @@ const getClasses = () => {
 `;
 
         //search the divs for one with a class day that matches the classname, and append to that div.
-        for (i = 0; i < $weekDayDiv.length; i++) {
+        for (let i = 0; i < $weekDayDiv.length; i++) {
           if ($weekDayDiv[i].className === fitClass.day) {
             $weekDayDiv.eq(i).append(classTemplate);
           }
@@ -233,6 +232,7 @@ $(".logout-btn").click(function () {
 const addToClass = () => {
   //grabs classId
   const classId = event.target.getAttribute("data-id");
+  console.log(classId);
 
   //grab classDate from div's class name.
   const classDate = event.target.parentElement.parentElement.parentElement.parentElement
