@@ -6,7 +6,7 @@ $("body").on("click", "#loginBtn", function () {
   const formElem = document.getElementById("login_form");
   // checks for form validation and sends an ajax call only when form fields are valid
   const checkValid = formElem.checkValidity();
-  if(checkValid){
+  if (checkValid) {
     $.ajax({
       url: "/api/login/",
       data: {
@@ -19,24 +19,24 @@ $("body").on("click", "#loginBtn", function () {
         if (err) alertModal("Login Failed");
       },
     }).then(function (response) {
-      console.log(response);
       //Add if statements to check for manager, trainer, or member status
-      if(!response.role){
-          //if correct login, set user id to local storage, and redirect to client schedule page.
-          localStorage.setItem("userId", response.id);
-          window.location.assign("/client-schedule");
-      } else if (response.role === "trainer") {
+      if (!response.role) {
+        //if correct login, set user id to local storage, and redirect to client schedule page.
+        localStorage.setItem("userId", response.id);
+        window.location.assign("/client-schedule");
+      } else if (response.role.toLowerCase() === "trainer") {
         localStorage.setItem("userId", response.id);
         window.location.assign("/employee");
-      } else{
+      } else if (response.role.toLowerCase() === "manager") {
         localStorage.setItem("userId", response.id);
         window.location.assign("/manager");
-      }      
+      }
+      console.log("neither");
     });
-  } else{
+  } else {
     // when form invalid, prevents submission and focuses into the 1st invalid field
-    document.querySelector('input:invalid').reportValidity();
-    document.querySelector('input:invalid').focus();
+    document.querySelector("input:invalid").reportValidity();
+    document.querySelector("input:invalid").focus();
   }
 });
 
