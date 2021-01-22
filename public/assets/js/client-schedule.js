@@ -71,6 +71,7 @@ const getClasses = () => {
         $classesTakenDiv.empty();
         numOfClassesTaken = `${classData[0].classJoined.length}`;
         for (i = 0; i < numOfClassesTaken; i++) {
+        
           const className = classData[i].class_name;
           const startTime = tConvert(classData[i].start_time);
           const trainerName = classData[i].trainer_name;
@@ -81,6 +82,7 @@ const getClasses = () => {
             `-${dayOfClass}, ${className} at ${startTime} with ${trainerName}-`
           );
           $classesTakenDiv.append($p);
+      
         }
       }
       writeUsersClasses();
