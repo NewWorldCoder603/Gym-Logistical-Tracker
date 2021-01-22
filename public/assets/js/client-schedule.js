@@ -69,13 +69,14 @@ const getClasses = () => {
       //takes each class the user is signed up for, then appends that class info to user info page
       function writeUsersClasses() {
         $classesTakenDiv.empty();
-        numOfClassesTaken = `${classData[0].classJoined.length}`;
+        const numOfClassesTaken = `${classData[0].classJoined.length}`;
         for (let i = 0; i < numOfClassesTaken; i++) {
           const className = classData[i].classJoined[i].class_name;
           const startTime = tConvert(classData[i].start_time);
           const trainerName = classData[i].trainer_name;
           const dayOfClass = classData[i].day;
           const $p = $("<p>");
+
           $p.html(
             `-${dayOfClass}, ${className} at ${startTime} with ${trainerName}-`
           );
@@ -86,7 +87,7 @@ const getClasses = () => {
 
       //if user is signed up for one class, appends "class", else, appends "classes"
       function isClassesPlural() {
-        $classText = $(".sentence-text-classes");
+        const $classText = $(".sentence-text-classes");
         //empties class text so it doesn't repeat during recursive
         $classText.empty();
 
@@ -120,6 +121,7 @@ const getClasses = () => {
             isEnrolled = false;
           }
         }
+        let joinOrRemoveBtn; 
 
         //if class is full and member has not joined, say "class full"
         if (
@@ -131,9 +133,9 @@ const getClasses = () => {
         }
         //if class is not full and member has not joined, create a join button
         else if (isEnrolled === false) {
-          joinOrRemoveBtn = `<button
+           joinOrRemoveBtn = `<button
           type="button"
-          onclick="addToClass()"
+          
           class="btn background-red text-white align-self-center join-btn"
           data-id="${fitClass.id}"
           data-joinedClassList="false"
@@ -143,10 +145,9 @@ const getClasses = () => {
 
           //if member has joined, regardless of if class is full, create a remove button
         } else {
-          joinOrRemoveBtn = `<button
+           joinOrRemoveBtn = `<button
           type="button"
-          onclick="removeFromClass()"
-          class="btn background-red text-white align-self-center join-btn"
+          class="btn background-red text-white align-self-center remove-btn"
           data-id="${fitClass.id}"
           data-joinedClassList="true"
           >
@@ -172,7 +173,7 @@ const getClasses = () => {
         }</div>
             <div class="class-spots-left-${fitClass.day}">${
           fitClass.max_size - fitClass.current_size
-        } slots </div>
+        } slots left </div>
           </div>
           <div class="col border-to-right border-teal d-flex">
           ${joinOrRemoveBtn}
@@ -227,14 +228,20 @@ $(".logout-btn").click(function () {
 });
 
 //  tells the database the user has signed up for the class, and adds their to 'roster' in backend.
-const addToClass = () => {
+$(document.body).on("click", ".join-btn", function () {
   //grabs classId
-  const classId = event.target.getAttribute("data-id");
+
+
+  const classId = $(this).attr("data-id");
 
   //grab classDate from div's class name.
-  const classDate = event.target.parentElement.parentElement.parentElement.parentElement
-    .querySelector("p")
-    .getAttribute("data-timestamp");
+  const classDate = $(this)
+    .parent()
+    .parent()
+    .parent()
+    .parent()
+    .find("p")
+    .attr("data-timestamp");
 
   //grab memberId from local storage
   const memberId = localStorage.getItem("userId");
@@ -254,20 +261,22 @@ const addToClass = () => {
       getClasses();
     },
   });
-};
+});
 
 //remove user from a particular class when remove button is clicked
-const removeFromClass = () => {
-  //grabs classId attatched when button is made in template
-  classId = event.target.getAttribute("data-id");
 
-  //grab classDate by climbing up the dom and grabbing timestamp attritube
-  classDate = event.target.parentElement.parentElement.parentElement.parentElement
-    .querySelector("p")
-    .getAttribute("data-timestamp");
+  $(document.body).on("click", ".remove-btn", function () {
+    const classId = $(this).attr("data-id");
+    const classDate = $(this)
+      .parent()
+      .parent()
+      .parent()
+      .parent()
+      .find("p")
+      .attr("data-timestamp");
 
   //grab memberId from local storage
-  memberId = localStorage.getItem("userId");
+  const memberId = localStorage.getItem("userId");
 
   return $.ajax({
     url: "/api/removeFromClass",
@@ -284,4 +293,4 @@ const removeFromClass = () => {
       getClasses();
     },
   });
-};
+});

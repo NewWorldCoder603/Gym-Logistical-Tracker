@@ -103,7 +103,7 @@ body {
 }
 
 /* for delete class button */
-.deleteClassBtn{
+.deleteClassBtn, .viewRosterBtn{
 display: inline-block;
 background:rgb(49, 49, 49);
 color: whitesmoke;
