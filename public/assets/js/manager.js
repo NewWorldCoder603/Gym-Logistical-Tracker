@@ -106,7 +106,7 @@ $("body").on("click", "#hireBtn", function () {
   const formElem = document.getElementById("employee_form");
   // checks for form validation and sends an ajax call only when form fields are valid
   const checkValid = formElem.checkValidity();
-  if(checkValid){
+  if (checkValid) {
     $.ajax({
       url: "/api/manager/addTrainer/",
       data: {
@@ -136,11 +136,11 @@ $("body").on("click", "#hireBtn", function () {
         phone.val("");
       }
       resetHireForm();
-    })
-  } else{
-      // when form invalid, prevents submission and focuses into the 1st invalid field
-      document.querySelector('input:invalid').reportValidity();
-      document.querySelector('input:invalid').focus();
+    });
+  } else {
+    // when form invalid, prevents submission and focuses into the 1st invalid field
+    document.querySelector("input:invalid").reportValidity();
+    document.querySelector("input:invalid").focus();
   }
 });
 
@@ -293,7 +293,7 @@ $(document.body).on("click", ".view-roster-btn", function () {
     .attr("data-timestamp");
   // .querySelector("p")
   // .getAttribute("data-timestamp");
-  console.log(classDate);
+
   //get the roster from the database
   $.ajax({
     url: `/api/roster/${classId}`,

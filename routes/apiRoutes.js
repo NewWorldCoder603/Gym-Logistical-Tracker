@@ -6,6 +6,7 @@ const trainerSchedule = require("../utilities/trainerSchedule");
 const removeClassMember = require("../utilities/removeClassMember");
 const addToClass = require("../utilities/addToClass");
 const getClassBundle = require("../utilities/classBundle");
+const getEmployeeClassBundle = require("../utilities/employeeClassBundle");
 
 module.exports = function (app) {
   // GET object to populate divs with class info
@@ -28,7 +29,7 @@ module.exports = function (app) {
       db.Employee.findOne({ where: { id: req.params.id } })
         .then((currentUser) => {
           db.Employee.findAll({}).then((trainers) => {
-            res.json(getClassBundle(classes, currentUser, trainers));
+            res.json(getEmployeeClassBundle(classes, currentUser, trainers));
           });
         })
         .catch((err) => res.json(err));

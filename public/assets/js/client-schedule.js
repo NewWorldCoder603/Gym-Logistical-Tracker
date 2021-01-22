@@ -45,7 +45,6 @@ const getClasses = () => {
     url: `/api/classes/${localStorage.getItem("userId")}`,
     method: "GET",
   }).then(function (classData) {
-    console.log(classData[0].classJoined);
     $weekDayDiv.empty();
     //function displays member info and what classes they are signed up for.
     //.replace borrowed from https://www.digitalocean.com/community/tutorials/js-capitalizing-strings
@@ -65,7 +64,7 @@ const getClasses = () => {
         $memberName.html(membersName);
         $numberOfClassesTakenDiv.html(numOfClassesTaken);
       }
-       writeUserName();
+      writeUserName();
 
       //takes each class the user is signed up for, then appends that class info to user info page
       function writeUsersClasses() {
@@ -77,7 +76,6 @@ const getClasses = () => {
           const trainerName = classData[i].trainer_name;
           const dayOfClass = classData[i].day;
           const $p = $("<p>");
-          console.log(dayOfClass, className, startTime, trainerName);
           $p.html(
             `-${dayOfClass}, ${className} at ${startTime} with ${trainerName}-`
           );
@@ -232,7 +230,6 @@ $(".logout-btn").click(function () {
 const addToClass = () => {
   //grabs classId
   const classId = event.target.getAttribute("data-id");
-  console.log(classId);
 
   //grab classDate from div's class name.
   const classDate = event.target.parentElement.parentElement.parentElement.parentElement
