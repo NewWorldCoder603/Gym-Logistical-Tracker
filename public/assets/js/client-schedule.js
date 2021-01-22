@@ -64,7 +64,7 @@ const getClasses = () => {
         $memberName.html(membersName);
         $numberOfClassesTakenDiv.html(numOfClassesTaken);
       }
-       writeUserName();
+      writeUserName();
 
       //takes each class the user is signed up for, then appends that class info to user info page
       function writeUsersClasses() {
@@ -76,7 +76,7 @@ const getClasses = () => {
           const trainerName = classData[i].trainer_name;
           const dayOfClass = classData[i].day;
           const $p = $("<p>");
-    
+
           $p.html(
             `-${dayOfClass}, ${className} at ${startTime} with ${trainerName}-`
           );
@@ -230,8 +230,9 @@ $(".logout-btn").click(function () {
 //  tells the database the user has signed up for the class, and adds their to 'roster' in backend.
 $(document.body).on("click", ".join-btn", function () {
   //grabs classId
-  const classId = $(this).attr("data-id");
 
+
+  const classId = $(this).attr("data-id");
 
   //grab classDate from div's class name.
   const classDate = $(this)

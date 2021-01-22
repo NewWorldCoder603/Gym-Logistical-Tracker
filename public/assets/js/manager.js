@@ -291,6 +291,7 @@ $(document.body).on("click", ".view-roster-btn", function () {
     .find("p")
     .attr("data-timestamp");
 
+
   //get the roster from the database
   $.ajax({
     url: `/api/roster/${classId}`,

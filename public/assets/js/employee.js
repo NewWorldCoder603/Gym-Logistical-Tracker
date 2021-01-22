@@ -287,17 +287,16 @@ $(".add-class-form-btn").click(function () {
   rosterOrClassDiv.append(addClassTemplate);
 });
 
-
 function createClass() {
   const formElem = document.getElementById("class_form");
   // checks for form validation and sends an ajax call only when form fields are valid
   const checkValid = formElem.checkValidity();
-  if(checkValid){
-    const $inputClassName = $('#inputClassName').val()
-    const $inputWeekDay = $('#inputWeekDay').val()
-    const $inputStartTime = $('#inputStartTime').val()
-    const $inputMaxSize = $('#inputMaxSize').val()
-    const userId = localStorage.getItem('userId')
+  if (checkValid) {
+    const $inputClassName = $("#inputClassName").val();
+    const $inputWeekDay = $("#inputWeekDay").val();
+    const $inputStartTime = $("#inputStartTime").val();
+    const $inputMaxSize = $("#inputMaxSize").val();
+    const userId = localStorage.getItem("userId");
 
     return $.ajax({
       url: "/api/addClass",
@@ -313,9 +312,10 @@ function createClass() {
       },
       success: function () {
         console.log("class added");
-        populateSchedule()
+        populateSchedule();
       },
     });
+
   } else{
   // when form invalid, prevents submission and focuses into the 1st invalid field
   document.querySelector('input:invalid').reportValidity();
@@ -324,6 +324,7 @@ function createClass() {
 };
 $(document.body).on("click", ".viewRosterBtn", function () {
   const classId = $(this).attr("data-id");
+
   $.ajax({
     url: `/api/roster/${classId}`,
     method: "GET",
@@ -342,7 +343,9 @@ $(document.body).on("click", ".viewRosterBtn", function () {
       //otherwise, display each member who signed up for the class
       else {
         for (let i = 0; i < classRoster.length - 1; i++) {
+
           let listItemTeamplate = `<li class="list-group-item">${i + 1}.   ${
+
             classRoster[i]
           } </li>`;
           $rosterList.append(listItemTeamplate);

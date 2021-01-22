@@ -6,11 +6,11 @@ const birthday = $("#inputBirthday");
 const gender = $("#inputGender");
 const phone = $("#inputPhone");
 
-$("body").on("click", "#submitRegistration", function(){
+$("body").on("click", "#submitRegistration", function () {
   const formElem = document.getElementById("register_form");
   // checks for form validation and sends an ajax call only when form fields are valid
   const checkValid = formElem.checkValidity();
-  if(checkValid){
+  if (checkValid) {
     $.ajax({
       url: "/api/register/",
       data: {
@@ -25,7 +25,6 @@ $("body").on("click", "#submitRegistration", function(){
       method: "POST",
 
       error: function (req, status, err) {
-        console.log(req);
         if (err) alertModal("Error", req.responseJSON.error);
       },
     }).then(function (response) {
@@ -33,10 +32,10 @@ $("body").on("click", "#submitRegistration", function(){
       localStorage.setItem("userId", response.id);
       window.location.assign("/client-schedule");
     });
-  } else{
+  } else {
     // when form invalid, prevents submission and focuses into the 1st invalid field
-    document.querySelector('input:invalid').reportValidity();
-    document.querySelector('input:invalid').focus();
+    document.querySelector("input:invalid").reportValidity();
+    document.querySelector("input:invalid").focus();
   }
 });
 
