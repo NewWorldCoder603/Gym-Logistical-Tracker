@@ -73,8 +73,7 @@ const populateSchedule = () => {
       if (fitClass.trainer_id === parseInt(localStorage.getItem("userId"))) {
         deleteBtn = `<button
           type="button"
-          onclick="deleteClass(), populateSchedule()"
-          class="btn background-red text-white align-self-center join-btn"
+          class="btn background-red text-white align-self-center delete-class-btn"
           data-id="${fitClass.id}"
           data-joinedClassList="true"
           >
@@ -98,7 +97,7 @@ const populateSchedule = () => {
       }</div>
             <div class="class-spots-left-${fitClass.day}">${
         fitClass.max_size - fitClass.current_size
-      } slots </div>
+      } slots left</div>
           </div>
           <div class="col border-to-right border-teal d-flex">
           ${deleteBtn}
@@ -139,7 +138,7 @@ function displayTrainerInfo() {
     method: "GET",
   }).then(function (trainerClassInfo) {
     function displayNameGreeting() {
-      $trainerNameDiv = $(".trainer-name");
+      const $trainerNameDiv = $(".trainer-name");
 
       //grabs just the first name from the full name
       const fullTrainerName = trainerClassInfo[trainerClassInfo.length - 1];
@@ -152,7 +151,6 @@ function displayTrainerInfo() {
     displayNameGreeting();
 
     function displayHowManyClasses() {
-      console.log(trainerClassInfo);
       const $numOfClassesDiv = $(".num-classes-taught");
 
       //minus 1 because last array item is always just trainers name.
@@ -168,8 +166,7 @@ function displayTrainerInfo() {
       for (let i = 0; i < trainerClassInfo.length - 1; i++) {
         const viewRosterBtn = `<button
       type="button"
-      onclick="viewRoster() "
-      class="btn align-self-center deleteClassBtn"
+      class="btn align-self-center viewRosterBtn"
       data-id="${trainerClassInfo[i].id}"
       >
       View Roster
@@ -205,16 +202,18 @@ function displayTrainerInfo() {
 displayTrainerInfo();
 
 //Not working properly. Perhaps my and dustins tables named differently? Look into this tonight.
-const deleteClass = () => {
-  const id = parseInt(event.target.getAttribute("data-id"));
+$(document.body).on("click", ".delete-class-btn", function () {
+  //grabs classId
+  const id = $(this).attr("data-id");
   return $.ajax({
     url: `/api/removeClass/${id}`,
     method: "DELETE",
     success: function () {
+      populateSchedule()
       console.log("Delete Request Sent");
     },
   });
-};
+});
 
 //on logout click, let database know, erase user local storage id, redirect back to login page.
 $(".add-class-form-btn").click(function () {
@@ -323,9 +322,8 @@ function createClass() {
   document.querySelector('input:invalid').focus();
   };
 };
-
-function viewRoster() {
-  const classId = event.target.getAttribute("data-id");
+$(document.body).on("click", ".viewRosterBtn", function () {
+  const classId = $(this).attr("data-id");
   $.ajax({
     url: `/api/roster/${classId}`,
     method: "GET",
@@ -338,14 +336,13 @@ function viewRoster() {
 
       //if the class is empty, display no one has signed up for the class
       if (classRoster.length === 1) {
-        listItemTeamplate = `<li class="list-group-item">No members signed up yet </li>`;
+        let listItemTeamplate = `<li class="list-group-item">No members signed up yet </li>`;
         $rosterList.append(listItemTeamplate);
       }
       //otherwise, display each member who signed up for the class
       else {
         for (let i = 0; i < classRoster.length - 1; i++) {
-          console.log(i);
-          listItemTeamplate = `<li class="list-group-item">${i + 1}.   ${
+          let listItemTeamplate = `<li class="list-group-item">${i + 1}.   ${
             classRoster[i]
           } </li>`;
           $rosterList.append(listItemTeamplate);
@@ -354,4 +351,4 @@ function viewRoster() {
     }
     writeRoster();
   });
-}
+})
