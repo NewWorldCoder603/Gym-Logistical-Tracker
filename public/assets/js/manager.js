@@ -3,7 +3,6 @@ const email = $("#inputEmail");
 const password = $("#inputPassword");
 const firstName = $("#firstName");
 const lastName = $("#lastName");
-const birthday = $("#inputBirthday");
 const gender = $("#inputGender");
 const phone = $("#inputPhone");
 const role = $("#inputRole");
@@ -186,7 +185,7 @@ function tConvert(time) {
 
 //grabs 7 days of the week, updates day and date for each div.
 const displayCurrentDate = () => {
-  for (i = 0; i < $weekDay.length; i++) {
+  for (let i = 0; i < $weekDay.length; i++) {
     //updates day of the week
     const dayofWeek = dayjs()
       .add([i - 1 + 1], "day")
@@ -258,7 +257,7 @@ const populateSchedule = () => {
       }</div>
               <div class="class-spots-left-${fitClass.day}">${
         fitClass.max_size - fitClass.current_size
-      } slots </div>
+      } slots left</div>
             </div>
             <div class="col border-to-right border-teal d-flex">
             ${viewRosterBtn}
@@ -268,7 +267,7 @@ const populateSchedule = () => {
 
       //search the divs for one with a class day that matches the classname, and append to that div.
       function appendtoWeekday() {
-        for (i = 0; i < $weekDayDiv.length; i++) {
+        for (let i = 0; i < $weekDayDiv.length; i++) {
           if ($weekDayDiv[i].className === fitClass.day) {
             $weekDayDiv.eq(i).append(classTemplate);
           }
@@ -291,9 +290,7 @@ $(document.body).on("click", ".view-roster-btn", function () {
     .parent()
     .find("p")
     .attr("data-timestamp");
-  // .querySelector("p")
-  // .getAttribute("data-timestamp");
-  console.log(classDate);
+
   //get the roster from the database
   $.ajax({
     url: `/api/roster/${classId}`,
@@ -357,17 +354,16 @@ $(document.body).on("click", ".removeMember", function () {
   const classDate = $(this).attr("data-class-date");
   const currentThis = $(this);
 
-  //this one was a rough hack. I couldn't use writeRoster again, because its data relied on a btn click.
-  //I added the member's id to both the button and the p tag. On Click, a for loop runs and when it matches the p tag to
-  //the id, it deletes both. This updates the modal for the user immediately. I KNOW this is not a great way and will try to improve.
+  //added the member's id to both the button and the p tag. On Click, a for loop runs and when it matches the p tag to
+  //the id, it deletes both. This updates the modal for the user immediately.
   function reWriteModal() {
     //grab all the ptags in the modal
     const $modalP = $(".modal-p");
 
-    for (i = 0; i < $modalP.length; i++) {
+    for (let i = 0; i < $modalP.length; i++) {
       const memberBtnId = currentThis.attr("data-id");
-      let $pId = $modalP[i].getAttribute("data-member-id");
-      if ($pId === memberBtnId) {
+      const ptagId = $modalP[i].getAttribute("data-member-id");
+      if (ptagId === memberBtnId) {
         $modalP.eq(i).empty();
       }
     }

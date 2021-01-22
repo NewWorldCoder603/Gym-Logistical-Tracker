@@ -29,7 +29,6 @@ $("body").on("click", "#submitRegistration", function(){
         if (err) alertModal("Error", req.responseJSON.error);
       },
     }).then(function (response) {
-      console.log(response);
       //If sign-up goes through, get request for specific member's id
       localStorage.setItem("userId", response.id);
       window.location.assign("/client-schedule");
