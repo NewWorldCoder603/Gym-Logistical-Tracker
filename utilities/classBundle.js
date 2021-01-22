@@ -24,6 +24,7 @@ module.exports = function (classes, currentUser, trainers) {
         }
       });
     }
+
     //Object to be sent to UI
     const reqClass = {
       id: unit.dataValues.id,
