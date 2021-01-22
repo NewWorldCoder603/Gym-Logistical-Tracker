@@ -209,7 +209,7 @@ $(document.body).on("click", ".delete-class-btn", function () {
     url: `/api/removeClass/${id}`,
     method: "DELETE",
     success: function () {
-      populateSchedule()
+      populateSchedule();
       console.log("Delete Request Sent");
     },
   });
@@ -315,14 +315,15 @@ function createClass() {
         populateSchedule();
       },
     });
-
-  } else{
-  // when form invalid, prevents submission and focuses into the 1st invalid field
-  document.querySelector('input:invalid').reportValidity();
-  document.querySelector('input:invalid').focus();
-  };
-};
+  } else {
+    // when form invalid, prevents submission and focuses into the 1st invalid field
+    document.querySelector("input:invalid").reportValidity();
+    document.querySelector("input:invalid").focus();
+  }
+}
 $(document.body).on("click", ".viewRosterBtn", function () {
+  const rosterOrClassDiv = $(".roster-or-addClass");
+  rosterOrClassDiv.empty();
   const classId = $(this).attr("data-id");
 
   $.ajax({
@@ -330,6 +331,17 @@ $(document.body).on("click", ".viewRosterBtn", function () {
     method: "GET",
   }).then(function (classRoster) {
     function writeRoster() {
+      rosterOrClassDiv.append(`<div class="card mb-5 background-red mt-5 " style="width: 70%">
+      <div class="card-header roster-text">
+      Roster
+      </div>
+      <ul class="list-group list-group-flush text-start displayPage">
+      <li class="list-group-item text-center">Choose a class to view </li>
+      </ul>
+      <!-- terminate button -->
+      <div class="card-footer">
+      </div>
+  </div>`);
       $rosterList = $(".displayPage");
 
       //empty out any previous list items
@@ -343,9 +355,7 @@ $(document.body).on("click", ".viewRosterBtn", function () {
       //otherwise, display each member who signed up for the class
       else {
         for (let i = 0; i < classRoster.length - 1; i++) {
-
           let listItemTeamplate = `<li class="list-group-item">${i + 1}.   ${
-
             classRoster[i]
           } </li>`;
           $rosterList.append(listItemTeamplate);
@@ -354,4 +364,4 @@ $(document.body).on("click", ".viewRosterBtn", function () {
     }
     writeRoster();
   });
-})
+});
