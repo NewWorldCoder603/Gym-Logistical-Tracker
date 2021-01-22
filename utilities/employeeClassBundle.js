@@ -1,3 +1,4 @@
+//This function will build the object to populate the schedule for employees
 module.exports = function (classes, currentUser, trainers) {
   let classBundle = [];
   console.log(currentUser);

@@ -1,3 +1,4 @@
+//This function will build the object sent to populate the class schedule for members
 module.exports = function (classes, currentUser, trainers) {
   let classesJoined = [];
   let roster = [];
@@ -41,5 +42,6 @@ module.exports = function (classes, currentUser, trainers) {
 
     classBundle.push(reqClass);
   });
+
   return classBundle;
 };

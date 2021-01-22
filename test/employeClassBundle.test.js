@@ -1,8 +1,8 @@
-const classBundle = require("../utilities/classBundle.js");
+const employeeClassBundle = require("../utilities/employeeClassBundle.js");
 
-describe("classBundle", () => {
+describe("employeeClassBundle", () => {
   it("should return an object that is the trainer schedule", () => {
-    const testMember = {
+    const testEmployee = {
       dataValues: {
         id: 2,
         first_name: "Memby",
@@ -72,10 +72,6 @@ describe("classBundle", () => {
     ];
     const result = [
       {
-        classJoined: [
-          { id: 1, class_name: "Schwarzenegger Sweller" },
-          { id: 1, class_name: "Captain Crunches" },
-        ],
         id: 1,
         class_name: "Beef Session",
         day: "Monday",
@@ -87,10 +83,6 @@ describe("classBundle", () => {
         userName: "Memby",
       },
       {
-        classJoined: [
-          { id: 1, class_name: "Schwarzenegger Sweller" },
-          { id: 1, class_name: "Captain Crunches" },
-        ],
         id: 1,
         class_name: "Schwarzenegger Sweller",
         day: "Tuesday",
@@ -102,10 +94,6 @@ describe("classBundle", () => {
         userName: "Memby",
       },
       {
-        classJoined: [
-          { id: 1, class_name: "Schwarzenegger Sweller" },
-          { id: 1, class_name: "Captain Crunches" },
-        ],
         id: 1,
         class_name: "Captain Crunches",
         day: "Friday",
@@ -117,6 +105,8 @@ describe("classBundle", () => {
         userName: "Memby",
       },
     ];
-    expect(result).toEqual(classBundle(testClasses, testMember, testTrainer));
+    expect(result).toEqual(
+      employeeClassBundle(testClasses, testEmployee, testTrainer)
+    );
   });
 });

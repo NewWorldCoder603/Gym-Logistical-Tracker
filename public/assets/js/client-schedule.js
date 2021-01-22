@@ -45,7 +45,7 @@ const getClasses = () => {
     url: `/api/classes/${localStorage.getItem("userId")}`,
     method: "GET",
   }).then(function (classData) {
-    console.log(classData);
+    
     $weekDayDiv.empty();
     //function displays member info and what classes they are signed up for.
     //.replace borrowed from https://www.digitalocean.com/community/tutorials/js-capitalizing-strings
