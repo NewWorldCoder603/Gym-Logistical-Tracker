@@ -26,7 +26,7 @@ function loadTrainers() {
       const lastName = trainerNames[i].last_name;
       const trainerId = trainerNames[i].id;
       $(trainerList).append(`
-        <li class="me-5 d-flex float-left text-white" >${firstName} ${lastName} <button type="button" class="btn darkBtn d-flex float-right ms-5 mb-3 viewBtn" data-id="${trainerId}">View</button></li>`);
+        <li class="me-5 d-flex text-white" ><button type="button" class="btn darkBtn d-flex ms-5 me-5 mb-3 viewBtn" data-id="${trainerId}">View</button>${firstName} ${lastName}</li>`);
     }
 
     //View button sends individual trainer's information to the right hand box.
@@ -105,7 +105,7 @@ $("body").on("click", "#hireBtn", function () {
   const formElem = document.getElementById("employee_form");
   // checks for form validation and sends an ajax call only when form fields are valid
   const checkValid = formElem.checkValidity();
-  if(checkValid){
+  if (checkValid) {
     $.ajax({
       url: "/api/manager/addTrainer/",
       data: {
@@ -135,11 +135,11 @@ $("body").on("click", "#hireBtn", function () {
         phone.val("");
       }
       resetHireForm();
-    })
-  } else{
-      // when form invalid, prevents submission and focuses into the 1st invalid field
-      document.querySelector('input:invalid').reportValidity();
-      document.querySelector('input:invalid').focus();
+    });
+  } else {
+    // when form invalid, prevents submission and focuses into the 1st invalid field
+    document.querySelector("input:invalid").reportValidity();
+    document.querySelector("input:invalid").focus();
   }
 });
 
