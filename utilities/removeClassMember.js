@@ -1,3 +1,4 @@
+//This function will remove a member from the selected class
 module.exports = function (selectedClass, memberid) {
   const newRoster = [];
   const oldRoster = selectedClass.dataValues.roster.split(",");

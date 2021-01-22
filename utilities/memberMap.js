@@ -1,3 +1,4 @@
+//This function will send a list of all members enrolled in the gym to the manager
 module.exports = function (members) {
   const memberList = [];
   members.map((member) => {

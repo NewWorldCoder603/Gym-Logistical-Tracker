@@ -1,3 +1,4 @@
+//This function will send an object with just the classes being taught by the trainer user
 module.exports = function (trainer, classes) {
   const classBundle = [];
   const trainerName = `${trainer.dataValues.first_name} ${trainer.dataValues.last_name}`;

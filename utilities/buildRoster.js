@@ -1,3 +1,4 @@
+//This function builds the roster for trainer to see
 module.exports = function (members, selectedClass) {
   const classRoster = [];
   const currentRosterIds = selectedClass.dataValues.roster.split(",");
