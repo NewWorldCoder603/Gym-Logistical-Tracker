@@ -1,6 +1,6 @@
 module.exports = function (classes, currentUser, trainers) {
   let classBundle = [];
-
+  console.log(currentUser);
   const userName = currentUser.dataValues.first_name;
   //Loop to match trainer with class and build object for each class
   classes.forEach((unit) => {
