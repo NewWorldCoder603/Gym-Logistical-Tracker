@@ -21,6 +21,19 @@ module.exports = function (app) {
     });
   });
 
+  // GET object to populate divs with class info
+  app.get("/api/employee/classes/:id", function (req, res) {
+    db.Class.findAll({ order: [["start_time", "ASC"]] }).then((classes) => {
+      db.Employee.findOne({ where: { id: req.params.id } })
+        .then((currentUser) => {
+          db.Employee.findAll({}).then((trainers) => {
+            res.json(getClassBundle(classes, currentUser, trainers));
+          });
+        })
+        .catch((err) => res.json(err));
+    });
+  });
+
   // POST "api/login" authenticates the member login credentials in the database, and responds with the member id
   app.post("/api/login", (req, res) => {
     // finds if there exists a member with the logged in username and password
