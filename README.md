@@ -45,19 +45,51 @@ This is a gym tracker app which allows clients to create accounts, log in with e
 
 ## Usage
 
+1. Clients
+   - Register for account from home page.
+   - Log in with registered account from home page.
+   - Join or drop classes.
+   - View classes they've registered for.
+   - View Gym's trainers.
+2. Trainers
+   - Log in from home page.
+   - Add Classes/classtimes for the week to be taught by that trainer.
+   - Delete Classes from the week that were added by that trainer.
+3. Managers
+   - Log in from home page.
+   - View list of trainers.
+   - View each trainer's demographics information.
+   - Terminate a trainer / remove him/her from the database.
+   - Hire a new trainer by entering his/her information into the database.
+   - View all classes being offered by the gym for the week.
+   - View class rosters.
+   - Add members to roster or delete members from roster for each class (in case client needs help with this process for some reason).
+
 ## Installation
 
 - Install [node.js](https://nodejs.org/en/download/)
--
+- Open server.js in node.js integrated terminal, and install dependencies with `npm install`
 
 ## Feedback
 
-Contact me with any feedback or questions through GitHub or by email.
+Contact us with any feedback or questions through GitHub or by email.
 
--
+- [Dustin](https://github.com/DustinErwin)
+- [Ethan](https://github.com/Ewager1)
+- [Jesal](https://github.com/JesalDM)
+- [Sarah](https://github.com/smanter82/)
 
 ## Challenges
 
--
+- Keeping project scope small enough to meet the deadline
+- Organizing a large amount of API's.
+- Deciding proper Sequelize joins.
+- Rotating calendar logic based on current date.
 
 ## Future_Development
+
+- Expanding the rotating week to be a full calendar.
+- Adding a router controller
+- Authentication
+- Improved user error handling
+- Membership pricing and records
