@@ -240,6 +240,18 @@ module.exports = function (app) {
       .catch((err) => res.json(err));
   });
 
+  // GET API route for logging out the employee
+  app.get("/api/employee/logout/:id", (req, res) => {
+    // updates the is_logged_in column in db to false when member logs out
+    db.Employee.update(
+      { is_logged_in: false },
+      { where: { id: req.params.id } }
+    )
+      // send a logged out message to the user
+      .then((result) => res.json(result))
+      .catch((err) => res.json(err));
+  });
+
   // GET API that gets list of all member names and ids
   app.get("/api/manager/memberList", (req, res) => {
     db.Member.findAll({})
