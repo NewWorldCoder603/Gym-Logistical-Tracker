@@ -22,6 +22,19 @@ module.exports = function (app) {
     });
   });
 
+  // GET object to populate divs with class info
+  app.get("/api/employee/classes/:id", function (req, res) {
+    db.Class.findAll({ order: [["start_time", "ASC"]] }).then((classes) => {
+      db.Employee.findOne({ where: { id: req.params.id } })
+        .then((currentUser) => {
+          db.Employee.findAll({}).then((trainers) => {
+            res.json(getClassBundle(classes, currentUser, trainers));
+          });
+        })
+        .catch((err) => res.json(err));
+    });
+  });
+
   // POST "api/login" authenticates the member login credentials in the database, and responds with the member id
   app.post("/api/login", (req, res) => {
     // finds if there exists a member with the logged in username and password
@@ -238,6 +251,18 @@ module.exports = function (app) {
           res.json(buildRoster(members, selectedClass))
         );
       })
+      .catch((err) => res.json(err));
+  });
+
+  // GET API route for logging out the employee
+  app.get("/api/employee/logout/:id", (req, res) => {
+    // updates the is_logged_in column in db to false when member logs out
+    db.Employee.update(
+      { is_logged_in: false },
+      { where: { id: req.params.id } }
+    )
+      // send a logged out message to the user
+      .then((result) => res.json(result))
       .catch((err) => res.json(err));
   });
 
