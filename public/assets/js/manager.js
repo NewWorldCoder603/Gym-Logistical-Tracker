@@ -103,36 +103,45 @@ $("body").on("click", ".logout-btn", function () {
 
 //submit button listener for hire new trainer
 $("body").on("click", "#hireBtn", function () {
-  $.ajax({
-    url: "/api/manager/addTrainer/",
-    data: {
-      email: email.val().trim(),
-      password: password.val().trim(),
-      first_name: firstName.val().trim(),
-      last_name: lastName.val().trim(),
-      gender: gender.val().trim(),
-      phone: phone.val().trim(),
-      role: role.val().trim(),
-    },
-    method: "POST",
+  const formElem = document.getElementById("employee_form");
+  // checks for form validation and sends an ajax call only when form fields are valid
+  const checkValid = formElem.checkValidity();
+  if(checkValid){
+    $.ajax({
+      url: "/api/manager/addTrainer/",
+      data: {
+        email: email.val().trim(),
+        password: password.val().trim(),
+        first_name: firstName.val().trim(),
+        last_name: lastName.val().trim(),
+        gender: gender.val().trim(),
+        phone: phone.val().trim(),
+        role: role.val().trim(),
+      },
+      method: "POST",
 
-    error: function (req, status, err) {
-      if (err) alertModal(err);
-    },
-  }).then(function (response) {
-    //If sign-up goes through, refresh manager page
-    loadTrainers();
+      error: function (req, status, err) {
+        if (err) alertModal(err);
+      },
+    }).then(function (response) {
+      //If sign-up goes through, refresh manager page
+      loadTrainers();
 
-    //empty out the html after hire button is clicked
-    function resetHireForm() {
-      email.val("");
-      password.val("");
-      firstName.val("");
-      lastName.val("");
-      phone.val("");
-    }
-    resetHireForm();
-  });
+      //empty out the html after hire button is clicked
+      function resetHireForm() {
+        email.val("");
+        password.val("");
+        firstName.val("");
+        lastName.val("");
+        phone.val("");
+      }
+      resetHireForm();
+    })
+  } else{
+      // when form invalid, prevents submission and focuses into the 1st invalid field
+      document.querySelector('input:invalid').reportValidity();
+      document.querySelector('input:invalid').focus();
+  }
 });
 
 //function to display Alert Modal on login error

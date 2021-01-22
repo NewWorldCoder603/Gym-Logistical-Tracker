@@ -24,13 +24,14 @@ $("body").on("click", "#loginBtn", function () {
         //if correct login, set user id to local storage, and redirect to client schedule page.
         localStorage.setItem("userId", response.id);
         window.location.assign("/client-schedule");
-      } else if (response.role === "trainer") {
+      } else if (response.role.toLowerCase() === "trainer") {
         localStorage.setItem("userId", response.id);
         window.location.assign("/employee");
-      } else {
+      } else if (response.role.toLowerCase() === "manager") {
         localStorage.setItem("userId", response.id);
         window.location.assign("/manager");
       }
+      console.log("neither");
     });
   } else {
     // when form invalid, prevents submission and focuses into the 1st invalid field

@@ -142,3 +142,16 @@ body {
 /* .viewBtn {
   float: right;
 } */
+/* for form validations*/
+
+input:invalid {
+  border: 1px solid red;
+}
+
+input:valid {
+  border: 1px solid black;
+}
+
+select:valid {
+  border: 1px solid black;
+}
