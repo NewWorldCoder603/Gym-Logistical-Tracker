@@ -74,7 +74,7 @@ This is a gym tracker app which allows clients to create accounts, log in with e
 
 Contact us with any feedback or questions through GitHub or by email.
 
-- [Dustin](https://github.com/DustinErwin)
+- [Dustin](https://github.com/DustinErwin) (Dustin's commits are registered as NewWorldCoder603.)
 - [Ethan](https://github.com/Ewager1)
 - [Jesal](https://github.com/JesalDM)
 - [Sarah](https://github.com/smanter82/)
