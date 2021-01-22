@@ -20,7 +20,9 @@ $("body").on("click", "#loginBtn", function () {
       },
     }).then(function (response) {
       //Add if statements to check for manager, trainer, or member status
-      if (!response.role) {
+      if (!response) {
+        alertModal("Login Failed");
+      } else if (!response.role) {
         //if correct login, set user id to local storage, and redirect to client schedule page.
         localStorage.setItem("userId", response.id);
         window.location.assign("/client-schedule");
