@@ -76,8 +76,8 @@ const getClasses = () => {
 
           const className = classData[0].classJoined[i].class_name;
           const startTime = tConvert(classData[0].classJoined[i].start_time);
-          const trainerName = classData[i].trainer_name;
-          const dayOfClass = classData[i].day;
+          const trainerName = classData[0].classJoined[i].trainer_name;
+          const dayOfClass = classData[0].classJoined[i].day;
           const $p = $("<p>");
 
           $p.html(
