@@ -158,7 +158,6 @@ const getClasses = () => {
           </button>`;
         }
 
-        //if the user is enrolled, button will be a remove Button
 
         //convert the ajax timestamp into more readable time to display on page.
         const twelveHourTime = tConvert(fitClass.start_time);
@@ -236,14 +235,7 @@ $(document.body).on("click", ".join-btn", function () {
 
   const classId = $(this).attr("data-id");
 
-  //grab classDate from div's class name.
-  const classDate = $(this)
-    .parent()
-    .parent()
-    .parent()
-    .parent()
-    .find("p")
-    .attr("data-timestamp");
+ 
 
   //grab memberId from local storage
   const memberId = localStorage.getItem("userId");
@@ -254,13 +246,10 @@ $(document.body).on("click", ".join-btn", function () {
     method: "POST",
     data: {
       id: classId,
-      date: classDate,
       memberid: memberId,
     },
     success: function () {
-      console.log("success");
-      //repopulates user data, then repopulates schedule data with updated info
-      getClasses();
+      //here for future additions if needed
     },
   });
 });
@@ -269,13 +258,7 @@ $(document.body).on("click", ".join-btn", function () {
 
 $(document.body).on("click", ".remove-btn", function () {
   const classId = $(this).attr("data-id");
-  const classDate = $(this)
-    .parent()
-    .parent()
-    .parent()
-    .parent()
-    .find("p")
-    .attr("data-timestamp");
+
 
   //grab memberId from local storage
   const memberId = localStorage.getItem("userId");
@@ -286,11 +269,9 @@ $(document.body).on("click", ".remove-btn", function () {
 
     data: {
       id: classId,
-      date: classDate,
       memberid: memberId,
     },
     success: function () {
-      console.log("User removed from Class");
       //repopulates user data, then repopulates schedule data with updated info
       getClasses();
     },
