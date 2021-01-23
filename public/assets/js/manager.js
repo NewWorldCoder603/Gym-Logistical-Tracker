@@ -280,11 +280,10 @@ const populateSchedule = () => {
 
 populateSchedule();
 
-
-
 //the onclick function that displays everyone who signed for a class and the ability to remove them
 $(document.body).on("click", ".view-roster-btn", function () {
   const classId = $(this).attr("data-id");
+  $("#exampleModalLabel").attr("data-class", `${classId}`);
 
   //get the roster from the database
   $.ajax({
@@ -302,13 +301,11 @@ $(document.body).on("click", ".view-roster-btn", function () {
       for (let i = 0; i < classRoster.length - 1; i++) {
         const memberId = classRoster[classRoster.length - 1][i];
         const memberName = classRoster[i];
-        const removeMemberBtn = `<button type="button" class="btn red-button float-right ms-5 mb-3 removeMember" 
+        const removeMemberBtn = `<button type="button" class="btn red-button ms-5 mb-3 removeMember center-module-btns" 
         data-id="${memberId}" data-class-id="${classId}" classId">Remove</button>`;
 
         $modalBody.append(
-          `<p class="modal-p" data-member-id="${memberId}">${
-            i + 1
-          }. ${memberName} ${removeMemberBtn}<p>`
+          `<p class="modal-p" data-member-id="${memberId}"><span style='font-size:2em;'>&#129354;</span> ${memberName} ${removeMemberBtn}<p>`
         );
       }
 
@@ -323,9 +320,8 @@ $(document.body).on("click", ".view-roster-btn", function () {
 
       $modalBody.append(addMemberFormTemplate);
 
-      //grab All members from database then make them text input autofill options
+      //grab All members from database then make themtext input autofill options
       function addMemberOptions() {
-
         $.ajax({
           url: `/api/manager/memberList`,
           method: "GET",
@@ -346,9 +342,20 @@ $(document.body).on("click", ".view-roster-btn", function () {
                     id: classId,
                     memberid: memberId,
                   },
-                  success: function (result, test,) {
+                  success: function () {
                     console.log("success");
-                    console.log(result, test)
+
+                      console.log(member.fullName);
+                      data.forEach((member) => {
+                        const removeMemberBtn = `<button type="button" class="btn red-button float-right ms-5 mb-3 removeMember" 
+                        data-id="${member.id}" data-class-id="${classId}" classId">Remove</button>`;
+
+                        if (member.fullName === $memberInput) {
+                          $modalBody.prepend(`<p class="modal-p" data-member-id="${memberId}"><span style='font-size:2em;'>&#129354;</span> ${member.fullName} ${removeMemberBtn}<p>`)
+                        }
+                      });
+                     
+                    
                   },
                 });
               }
@@ -407,5 +414,3 @@ $(document.body).on("click", ".removeMember", function () {
     },
   });
 });
-
-
