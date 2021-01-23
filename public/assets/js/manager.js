@@ -326,15 +326,18 @@ $(document.body).on("click", ".view-roster-btn", function () {
           url: `/api/manager/memberList`,
           method: "GET",
         }).then(function (data) {
+
+
           $(document.body).on("click", ".addMemberBtn", function () {
             const $memberInput = $(".inputAddMember").eq(0).val();
-            console.log(data)
-            data.forEach((member) => {
+            
+            for(let i=0; i<data.length; i++) {
               
               const classId = $(this).attr("data-class-id");
 
-              if ($memberInput === member.fullName) {
-                let memberId = member.id;
+              if ($memberInput === data[i].fullName) {
+                console.log('it happened')
+                let memberId = data[i].id;
 
                 return $.ajax({
                   url: "/api/addToClass",
@@ -347,19 +350,17 @@ $(document.body).on("click", ".view-roster-btn", function () {
                     console.log("success");
                      
                         const removeMemberBtn = `<button type="button" class="btn red-button float-right ms-5 mb-3 removeMember" 
-                        data-id="${member.id}" data-class-id="${classId}" classId">Remove</button>`;
+                        data-id="${data[i].id}" data-class-id="${classId}" classId">Remove</button>`;
 
-                        if (member.fullName === $memberInput) {
-                          console.log(member.fullName, $memberInput)
-                          $modalBody.prepend(`<p class="modal-p" data-member-id="${memberId}"><span style='font-size:2em;'>&#129354;</span> ${member.fullName} ${removeMemberBtn}<p>`)
-                        }
-                      
-                     
+                        if (data[i].fullName === $memberInput) {
+                          console.log(data[i].fullName, $memberInput)
+                          $modalBody.prepend(`<p class="modal-p" data-member-id="${memberId}"><span style='font-size:2em;'>&#129354;</span> ${data[i].fullName} ${removeMemberBtn}<p>`)
+                        }  
                     
                   },
                 });
               }
-            });
+            };
           });
 
           const $optionsList = $("#memberList");
