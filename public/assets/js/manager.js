@@ -280,17 +280,11 @@ const populateSchedule = () => {
 
 populateSchedule();
 
+
+
 //the onclick function that displays everyone who signed for a class and the ability to remove them
 $(document.body).on("click", ".view-roster-btn", function () {
   const classId = $(this).attr("data-id");
-  const classDate = $(this)
-    .parent()
-    .parent()
-    .parent()
-    .parent()
-    .find("p")
-    .attr("data-timestamp");
-
 
   //get the roster from the database
   $.ajax({
@@ -309,7 +303,7 @@ $(document.body).on("click", ".view-roster-btn", function () {
         const memberId = classRoster[classRoster.length - 1][i];
         const memberName = classRoster[i];
         const removeMemberBtn = `<button type="button" class="btn red-button float-right ms-5 mb-3 removeMember" 
-        data-id="${memberId}" data-class-id="${classId}" data-class-date="${classDate}" "classId">Remove</button>`;
+        data-id="${memberId}" data-class-id="${classId}" classId">Remove</button>`;
 
         $modalBody.append(
           `<p class="modal-p" data-member-id="${memberId}">${
@@ -320,22 +314,48 @@ $(document.body).on("click", ".view-roster-btn", function () {
 
       //add the AddMember form to the bottom
       const addMemberFormTemplate = ` <div class="col">
-      <label for="inputAddMember" class="form-label">Add Member</label>
-      <input type="text" name ="inputAddMember" list="memberList">
+      <input type="text" class="inputAddMember" name ="inputAddMember" list="memberList" >
+      <label for="inputAddMember" class="form-label"><button type="button" data-class-id="${classId}" class="btn red-button addMemberBtn">Add Member</button></label>
       <datalist id="memberList">
       </select>
+      
       </div>`;
 
       $modalBody.append(addMemberFormTemplate);
 
       //grab All members from database then make them text input autofill options
       function addMemberOptions() {
+
         $.ajax({
           url: `/api/manager/memberList`,
           method: "GET",
         }).then(function (data) {
-          $optionsList = $("#memberList");
+          $(document.body).on("click", ".addMemberBtn", function () {
+            const $memberInput = $(".inputAddMember").eq(0).val();
 
+            data.forEach((member) => {
+              const classId = $(this).attr("data-class-id");
+
+              if ($memberInput === member.fullName) {
+                let memberId = member.id;
+
+                return $.ajax({
+                  url: "/api/addToClass",
+                  method: "POST",
+                  data: {
+                    id: classId,
+                    memberid: memberId,
+                  },
+                  success: function (result, test,) {
+                    console.log("success");
+                    console.log(result, test)
+                  },
+                });
+              }
+            });
+          });
+
+          const $optionsList = $("#memberList");
           data.forEach((member) => {
             $optionsList.append(`<option>${member.fullName}</option>`);
           });
@@ -347,6 +367,8 @@ $(document.body).on("click", ".view-roster-btn", function () {
     writeRosterModal();
   });
 });
+
+//when clicking Add Member in roster modal, add member to class in database and update modal
 
 //on remove button click, delete the associated user from the class
 $(document.body).on("click", ".removeMember", function () {
@@ -385,3 +407,5 @@ $(document.body).on("click", ".removeMember", function () {
     },
   });
 });
+
+

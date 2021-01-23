@@ -139,13 +139,25 @@ module.exports = function (app) {
   });
 
   //API to add member into chosen class
-  app.post("/api/addToClass", (req, res) => {
-    db.Class.findOne({ where: { id: req.body.id } }).then((selectedClass) => {
-      const classUpdate = addToClass(selectedClass, req.body.memberid);
-      db.Class.update(classUpdate, { where: { id: req.body.id } })
-        .then(() => res.send("Success!"))
-        .catch((err) => res.json(err));
-    });
+  app.post("/api/addToClass", async (req, res) => {
+    const selectedClass = await db.Class.findOne({
+      where: { id: req.body.id },
+    }).catch((err) => res.json(err));
+    const classUpdate = addToClass(selectedClass, req.body.memberid);
+    const updated = await db.Class.update(classUpdate, {
+      where: { id: req.body.id },
+    }).catch((err) => res.json(err));
+    const new_roster = await db.Class.findOne({
+      id: selectedClass.id,
+    }).catch((err) => res.json(err));
+    await db.Class.findOne({
+      where: { id: new_roster.id },
+    }).catch((err) => res.json(err));
+    await db.Member.findAll({})
+      .then((members) => {
+        res.json(buildRoster(members, selectedClass));
+      })
+      .catch((err) => res.json(err));
   });
 
   // API for removing a member from a class
