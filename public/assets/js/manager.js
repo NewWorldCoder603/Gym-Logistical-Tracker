@@ -283,17 +283,7 @@ populateSchedule();
 //the onclick function that displays everyone who signed for a class and the ability to remove them
 $(document.body).on("click", ".view-roster-btn", function () {
   const classId = $(this).attr("data-id");
-<<<<<<< HEAD
-  const classDate = $(this)
-    .parent()
-    .parent()
-    .parent()
-    .parent()
-    .find("p")
-    .attr("data-timestamp");
-=======
   $("#exampleModalLabel").attr("data-class", `${classId}`);
->>>>>>> master
 
   //get the roster from the database
   $.ajax({
@@ -311,15 +301,9 @@ $(document.body).on("click", ".view-roster-btn", function () {
       for (let i = 0; i < classRoster.length - 1; i++) {
         const memberId = classRoster[classRoster.length - 1][i];
         const memberName = classRoster[i];
-<<<<<<< HEAD
-        console.log(memberId);
-        console.log(memberName);
+
         const removeMemberBtn = `<button type="button" class="btn red-button float-right ms-5 mb-3 removeMember" 
         data-id="${memberId}" data-class-id="${classId}" data-class-date="${classDate}" "classId">Remove</button>`;
-=======
-        const removeMemberBtn = `<button type="button" class="btn red-button ms-5 mb-3 removeMember center-module-btns" 
-        data-id="${memberId}" data-class-id="${classId}" classId">Remove</button>`;
->>>>>>> master
 
         $modalBody.append(
           `<p class="modal-p" data-member-id="${memberId}"><span style='font-size:2em;'>&#129354;</span> ${memberName} ${removeMemberBtn}<p>`
