@@ -19,6 +19,8 @@ module.exports = function (classes, currentUser, trainers) {
           let thisClass = {
             id: unit.dataValues.id,
             class_name: unit.dataValues.class_name,
+            day: unit.dataValues.day,
+            trainer_name: activeTrainer[0].dataValues.first_name,
             start_time: unit.dataValues.start_time,
           };
           //Add class to user's joined classes to show in UI
