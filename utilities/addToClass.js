@@ -1,4 +1,3 @@
-//This function will add a member to the selected class
 module.exports = function (selectedClass, memberid) {
   //Pulls class roster and checks if user is already joined
   const oldRoster = selectedClass.dataValues.roster.split(",");

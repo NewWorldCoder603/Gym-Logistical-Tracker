@@ -47,7 +47,7 @@ $("body").on("click", "#getStartedBtn", function () {
   window.location.assign("/register");
 });
 
-//function to display Alert Modal on login error - Code credit:  https://gist.github.com/billmei/2e9d11ff732b1ea6916f (lines 31-37)
+//function to display Alert Modal on login error - Code credit:  https://gist.github.com/billmei/2e9d11ff732b1ea6916f
 function alertModal(title, body) {
   // Display error message to the user in a modal
   $("#alert-modal-title").html(title);

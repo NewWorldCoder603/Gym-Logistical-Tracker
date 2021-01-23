@@ -322,6 +322,8 @@ function createClass() {
   }
 }
 $(document.body).on("click", ".viewRosterBtn", function () {
+  const rosterOrClassDiv = $(".roster-or-addClass");
+  rosterOrClassDiv.empty();
   const classId = $(this).attr("data-id");
 
   $.ajax({
@@ -329,6 +331,17 @@ $(document.body).on("click", ".viewRosterBtn", function () {
     method: "GET",
   }).then(function (classRoster) {
     function writeRoster() {
+      rosterOrClassDiv.append(`<div class="card mb-5 background-red mt-5 " style="width: 70%">
+      <div class="card-header roster-text">
+      Roster
+      </div>
+      <ul class="list-group list-group-flush text-start displayPage">
+      <li class="list-group-item text-center">Choose a class to view </li>
+      </ul>
+      <!-- terminate button -->
+      <div class="card-footer">
+      </div>
+  </div>`);
       $rosterList = $(".displayPage");
 
       //empty out any previous list items

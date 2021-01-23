@@ -29,7 +29,7 @@
       <section class="mb-5 background-dark container-fluid ">
         <div class="row align-items-center ">
           <div class="col">
-            <h1 class="big-heading-text less-big-heading text-end ">Dev</h1>
+            <h1 class="big-heading-text less-big-heading no-heading text-end ">Dev</h1>
           </div>
           <div class="col text-center ">
             <img
@@ -39,7 +39,7 @@
             />
           </div>
           <div class="col">
-            <h1 class="big-heading-text less-big-heading"> &nbsp Fit</h1> <!--&nbsp adds space to even out heading spacing-->
+            <h1 class="big-heading-text less-big-heading no-heading"> &nbsp Fit</h1> <!--&nbsp adds space to even out heading spacing-->
           </div>
         </div>
         
@@ -234,12 +234,12 @@
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title" id="exampleModalLabel">Roster</h5>
+              
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
             <div class="modal-body roster-body">
-             
             </div>
             <div class="modal-footer">
               <button type="button" class="btn background-red text-white " data-dismiss="modal">Close</button>
@@ -256,6 +256,32 @@
         </p>
       </footer>
     </main>
+        <!--Alert modal for hire errors - Code credit:  https://gist.github.com/billmei/2e9d11ff732b1ea6916f  (lines 149-162)-->
+        <div id="alert-modal" class="modal fade">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button> -->
+                <h4 id="alert-modal-title" class="modal-title">
+                  Oops! Something Went Wrong
+                </h4>
+              </div>
+              <div id="alert-modal-body" class="modal-body">
+                Please try again.
+              </div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-default modalBtn"
+                  data-dismiss="modal"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+    
     <!--Link to schedule.js-->
     <script defer src="./assets/js/manager.js"></script>
 
