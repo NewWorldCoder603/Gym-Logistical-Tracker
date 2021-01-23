@@ -45,7 +45,6 @@ const getClasses = () => {
     url: `/api/classes/${localStorage.getItem("userId")}`,
     method: "GET",
   }).then(function (classData) {
-    
     $weekDayDiv.empty();
     //function displays member info and what classes they are signed up for.
 
@@ -57,7 +56,7 @@ const getClasses = () => {
 
       //create variables that hold member info
       function writeUserName() {
-            //.replace borrowed from https://www.digitalocean.com/community/tutorials/js-capitalizing-strings
+        //.replace borrowed from https://www.digitalocean.com/community/tutorials/js-capitalizing-strings
         const membersName = `Hello ${classData[0].userName.replace(/^\w/, (c) =>
           c.toUpperCase()
         )}`;
@@ -71,10 +70,12 @@ const getClasses = () => {
       //takes each class the user is signed up for, then appends that class info to user info page
       function writeUsersClasses() {
         $classesTakenDiv.empty();
+        
         const numOfClassesTaken = `${classData[0].classJoined.length}`;
         for (let i = 0; i < numOfClassesTaken; i++) {
-          const className = classData[i].classJoined[i].class_name;
-          const startTime = tConvert(classData[i].start_time);
+
+          const className = classData[0].classJoined[i].class_name;
+          const startTime = tConvert(classData[0].classJoined[i].start_time);
           const trainerName = classData[i].trainer_name;
           const dayOfClass = classData[i].day;
           const $p = $("<p>");

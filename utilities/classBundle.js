@@ -43,6 +43,6 @@ module.exports = function (classes, currentUser, trainers) {
 
     classBundle.push(reqClass);
   });
-
+  
   return classBundle;
 };
