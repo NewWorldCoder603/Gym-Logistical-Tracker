@@ -328,8 +328,9 @@ $(document.body).on("click", ".view-roster-btn", function () {
         }).then(function (data) {
           $(document.body).on("click", ".addMemberBtn", function () {
             const $memberInput = $(".inputAddMember").eq(0).val();
-
+            console.log(data)
             data.forEach((member) => {
+              
               const classId = $(this).attr("data-class-id");
 
               if ($memberInput === member.fullName) {
@@ -344,16 +345,15 @@ $(document.body).on("click", ".view-roster-btn", function () {
                   },
                   success: function () {
                     console.log("success");
-
-                      console.log(member.fullName);
-                      data.forEach((member) => {
+                     
                         const removeMemberBtn = `<button type="button" class="btn red-button float-right ms-5 mb-3 removeMember" 
                         data-id="${member.id}" data-class-id="${classId}" classId">Remove</button>`;
 
                         if (member.fullName === $memberInput) {
+                          console.log(member.fullName, $memberInput)
                           $modalBody.prepend(`<p class="modal-p" data-member-id="${memberId}"><span style='font-size:2em;'>&#129354;</span> ${member.fullName} ${removeMemberBtn}<p>`)
                         }
-                      });
+                      
                      
                     
                   },
