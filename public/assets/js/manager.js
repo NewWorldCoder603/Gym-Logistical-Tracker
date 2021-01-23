@@ -26,7 +26,7 @@ function loadTrainers() {
       const lastName = trainerNames[i].last_name;
       const trainerId = trainerNames[i].id;
       $(trainerList).append(`
-        <li class="me-5 d-flex text-white" ><button type="button" class="btn darkBtn d-flex ms-5 me-5 mb-3 viewBtn" data-id="${trainerId}">View</button>${firstName} ${lastName}</li>`);
+        <li class="mx-auto d-flex text-white" ><button type="button" class="btn darkBtn d-flex me-5 mb-3 viewBtn" data-id="${trainerId}">View</button>${firstName} ${lastName}</li>`);
     }
 
     //View button sends individual trainer's information to the right hand box.
@@ -326,17 +326,14 @@ $(document.body).on("click", ".view-roster-btn", function () {
           url: `/api/manager/memberList`,
           method: "GET",
         }).then(function (data) {
-
-
           $(document.body).on("click", ".addMemberBtn", function () {
             const $memberInput = $(".inputAddMember").eq(0).val();
-            
-            for(let i=0; i<data.length; i++) {
-              
+
+            for (let i = 0; i < data.length; i++) {
               const classId = $(this).attr("data-class-id");
 
               if ($memberInput === data[i].fullName) {
-                console.log('it happened')
+                console.log("it happened");
                 let memberId = data[i].id;
 
                 return $.ajax({
@@ -348,19 +345,20 @@ $(document.body).on("click", ".view-roster-btn", function () {
                   },
                   success: function () {
                     console.log("success");
-                     
-                        const removeMemberBtn = `<button type="button" class="btn red-button float-right ms-5 mb-3 removeMember" 
+
+                    const removeMemberBtn = `<button type="button" class="btn red-button float-right ms-5 mb-3 removeMember" 
                         data-id="${data[i].id}" data-class-id="${classId}" classId">Remove</button>`;
 
-                        if (data[i].fullName === $memberInput) {
-                          console.log(data[i].fullName, $memberInput)
-                          $modalBody.prepend(`<p class="modal-p" data-member-id="${memberId}"><span style='font-size:2em;'>&#129354;</span> ${data[i].fullName} ${removeMemberBtn}<p>`)
-                        }  
-                    
+                    if (data[i].fullName === $memberInput) {
+                      console.log(data[i].fullName, $memberInput);
+                      $modalBody.prepend(
+                        `<p class="modal-p" data-member-id="${memberId}"><span style='font-size:2em;'>&#129354;</span> ${data[i].fullName} ${removeMemberBtn}<p>`
+                      );
+                    }
                   },
                 });
               }
-            };
+            }
           });
 
           const $optionsList = $("#memberList");
