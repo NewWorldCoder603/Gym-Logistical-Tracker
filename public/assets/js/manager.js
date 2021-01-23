@@ -291,7 +291,6 @@ $(document.body).on("click", ".view-roster-btn", function () {
     .find("p")
     .attr("data-timestamp");
 
-
   //get the roster from the database
   $.ajax({
     url: `/api/roster/${classId}`,
@@ -308,6 +307,8 @@ $(document.body).on("click", ".view-roster-btn", function () {
       for (let i = 0; i < classRoster.length - 1; i++) {
         const memberId = classRoster[classRoster.length - 1][i];
         const memberName = classRoster[i];
+        console.log(memberId);
+        console.log(memberName);
         const removeMemberBtn = `<button type="button" class="btn red-button float-right ms-5 mb-3 removeMember" 
         data-id="${memberId}" data-class-id="${classId}" data-class-date="${classDate}" "classId">Remove</button>`;
 

@@ -209,7 +209,7 @@ $(document.body).on("click", ".delete-class-btn", function () {
     url: `/api/removeClass/${id}`,
     method: "DELETE",
     success: function () {
-      populateSchedule()
+      populateSchedule();
       console.log("Delete Request Sent");
     },
   });
@@ -315,13 +315,12 @@ function createClass() {
         populateSchedule();
       },
     });
-
-  } else{
-  // when form invalid, prevents submission and focuses into the 1st invalid field
-  document.querySelector('input:invalid').reportValidity();
-  document.querySelector('input:invalid').focus();
-  };
-};
+  } else {
+    // when form invalid, prevents submission and focuses into the 1st invalid field
+    document.querySelector("input:invalid").reportValidity();
+    document.querySelector("input:invalid").focus();
+  }
+}
 $(document.body).on("click", ".viewRosterBtn", function () {
   const classId = $(this).attr("data-id");
 
@@ -343,9 +342,7 @@ $(document.body).on("click", ".viewRosterBtn", function () {
       //otherwise, display each member who signed up for the class
       else {
         for (let i = 0; i < classRoster.length - 1; i++) {
-
           let listItemTeamplate = `<li class="list-group-item">${i + 1}.   ${
-
             classRoster[i]
           } </li>`;
           $rosterList.append(listItemTeamplate);
@@ -354,4 +351,4 @@ $(document.body).on("click", ".viewRosterBtn", function () {
     }
     writeRoster();
   });
-})
+});
