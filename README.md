@@ -28,6 +28,8 @@ This is a gym tracker app which allows clients to create accounts, log in with e
 - [Feedback](#Feedback)
 - [Challenges](#Challenges)
 - [Future Development](#Future_Development)
+- [Walkthrough Video](#Walkthrough)
+- [Copyrights/Acknowledgements](#Copyrights/Acknowledgements)
 
 ## Technologies
 
@@ -94,7 +96,12 @@ Contact us with any feedback or questions through GitHub or by email.
 - Improved user error handling
 - Membership pricing and records
 
+## Walkthrough
+
+[Walkthrough Video](https://drive.google.com/file/d/1waBdCG9vFMojRRJAujn7LDis4MAf_Nr8/view)
+
 ## Copyrights/Acknowledgements
+
 Copyright © 2011-2015, Paul Vorbach.
 Copyright © 2009, Jeff Mott.
 
@@ -103,12 +110,12 @@ All rights reserved.
 Redistribution and use in source and binary forms, with or without modification,
 are permitted provided that the following conditions are met:
 
-* Redistributions of source code must retain the above copyright notice, this
+- Redistributions of source code must retain the above copyright notice, this
   list of conditions and the following disclaimer.
-* Redistributions in binary form must reproduce the above copyright notice, this
+- Redistributions in binary form must reproduce the above copyright notice, this
   list of conditions and the following disclaimer in the documentation and/or
   other materials provided with the distribution.
-* Neither the name Crypto-JS nor the names of its contributors may be used to
+- Neither the name Crypto-JS nor the names of its contributors may be used to
   endorse or promote products derived from this software without specific prior
   written permission.
 
