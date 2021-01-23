@@ -8,6 +8,18 @@ This is a gym tracker app which allows clients to create accounts, log in with e
 
 [Dev_Fit_Application](https://gym-logistical-tracker-duex.herokuapp.com/)
 
+Dummy Login Info: Use these to log in and access the different. 
+None of these are real life user/passwords
+
+Member Username: Dwreck@over9000.com
+Member Password: dustin1 
+
+Trainer Username: F@yahoo.com
+Trainer Password: felicia1
+
+Manager Username: jimdhima@yahoo.com
+Manager Password: 50%dhima
+
 ## Screenshots
 
 ![HomePage](./public/assets/images/screenshots/homePage.png)
