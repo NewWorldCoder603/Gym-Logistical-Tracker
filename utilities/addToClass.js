@@ -1,10 +1,9 @@
-//This function will add a member to the selected class
 module.exports = function (selectedClass, memberid) {
   //Pulls class roster and checks if user is already joined
   const oldRoster = selectedClass.dataValues.roster.split(",");
   oldRoster.forEach((member) => {
     if (memberid === member) {
-      return { message: "Member already enrolled here." };
+      res.json({ message: "Member already enrolled here." });
     }
   });
 
