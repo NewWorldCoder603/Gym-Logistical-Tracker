@@ -301,8 +301,9 @@ $(document.body).on("click", ".view-roster-btn", function () {
       for (let i = 0; i < classRoster.length - 1; i++) {
         const memberId = classRoster[classRoster.length - 1][i];
         const memberName = classRoster[i];
-        const removeMemberBtn = `<button type="button" class="btn red-button ms-5 mb-3 removeMember center-module-btns" 
-        data-id="${memberId}" data-class-id="${classId}" classId">Remove</button>`;
+
+        const removeMemberBtn = `<button type="button" class="btn red-button float-right ms-5 mb-3 removeMember" 
+        data-id="${memberId}" data-class-id="${classId}" data-class-date="${classDate}" "classId">Remove</button>`;
 
         $modalBody.append(
           `<p class="modal-p" data-member-id="${memberId}"><span style='font-size:2em;'>&#129354;</span> ${memberName} ${removeMemberBtn}<p>`
