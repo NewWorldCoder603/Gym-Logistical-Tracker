@@ -48,7 +48,7 @@ const getClasses = () => {
     
     $weekDayDiv.empty();
     //function displays member info and what classes they are signed up for.
-    //.replace borrowed from https://www.digitalocean.com/community/tutorials/js-capitalizing-strings
+
     const displayMemberInfo = () => {
       //grab divs in Member area
       const $memberName = $(".member-name");
@@ -57,6 +57,7 @@ const getClasses = () => {
 
       //create variables that hold member info
       function writeUserName() {
+            //.replace borrowed from https://www.digitalocean.com/community/tutorials/js-capitalizing-strings
         const membersName = `Hello ${classData[0].userName.replace(/^\w/, (c) =>
           c.toUpperCase()
         )}`;

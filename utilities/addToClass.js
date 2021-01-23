@@ -4,7 +4,7 @@ module.exports = function (selectedClass, memberid) {
   const oldRoster = selectedClass.dataValues.roster.split(",");
   oldRoster.forEach((member) => {
     if (memberid === member) {
-      res.json({ message: "Member already enrolled here." });
+      return { message: "Member already enrolled here." };
     }
   });
 
