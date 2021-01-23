@@ -150,6 +150,7 @@ function displayTrainerInfo() {
     }
     displayNameGreeting();
 
+    //display the number of classes the trainer is teaching
     function displayHowManyClasses() {
       const $numOfClassesDiv = $(".num-classes-taught");
 
@@ -160,6 +161,7 @@ function displayTrainerInfo() {
     }
     displayHowManyClasses();
 
+    //display the information about each class the trainer is teaching
     function displayTaughtClasses() {
       const $classesTaughtDiv = $(".classes-taught");
 
@@ -201,7 +203,7 @@ function displayTrainerInfo() {
 }
 displayTrainerInfo();
 
-//Not working properly. Perhaps my and dustins tables named differently? Look into this tonight.
+//delete a class 
 $(document.body).on("click", ".delete-class-btn", function () {
   //grabs classId
   const id = $(this).attr("data-id");
@@ -210,7 +212,6 @@ $(document.body).on("click", ".delete-class-btn", function () {
     method: "DELETE",
     success: function () {
       populateSchedule();
-      console.log("Delete Request Sent");
     },
   });
 });
@@ -287,6 +288,7 @@ $(".add-class-form-btn").click(function () {
   rosterOrClassDiv.append(addClassTemplate);
 });
 
+//Ability for trainer to Add Class
 function createClass() {
   const formElem = document.getElementById("class_form");
   // checks for form validation and sends an ajax call only when form fields are valid
@@ -311,7 +313,6 @@ function createClass() {
         roster: "",
       },
       success: function () {
-        console.log("class added");
         populateSchedule();
       },
     });
@@ -321,6 +322,7 @@ function createClass() {
     document.querySelector("input:invalid").focus();
   }
 }
+//When clicking on the view button, display all members in a class
 $(document.body).on("click", ".viewRosterBtn", function () {
   const rosterOrClassDiv = $(".roster-or-addClass");
   rosterOrClassDiv.empty();
@@ -330,6 +332,7 @@ $(document.body).on("click", ".viewRosterBtn", function () {
     url: `/api/roster/${classId}`,
     method: "GET",
   }).then(function (classRoster) {
+    //using data from database, display the roster on the page
     function writeRoster() {
       rosterOrClassDiv.append(`<div class="card mb-5 background-red mt-5 " style="width: 70%">
       <div class="card-header roster-text">

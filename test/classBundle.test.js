@@ -73,8 +73,20 @@ describe("classBundle", () => {
     const result = [
       {
         classJoined: [
-          { id: 1, class_name: "Schwarzenegger Sweller" },
-          { id: 1, class_name: "Captain Crunches" },
+          {
+            id: 1,
+            class_name: "Schwarzenegger Sweller",
+            day: "Tuesday",
+            trainer_name: "Trainy",
+            start_time: "01:00:00",
+          },
+          {
+            id: 1,
+            class_name: "Captain Crunches",
+            day: "Friday",
+            trainer_name: "Testy",
+            start_time: "18:00:00",
+          },
         ],
         id: 1,
         class_name: "Beef Session",
@@ -88,8 +100,20 @@ describe("classBundle", () => {
       },
       {
         classJoined: [
-          { id: 1, class_name: "Schwarzenegger Sweller" },
-          { id: 1, class_name: "Captain Crunches" },
+          {
+            id: 1,
+            class_name: "Schwarzenegger Sweller",
+            day: "Tuesday",
+            trainer_name: "Trainy",
+            start_time: "01:00:00",
+          },
+          {
+            id: 1,
+            class_name: "Captain Crunches",
+            day: "Friday",
+            trainer_name: "Testy",
+            start_time: "18:00:00",
+          },
         ],
         id: 1,
         class_name: "Schwarzenegger Sweller",
@@ -103,8 +127,20 @@ describe("classBundle", () => {
       },
       {
         classJoined: [
-          { id: 1, class_name: "Schwarzenegger Sweller" },
-          { id: 1, class_name: "Captain Crunches" },
+          {
+            id: 1,
+            class_name: "Schwarzenegger Sweller",
+            day: "Tuesday",
+            trainer_name: "Trainy",
+            start_time: "01:00:00",
+          },
+          {
+            id: 1,
+            class_name: "Captain Crunches",
+            day: "Friday",
+            trainer_name: "Testy",
+            start_time: "18:00:00",
+          },
         ],
         id: 1,
         class_name: "Captain Crunches",

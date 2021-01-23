@@ -303,7 +303,7 @@ $(document.body).on("click", ".view-roster-btn", function () {
         const memberName = classRoster[i];
 
         const removeMemberBtn = `<button type="button" class="btn red-button float-right ms-5 mb-3 removeMember" 
-        data-id="${memberId}" data-class-id="${classId}" data-class-date="${classDate}" "classId">Remove</button>`;
+        data-id="${memberId}" data-class-id="${classId}" "classId">Remove</button>`;
 
         $modalBody.append(
           `<p class="modal-p" data-member-id="${memberId}"><span style='font-size:2em;'>&#129354;</span> ${memberName} ${removeMemberBtn}<p>`
@@ -321,20 +321,31 @@ $(document.body).on("click", ".view-roster-btn", function () {
 
       $modalBody.append(addMemberFormTemplate);
 
-      //grab All members from database then make themtext input autofill options
+      //grab All members from database for input box autofill
       function addMemberOptions() {
         $.ajax({
           url: `/api/manager/memberList`,
           method: "GET",
         }).then(function (data) {
+
+
+          //append all members in database as suggestions in the input feild
+          const $optionsList = $("#memberList");
+          data.forEach((member) => {
+            $optionsList.append(`<option>${member.fullName}</option>`);
+          });
+
+          //when clicking add member, add the member in the database and display that member in the modal roster
           $(document.body).on("click", ".addMemberBtn", function () {
             const $memberInput = $(".inputAddMember").eq(0).val();
 
+            //check each member
             for (let i = 0; i < data.length; i++) {
+              //add a class id to each member for removal purposes later on
               const classId = $(this).attr("data-class-id");
 
+              //if the member's input text matches a member in the database, then update the database and display that member on modal page
               if ($memberInput === data[i].fullName) {
-                console.log("it happened");
                 let memberId = data[i].id;
 
                 return $.ajax({
@@ -345,26 +356,19 @@ $(document.body).on("click", ".view-roster-btn", function () {
                     memberid: memberId,
                   },
                   success: function () {
-                    console.log("success");
 
+                    //add a remove button with the class id that can be referenced when removing a member
                     const removeMemberBtn = `<button type="button" class="btn red-button float-right ms-5 mb-3 removeMember" 
                         data-id="${data[i].id}" data-class-id="${classId}" classId">Remove</button>`;
 
-                    if (data[i].fullName === $memberInput) {
-                      console.log(data[i].fullName, $memberInput);
-                      $modalBody.prepend(
-                        `<p class="modal-p" data-member-id="${memberId}"><span style='font-size:2em;'>&#129354;</span> ${data[i].fullName} ${removeMemberBtn}<p>`
-                      );
-                    }
+                    //add that member onto the page, with their memberId attatched for removal reference
+                    $modalBody.prepend(
+                      `<p class="modal-p" data-member-id="${memberId}"><span style='font-size:2em;'>&#129354;</span> ${data[i].fullName} ${removeMemberBtn}<p>`
+                    );
                   },
                 });
               }
             }
-          });
-
-          const $optionsList = $("#memberList");
-          data.forEach((member) => {
-            $optionsList.append(`<option>${member.fullName}</option>`);
           });
         });
       }
@@ -375,7 +379,7 @@ $(document.body).on("click", ".view-roster-btn", function () {
   });
 });
 
-//when clicking Add Member in roster modal, add member to class in database and update modal
+
 
 //on remove button click, delete the associated user from the class
 $(document.body).on("click", ".removeMember", function () {
@@ -384,12 +388,11 @@ $(document.body).on("click", ".removeMember", function () {
   const classDate = $(this).attr("data-class-date");
   const currentThis = $(this);
 
-  //added the member's id to both the button and the p tag. On Click, a for loop runs and when it matches the p tag to
-  //the id, it deletes both. This updates the modal for the user immediately.
+//reWrite the Modal. This isn't great practice but i did a poor job nesting fuctionsinsead of keeping them global. Fixing in react version. 
   function reWriteModal() {
     //grab all the ptags in the modal
     const $modalP = $(".modal-p");
-
+//check each possible member against current id. When they match, delete that member
     for (let i = 0; i < $modalP.length; i++) {
       const memberBtnId = currentThis.attr("data-id");
       const ptagId = $modalP[i].getAttribute("data-member-id");
@@ -399,18 +402,17 @@ $(document.body).on("click", ".removeMember", function () {
     }
   }
   reWriteModal();
-
+// tell the database that member is no longer in class
   return $.ajax({
     url: "/api/removeFromClass",
     method: "POST",
 
     data: {
       id: classId,
-      date: classDate,
       memberid: memberId,
     },
     success: function () {
-      console.log("User removed from Class");
+
     },
   });
 });

@@ -45,7 +45,6 @@ const getClasses = () => {
     url: `/api/classes/${localStorage.getItem("userId")}`,
     method: "GET",
   }).then(function (classData) {
-    
     $weekDayDiv.empty();
     //function displays member info and what classes they are signed up for.
 
@@ -57,7 +56,7 @@ const getClasses = () => {
 
       //create variables that hold member info
       function writeUserName() {
-            //.replace borrowed from https://www.digitalocean.com/community/tutorials/js-capitalizing-strings
+        //.replace borrowed from https://www.digitalocean.com/community/tutorials/js-capitalizing-strings
         const membersName = `Hello ${classData[0].userName.replace(/^\w/, (c) =>
           c.toUpperCase()
         )}`;
@@ -71,12 +70,14 @@ const getClasses = () => {
       //takes each class the user is signed up for, then appends that class info to user info page
       function writeUsersClasses() {
         $classesTakenDiv.empty();
+        
         const numOfClassesTaken = `${classData[0].classJoined.length}`;
         for (let i = 0; i < numOfClassesTaken; i++) {
-          const className = classData[i].classJoined[i].class_name;
-          const startTime = tConvert(classData[i].start_time);
-          const trainerName = classData[i].trainer_name;
-          const dayOfClass = classData[i].day;
+
+          const className = classData[0].classJoined[i].class_name;
+          const startTime = tConvert(classData[0].classJoined[i].start_time);
+          const trainerName = classData[0].classJoined[i].trainer_name;
+          const dayOfClass = classData[0].classJoined[i].day;
           const $p = $("<p>");
 
           $p.html(
@@ -157,7 +158,6 @@ const getClasses = () => {
           </button>`;
         }
 
-        //if the user is enrolled, button will be a remove Button
 
         //convert the ajax timestamp into more readable time to display on page.
         const twelveHourTime = tConvert(fitClass.start_time);
@@ -257,7 +257,6 @@ $(document.body).on("click", ".join-btn", function () {
       memberid: memberId,
     },
     success: function () {
-      console.log("success");
       //repopulates user data, then repopulates schedule data with updated info
       getClasses();
     },
@@ -289,7 +288,6 @@ $(document.body).on("click", ".remove-btn", function () {
       memberid: memberId,
     },
     success: function () {
-      console.log("User removed from Class");
       //repopulates user data, then repopulates schedule data with updated info
       getClasses();
     },
