@@ -117,7 +117,9 @@ Contact us with any feedback or questions through GitHub or by email.
 
 [Walkthrough Video](https://drive.google.com/file/d/1waBdCG9vFMojRRJAujn7LDis4MAf_Nr8/view)
 
-## Copyrights/Acknowledgements (For md5 npm package)
+## Copyrights/Acknowledgements 
+
+(For md5 npm package)
 
 Copyright © 2011-2015, Paul Vorbach.
 Copyright © 2009, Jeff Mott.
